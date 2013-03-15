@@ -1,3 +1,18 @@
 \section{Introduction to Lists and Vectors}\label{sec:list-vectors}
-Clojure provides many ways of storing data. \elenacomment{A very important discussion of sequences goes here.}
+Clojure provides many ways of storing data. 
+\elenacomment{Add a transition.} 
+
+ \fut{Collections} are containers for storing data. There many types of collections, each suited to store data for a specific set of purposes. Every type of collections has a particular implementation in computer memory: its elements are stored in a specific way. Some collections allow faster access to data, some allow better ways of indexing it, some store data in a specific order, and some in a set-like fashion in which the order of elements does not matter. 
+
+If you read Clojure documentation or examples, you will notice that people frequently mention \fut{sequences}. Sometimes the terms ``collection'' and ``sequence"' seem to be used interchangeably. While there are many situations in which you can refer to the same data container as a collection or a sequence, they are not the same. A \fut{sequence} is not any concrete collection, but an abstraction. It refers to the ability to get elements from a collection (as well as from other sources, such as user input) in a \fut{sequential} manner: a fancy word for getting elements \fut{one at a time}. It does not matter how elements are stored internally: if you get the same elements in the same order from two containers, they are equal as sequences.
+
+We will discuss collections and sequences more in the future, but for now remember that while both collections and sequences are used to describe data containers, \takeaway{collections refer to a concrete way of storing data in memory} and \takeaway{sequences are an abstraction for accessing elements in a sequential manner}. 
+
+The two types of collections that we introduce at this point are \fut{lists} and \fut{vectors}. We explain some of the differences between the two and reasons for these differences. 
+
+
+\subsection{Section resources:}
+\begin{itemize}
+\item \url{http://bpeirce.me/clojure-sequence-implementations.html}
+\end{itemize}
 
