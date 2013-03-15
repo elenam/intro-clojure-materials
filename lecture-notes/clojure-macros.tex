@@ -1,2 +1,16 @@
 %%%% macros for the lecture notes %%%%%
+
+%%%%  Elena's comments %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In order to make all comments invisible: comment out the first
+% line for \allcomments, uncomment the second one
+\newcommand{\allcomments}[1]{{#1}}
+%\newcommand{\allcomments}[1]{}
+
+%% Elena's favorite green (thanks, Fernando!)
+\definecolor{ForestGreen}{RGB}{34,139,34}
+
+% Uncomment this if you don't want to show comments
+\newcommand{\elenacomment}[1]{{\bf \textcolor{ForestGreen}{\allcomments{{#1}}}}}
+% \renewcommand{\elenacomment}[1]{}
+
 \newcommand{\clocode}[1]{\code{#1}} %% stub for more fancy formatting
