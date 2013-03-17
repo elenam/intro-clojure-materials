@@ -10,15 +10,44 @@ We will discuss collections and sequences more in the future, but for now rememb
 
 The two types of collections that we introduce at this point are \fut{lists} and \fut{vectors}. We explain some of the differences between the two and reasons for these differences. 
 
-Both lists and vectors allow one to store data (of any type) in some order. 
+Both lists and vectors allow one to store data (of any type) in some order. Historically, lists have been the main data storage in the Lisp family of programming languages. They have a straightforward internal implementation. Vectors are unique to Clojure and are designed to be more efficient. Some details of the implementation of lists and vectors will be discussed later \elenacomment{Reference + more reading?}. 
 
 Lists store their items in way that acts like a stack on plates: new items are added at ``the top'', and one needs to take an item, they take it from ``the top''.  Of course, there is really no top in the machine representation of memory, but it is a convenient analogy.  This way of accessing elements in called \fut{last-in-first-out} and is abbreviated as \fut{LIFO}. Lists historically have been the main data structure in the Lisp family of languages. 
 
 Vectors store their items similarly to a queue in a cafeteria: items are added at ``the end'' and removed from ''the beginning''. Once again, ``the end'' and removed from ''the beginning'' are just a convenient analogy, and do not correspond to the internal implementation. This way of accessing elements in often called \fut{first-in-first-out} and is abbreviated as \fut{FIFO}. 
 
-Historicaly, lists have been the main data storage in the Lisp family of programming languages. 
-
-
+\subsection{Creating lists and working with lists}\label{subsec:lists}
+Examples below show how to create a list. Note that the single quotation mark in front of the list is needed: without it the parentheses would be interpreted as a function application. However, when the interpreter evaluates the list, the quotation mark is not printed. One can define an empty list, i.e. a list with no elements at all, by not putting any elements in the list: \clocode{'()}.
+\begin{framed}
+\begin{verbatim}
+intro.core=> '(1 2 3)  ; creating a list
+(1 2 3)
+intro.core=> '(1 true 8.5) ; we can have anything in a list
+(1 true 8.5)
+intro.core=> (def mylist '(1 2 3)) ;saving a list in a variable
+#'intro.core/mylist
+intro.core=> mylist
+(1 2 3)
+intro.core=> (def emptylist '()) ; create an empty list
+#'intro.core/emptylist
+intro.core=> emptylist
+()
+\end{verbatim}
+\end{framed}
+There are many functions that operate on lists (most of them can also operate on other collections). The most fundamental ones are \clocode{first} that returns the first element in a list and \clocode{rest} that returns the list of all elements of the list except the first one. The rest of a one element list is an empty list. Continuing our example: 
+\begin{framed}
+\begin{verbatim}
+intro.core=> (first mylist)
+1
+intro.core=> (rest mylist)
+(2 3)
+intro.core=> mylist
+(1 2 3)
+intro.core=> (rest '(1)) ; 
+()
+\end{verbatim}
+\end{framed}
+Note the important difference: \takeaway{\clocode{first} returns an element, and \clocode{rest} returns a list.}
 
 Sequences generally act like lists. 
 
