@@ -16,8 +16,8 @@ Lists store their items in way that acts like a stack on plates: new items are a
 
 Vectors store their items similarly to a queue in a cafeteria: items are added at ``the end'' and removed from ''the beginning''. Once again, ``the end'' and removed from ''the beginning'' are just a convenient analogy, and do not correspond to the internal implementation. This way of accessing elements in often called \fut{first-in-first-out} and is abbreviated as \fut{FIFO}. 
 
-\subsection{Creating lists and working with lists}\label{subsec:lists}
-Examples below show how to create a list. Note that the single quotation mark in front of the list is needed: without it the parentheses would be interpreted as a function application. However, when the interpreter evaluates the list, the quotation mark is not printed. One can define an empty list, i.e. a list with no elements at all, by not putting any elements in the list: \clocode{'()}.
+\subsection{The very basics of lists}\label{subsec:lists}
+Examples below show how to create a list and to work with it. Note that the single quotation mark in front of the list is needed: without it the parentheses would be interpreted as a function application. However, when the interpreter evaluates the list, the quotation mark is not printed. One can define an empty list, i.e. a list with no elements at all, by not putting any elements in the list: \clocode{'()}.
 \begin{framed}
 \begin{verbatim}
 intro.core=> '(1 2 3)  ; creating a list
@@ -47,9 +47,29 @@ intro.core=> (rest '(1)) ;
 ()
 \end{verbatim}
 \end{framed}
-Note the important difference: \takeaway{\clocode{first} returns an element, and \clocode{rest} returns a list.}
+Note the important difference: \takeaway{\clocode{first} returns an element, and \clocode{rest} returns a list.} 
+
+Often you need to check if a list (or any other collection) is empty. A collection is \fut{empty} if it does not have any elements. There are several ways to check if a list empty, but for now we cover just one, the function \clocode{empty?} (recall the convention that names of functions returning a boolean end with a question mark). The function returns \clocode{true} if the list is empty and \clocode{false} otherwise.
+\begin{framed}
+\begin{verbatim}
+intro.core=> (empty? '(5))
+false
+intro.core=> (empty? '())
+true
+intro.core=> (empty? (rest '(5)))
+true
+\end{verbatim}
+\end{framed}
+
+\subsection{The very basics of vectors}\label{subsec:vectors}
+As we mentioned earlier, vectors are Clojure-specific collection with a faster implementation than lists. They are similar to lists in many ways, so the examples below may look like lists, just with a different notation. Section~\ref{subsec:conj-lists-vectors} focuses more on the differences between lists and vectors. 
+
+\subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
+
 
 Sequences generally act like lists. 
+
+\elenacomment{Need to decide how to treat nil vs '()}
 
 
 \subsection{Section resources:}
