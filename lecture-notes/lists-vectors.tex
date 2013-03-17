@@ -34,6 +34,8 @@ intro.core=> emptylist
 ()
 \end{verbatim}
 \end{framed}
+A subtle point is that in Clojure you don't need to put the quotation mark in front of an empty list: \clocode{(def emptylist ())} works just fine. I will, for the most part, stick to using the quotation mark for uniformity, but feel free to skip it in your code if you prefer. Not, however, that forgetting the quotation mark for a non-empty list is an error: \clocode{ (def trylist (1 2 3))} results in the error \cloerr{Attempted to use a number, but a function was expected}. This is because \clocode{(1 2 3)} is interpreted as \clocode{1} applied to the arguments \clocode{2 3}, but \clocode{1} is a number, not a function. 
+
 There are many functions that operate on lists (most of them can also operate on other collections). The most fundamental ones are \clocode{first} that returns the first element in a list and \clocode{rest} that returns the list of all elements of the list except the first one. The rest of a one element list is an empty list. Continuing our example: 
 \begin{framed}
 \begin{verbatim}
@@ -63,6 +65,31 @@ true
 
 \subsection{The very basics of vectors}\label{subsec:vectors}
 As we mentioned earlier, vectors are Clojure-specific collection with a faster implementation than lists. They are similar to lists in many ways, so the examples below may look like lists, just with a different notation. Section~\ref{subsec:conj-lists-vectors} focuses more on the differences between lists and vectors. 
+
+\elenacomment{rest on vectors returns a list-like sequence}
+
+
+\subsection{\clocode{nil}: representing ``nothing" in Clojure}\label{subsec:nil}
+What happens if we call \clocode{first} or \clocode{rest} on an empty list or a vector?  Let us try it in REPL:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (rest '())
+()
+intro.core=> (rest [])
+()
+intro.core=> (empty? (rest '()))
+true
+intro.core=> (empty? (rest []))
+true
+intro.core=> (first '())
+nil
+intro.core=> (first [])
+nil
+\end{verbatim}
+\end{framed}
+The first two lines of code show that rest of an empty collection (a list or a vector) is an empty sequence \clocode{()}. 
+
+\elenacomment{Need to deal with errors: first returns nil for an empty collection; do we want to wrap that? Also, nil is empty, so how do we handle this?}
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
 
