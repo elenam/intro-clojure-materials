@@ -64,9 +64,43 @@ true
 \end{framed}
 
 \subsection{The very basics of vectors}\label{subsec:vectors}
-As we mentioned earlier, vectors are Clojure-specific collection with a faster implementation than lists. They are similar to lists in many ways, so the examples below may look like lists, just with a different notation. Section~\ref{subsec:conj-lists-vectors} focuses more on the differences between lists and vectors. 
+As we mentioned earlier, vectors are Clojure-specific collection with a faster implementation than lists. They are similar to lists in many ways, so the examples below may look like lists, just with a different notation, although there are a few differences that we will discuss. Section~\ref{subsec:conj-lists-vectors} focuses more on the differences between lists and vectors. 
 
-\elenacomment{rest on vectors returns a list-like sequence}
+When creating a vector of particular elements, use square brackets (without a quotation). An empty vector is written as an empty set of square brackets.
+\begin{framed}
+\begin{verbatim}
+intro.core=> [1 2 3] ; creating a vector
+[1 2 3]
+intro.core=>  ; vectors can have any type of elements: 
+intro.core=> [true 6.7 "banana" false]
+[true 6.7 "banana" false]
+intro.core=> [] ; an empty vector
+[]
+intro.core=> (def myvector [5 3 4]) ; store vector in a variable 
+#'intro.core/myvector
+intro.core=> myvector
+[5 3 4]
+\end{verbatim}
+\end{framed}
+The same functions  \clocode{first}, \clocode{rest}, and \clocode{empty?} work on vectors:
+
+\begin{framed}
+\begin{verbatim}
+intro.core=> (first myvector)
+5
+intro.core=> (rest myvector) ; returns a sequence!
+(3 4)
+intro.core=> (empty? myvector)
+false
+intro.core=> (empty? [])
+true
+\end{verbatim}
+\end{framed}
+The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe, however, that even though \clocode{rest} returns all but the first elements of the vector (just like for lists), it returns it as something that looks like a list, not a vector: \clocode{(3 4)}. That is because  \clocode{rest}, just like most other functions on collections, returns the result as a sequence, not any specific collection. In fact, \clocode{rest} for lists also returns some collection, and not necessarily a list, but sequences are shown just like lists, so there is no way at this point to observe the difference. 
+
+This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them following sequence abstraction rather than being concerned with details of a specific collection type. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
+
+To summarize, \takeaway{vectors are similar to lists in how they are created and worked with}, although they have a slightly different syntax.  \takeaway{The function \clocode{rest} on both lists and vectors returns a sequence, not any particular collection type.}
 
 
 \subsection{\clocode{nil}: representing ``nothing" in Clojure}\label{subsec:nil}
@@ -87,14 +121,31 @@ intro.core=> (first [])
 nil
 \end{verbatim}
 \end{framed}
-The first two lines of code show that rest of an empty collection (a list or a vector) is an empty sequence \clocode{()}. 
+The first four lines of code show that \clocode{rest} of an empty collection (a list or a vector) is an empty sequence \clocode{()}. This makes sense because there are no elements that belong to this sequence. Taking \clocode{first} of an empty sequence is more interesting: it is supposed to return the first element, but there is no element to return. 
 
-\elenacomment{Need to deal with errors: first returns nil for an empty collection; do we want to wrap that? Also, nil is empty, so how do we handle this?}
+One may think that an attempt to take the first element would result in an error (which is what happens in some other languages), but that's not what happens. Instead \clocode{first} of an empty sequence returns a special value \clocode{nil}. \clocode{nil} stands for \fut{nothing}. It is often returned from functions that failed to find an elements with desired properties in a sequence. In this case \clocode{first} failed to find the first element, thus \clocode{nil} is a proper thing to return. 
+
+Since we will be encountering \clocode{nil} quite often, it is helpful to study it a bit more. We will also look into the corresponding function \clocode{nil?} that checks whether a given value is nil. Below are some tests that we ran on  \clocode{nil}:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (empty? nil)
+true
+intro.core=> (nil? '())
+false
+\end{verbatim}
+\end{framed}
+We notice that while \clocode{nil} is considered to be empty, an empty list (or any other empty sequence, as you can easily check) is not nil. One may think of  \clocode{nil} as ``emptier than empty''. 
+
+To summarize: \takeaway{\clocode{nil} is a special value in Clojure that means ``nothing at all''. It is often returned from functions that cannot find an element with certain properties in a sequence, such as the first element in an empty sequence. While \clocode{nil} is considered an empty sequence, an empty sequence is not considered nil.}
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
+\elenacomment{conj, add-first, add-last, into, concat}
 
+\subsection{Working with sequences}\label{subsec:sequences}
 
 Sequences generally act like lists. 
+
+\elenacomment{introduce \clocode{seq?}}
 
 \elenacomment{Need to decide how to treat nil vs '()}
 
