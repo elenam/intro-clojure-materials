@@ -139,7 +139,21 @@ We notice that while \clocode{nil} is considered to be empty, an empty list (or 
 To summarize: \takeaway{\clocode{nil} is a special value in Clojure that means ``nothing at all''. It is often returned from functions that cannot find an element with certain properties in a sequence, such as the first element in an empty sequence. While \clocode{nil} is considered an empty sequence, an empty sequence is not considered nil.}
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
-\elenacomment{conj, add-first, add-last, into, concat}
+It is quite common to create collections from existing ones by adding elements to them. Since Clojure is a functional language, its data storage is  immutable which means that every time you add an element to a collection you are actually creating a new one, not modifying the existing one. \elenacomment{add a back reference to discussion of immutability} It seems very inefficient, but keep in mind that collections are designed in such a way that, even though a new collection is created with every added (or removed) element, common parts of the old and the new collection are reused.  \elenacomment{add a forward reference to the corresponding discussion - need some diagrams!}
+
+There are two ways to add an element to a collection: \fut{collection-specific} and \fut{collection-independent}. In a collection-specific approach you create a collection of exactly the same type as the one you are adding to. In a collection-independent approach your result is some type of  sequence, and since all sequences act the same, it doesn't matter how the resulting sequence is implemented internally. Both approaches have their benefits which we discuss after we introduce both. 
+
+\subsubsection{Collection-specific addition of elements to lists and vectors. }\label{subsubsec:conj}
+
+\elenacomment{conj}
+
+\subsubsection{Collection-independent addition of elements to lists and vectors. }\label{subsubsec:add-first-last}
+
+\elenacomment{add-first, add-last}
+
+\subsubsection{Combining two lists or vectors}\label{subsubsec:into-concat}
+
+\elenacomment{into, concat}
 
 \subsection{Working with sequences}\label{subsec:sequences}
 
@@ -147,8 +161,7 @@ Sequences generally act like lists.
 
 \elenacomment{introduce \clocode{seq?}}
 
-\elenacomment{Need to decide how to treat nil vs '()}
-
+\subsection{In-depth: implementation of lists and vectors}\label{subsec:implement}
 
 \subsection{Section resources:}
 \begin{itemize}
