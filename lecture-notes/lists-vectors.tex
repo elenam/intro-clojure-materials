@@ -1,4 +1,5 @@
 \section{Introduction to Lists and Vectors}\label{sec:list-vectors}
+\subsection{Introduction to Clojure collections and sequences}\label{subsec:coll-seq}
 Clojure provides many ways of storing data. 
 \elenacomment{Add a transition.} 
 
@@ -144,8 +145,40 @@ It is quite common to create collections from existing ones by adding elements t
 There are two ways to add an element to a collection: \fut{collection-specific} and \fut{collection-independent}. In a collection-specific approach you create a collection of exactly the same type as the one you are adding to. In a collection-independent approach your result is some type of  sequence, and since all sequences act the same, it doesn't matter how the resulting sequence is implemented internally. Both approaches have their benefits which we discuss after we introduce both. 
 
 \subsubsection{Collection-specific addition of elements to lists and vectors. }\label{subsubsec:conj}
+Every Clojure collection supports a function \clocode{conj} that takes this collection and an element and produces a new collection (of the same type) with the element added. What this means is that if I add an element using  \clocode{conj} to a vector, I get a new vector, and if I add it to a list, I get a new list. Let's try this in REPL:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (conj '() 5)
+(5)
+intro.core=> (conj [] 5)
+[5]
+intro.core=> (conj '(1 5 3) 2)
+(2 1 5 3)
+intro.core=> (conj [1 5 3] 2)
+[1 5 3 2]
+\end{verbatim}
+\end{framed}
+You can see that adding an element \clocode{5} to an empty list creates a list \clocode{(5)}, and adding this element to an empty vector creates a vector \clocode{[5]}, as one would expect. Interestingly, adding an element to a non-empty list or vector using \clocode{conj} results in a different order of elements: adding \clocode{2} to a list \clocode{(1 5 3)} places the new element in the beginning of the list, resulting in \clocode{(2 1 5 3)}, and adding an element to a vector with the same elements \clocode{[1 5 3]} results in a vector with the new element added at the end: \clocode{[1 5 3 2]}. Recall that in section~\ref{subsec:coll-seq} we described lists as something similar to a stack of plates, and vectors as similar to a queue in a cafeteria. When you add a new plate to a stack, you put it on top of the stack. When a new person gets into a queue, they get in at the end of the queue. The function \clocode{conj} is collection-specific, thus it follows the collection's behavior, producing different results for lists and vectors. 
 
-\elenacomment{conj}
+This difference in behavior has important implications for using \clocode{conj}: if you start off with a vector and a list containing the same elements and add the same element to both of them using \clocode{conj}, they will have a different order of elements. For instance: 
+\begin{framed}
+\begin{verbatim}
+intro.core=> (def list1 (conj '(1 5 3) 2))
+#'intro.core/list1
+intro.core=> (def vec1 (conj [1 5 3] 2))
+#'intro.core/vec1
+intro.core=> (first list1)
+2
+intro.core=> (first vec1)
+1
+\end{verbatim}
+\end{framed}
+Since \clocode{first} always takes the first, i.e. the ``leftmost'', element of a collection, it returns different elements for \clocode{list1} and \clocode{vec1}, despite the fact that both were created by adding the same element \clocode{2} to a collection that contained the same initial elements \clocode{1, 5, 3} in the same order. If your program depends on \clocode{first} returning an element at a specific position, switching from lists to vectors in your program would make a significant difference. 
+
+
+
+
+\elenacomment{show a test in REPL that demonstrates that a new list/vector is created and the original is unchanged}
 
 \subsubsection{Collection-independent addition of elements to lists and vectors. }\label{subsubsec:add-first-last}
 
