@@ -181,9 +181,33 @@ One may wonder why Clojure has such a difference in behavior of such a fundament
 
 However, the speed of your program is a secondary consideration. The primary one is correctness since an incorrect program is of no use, no matter how fast it is. Using collection-specific functions, such as \clocode{conj}, requires that you constantly think of whether the newly added element appears at the front or at the end, and the confusion between the two may lead to an incorrect program. Since for the most part speed doesn't matter for the programs you are writing at this point, we recommend that you stay away from using \clocode{conj} (and another collection-dependent function, \clocode{into}, described in section~\ref{subsubsec:into-concat}) and use collection-independent functions given in the next section. 
 
-One final important reminder about adding elements to lists and vectors. 
+One final important reminder about lists and vectors:  just like all Clojure collections, they are \fut{immutable}, so \clocode{conj} returns a new collection when a new element is added, while the original one remains exactly the same as before:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (def list1 '(1 true "apple"))
+#'intro.core/list1
+intro.core=> (def list2 (conj list1 5))
+#'intro.core/list2
+intro.core=> list1
+(1 true "apple")
+intro.core=> list2
+(5 1 true "apple")
+\end{verbatim}
+\end{framed}
+You can see that adding an element \clocode{5} to \clocode{list1} created a new list (which we named \clocode{list2}), but hasn't changed \clocode{list1}. You can check that the same is true for vectors. 
 
-\elenacomment{show a test in REPL that demonstrates that a new list/vector is created and the original is unchanged}
+To summarize what we have learned: 
+\takeaway{
+\begin{itemize}
+\item \clocode{conj} is a collection-specific function that adds an element to a collection.
+\item \clocode{conj} creates a new collection of the same type (a list for a list and a vector for a vector) that contains all of the elements of the given collection and the new element. 
+\item The position of the new element in the resulting collection depends on the type of the given collection: it is added to the beginning of a list in a LIFO manner and to the end of a vector in a FIFO manner. 
+\item Collection-specific functions provide the fastest operations on a given collection. 
+\item Because the position of the resulting elements is collection-dependent, \clocode{conj} may be confusing to use. 
+\end{itemize}
+}
+
+%\elenacomment{show a test in REPL that demonstrates that a new list/vector is created and the original is unchanged}
 
 \subsubsection{Collection-independent addition of elements to lists and vectors. }\label{subsubsec:add-first-last}
 
