@@ -1,9 +1,9 @@
 \section{Introduction to Lists and Vectors}\label{sec:list-vectors}
 \subsection{Introduction to Clojure collections and sequences}\label{subsec:coll-seq}
-Clojure provides many ways of storing data. 
-\elenacomment{Add a transition.} 
+Most real-life programs work with data: they analyze data, search it for elements with specific properties, transform it from one form to another for storage or display, and perform other operations. Data may be coming in from a database, from a user input or a web form, from traversing the web,  from another program, to name just a few sources. Every data item may be as simple as one number, and as complicated as contents of a book. While data is being processed by a program, it needs to be stored in the program's memory in some way that allows accessing elements, in some sort of virtual \fut{container}. 
 
- \fut{Collections} are containers for storing data. There many types of collections, each suited to store data for a specific set of purposes. Every type of collections has a particular implementation in computer memory: its elements are stored in a specific way. Some collections allow faster access to data, some allow better ways of indexing it, some store data in a specific order, and some in a set-like fashion in which the order of elements does not matter. 
+Clojure  \fut{collections} are ``containers'' for storing data. There many types of collections, each suited to store data for a specific set of purposes. Every type of collections has a particular implementation in computer memory: its elements are stored in a specific way. Some collections allow faster access to data, some allow better ways of indexing it, some store data in a specific order, and some in a set-like fashion in which the order of elements does not matter. 
+Since Clojure is a functional language, Clojure collections are \fut{immutable}. This means that any function that ``adds'' elements to a collection or ``removes'' elements from it return a \fut{new} collection instead of modifying the original one.  
 
 If you read Clojure documentation or examples, you will notice that people frequently mention \fut{sequences}. Sometimes the terms ``collection'' and ``sequence"' seem to be used interchangeably. While there are many situations in which you can refer to the same data container as a collection or a sequence, they are not the same. A \fut{sequence} is not any concrete collection, but an abstraction. It refers to the ability to get elements from a collection (as well as from other sources, such as user input) in a \fut{sequential} manner: a fancy word for getting elements \fut{one at a time}. It does not matter how elements are stored internally: if you get the same elements in the same order from two containers, they are equal as sequences.
 
@@ -13,7 +13,7 @@ The two types of collections that we introduce at this point are \fut{lists} and
 
 Both lists and vectors allow one to store data (of any type) in some order. Historically, lists have been the main data storage in the Lisp family of programming languages. They have a straightforward internal implementation. Vectors are unique to Clojure and are designed to be more efficient. Some details of the implementation of lists and vectors will be discussed later \elenacomment{Reference + more reading?}. 
 
-Lists store their items in way that acts like a stack on plates: new items are added at ``the top'', and one needs to take an item, they take it from ``the top''.  Of course, there is really no top in the machine representation of memory, but it is a convenient analogy.  This way of accessing elements in called \fut{last-in-first-out} and is abbreviated as \fut{LIFO}. Lists historically have been the main data structure in the Lisp family of languages. 
+Lists store their items in way that acts like a stack on plates: new items are added at ``the top'', and when one needs to take an item, they take it from ``the top''.  Of course, there is really no top in the machine representation of memory, but it is a convenient analogy.  This way of accessing elements in called \fut{last-in-first-out} and is abbreviated as \fut{LIFO}. Lists historically have been the main data structure in the Lisp family of languages. 
 
 Vectors store their items similarly to a queue in a cafeteria: items are added at ``the end'' and removed from ''the beginning''. Once again, ``the end'' and removed from ''the beginning'' are just a convenient analogy, and do not correspond to the internal implementation. This way of accessing elements in often called \fut{first-in-first-out} and is abbreviated as \fut{FIFO}. 
 
@@ -35,9 +35,9 @@ intro.core=> emptylist
 ()
 \end{verbatim}
 \end{framed}
-A subtle point is that in Clojure you don't need to put the quotation mark in front of an empty list: \clocode{(def emptylist ())} works just fine. I will, for the most part, stick to using the quotation mark for uniformity, but feel free to skip it in your code if you prefer. Not, however, that forgetting the quotation mark for a non-empty list is an error: \clocode{ (def trylist (1 2 3))} results in the error \cloerr{Attempted to use a number, but a function was expected}. This is because \clocode{(1 2 3)} is interpreted as \clocode{1} applied to the arguments \clocode{2 3}, but \clocode{1} is a number, not a function. 
+A subtle point is that in Clojure you don't need to put the quotation mark in front of an empty list: \clocode{(def emptylist ())} works just fine. I will, for the most part, stick to using the quotation mark for uniformity, but feel free to skip it in your code if you prefer. Note, however, that forgetting the quotation mark for a non-empty list is an error: \clocode{ (def trylist (1 2 3))} results in the error \cloerr{Attempted to use a number, but a function was expected}. This is because \clocode{(1 2 3)} is interpreted as \clocode{1} applied to the arguments \clocode{2 3}, but \clocode{1} is a number, not a function. 
 
-There are many functions that operate on lists (most of them can also operate on other collections). The most fundamental ones are \clocode{first} that returns the first element in a list and \clocode{rest} that returns the list of all elements of the list except the first one. The rest of a one element list is an empty list. Continuing our example: 
+There are many functions that operate on lists (most of them can also operate on other collections). The most fundamental ones are \clocode{first} that returns the first element in a list and \clocode{rest} that returns the list of all elements of the list except the first one. The rest of a one-element list is an empty list. Continuing our example: 
 \begin{framed}
 \begin{verbatim}
 intro.core=> (first mylist)
@@ -52,7 +52,7 @@ intro.core=> (rest '(1)) ;
 \end{framed}
 Note the important difference: \takeaway{\clocode{first} returns an element, and \clocode{rest} returns a list.} 
 
-Often you need to check if a list (or any other collection) is empty. A collection is \fut{empty} if it does not have any elements. There are several ways to check if a list empty, but for now we cover just one, the function \clocode{empty?} (recall the convention that names of functions returning a boolean end with a question mark). The function returns \clocode{true} if the list is empty and \clocode{false} otherwise.
+Often you need to check if a list (or any other collection) is empty. A collection is \fut{empty} if it does not have any elements. There are several ways to check if a list is empty, but for now we cover just one, the function \clocode{empty?} (recall the convention that names of functions returning a boolean end with a question mark). The function returns \clocode{true} if the list is empty and \clocode{false} otherwise.
 \begin{framed}
 \begin{verbatim}
 intro.core=> (empty? '(5))
@@ -83,7 +83,7 @@ intro.core=> myvector
 [5 3 4]
 \end{verbatim}
 \end{framed}
-The same functions  \clocode{first}, \clocode{rest}, and \clocode{empty?} work on vectors:
+The same functions  \clocode{first}, \clocode{rest}, and \clocode{empty?} that we have seen for lists work on vectors:
 
 \begin{framed}
 \begin{verbatim}
@@ -97,7 +97,7 @@ intro.core=> (empty? [])
 true
 \end{verbatim}
 \end{framed}
-The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe, however, that even though \clocode{rest} returns all but the first elements of the vector (just like for lists), it returns it as something that looks like a list, not a vector: \clocode{(3 4)}. That is because  \clocode{rest}, just like most other functions on collections, returns the result as a sequence, not any specific collection. In fact, \clocode{rest} for lists also returns some collection, and not necessarily a list, but sequences are shown just like lists, so there is no way at this point to observe the difference. 
+The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe, however, that even though \clocode{rest} returns all but the first elements of the vector (just like for lists), it returns it as something that looks like a list, not a vector: \clocode{(3 4)}. That is because  \clocode{rest}, just like most other functions on collections, returns the result as a sequence, not any specific collection\footnote{In fact, \clocode{rest} for lists also returns a sequence that's not necessarily a list, but sequences are shown just like lists, so there is no way at this point to observe the difference.}. 
 
 This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them following sequence abstraction rather than being concerned with details of a specific collection type. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
 
@@ -122,9 +122,9 @@ intro.core=> (first [])
 nil
 \end{verbatim}
 \end{framed}
-The first four lines of code show that \clocode{rest} of an empty collection (a list or a vector) is an empty sequence \clocode{()}. This makes sense because there are no elements that belong to this sequence. Taking \clocode{first} of an empty sequence is more interesting: it is supposed to return the first element, but there is no element to return. 
+The first four lines of code show that \clocode{rest} of an empty collection (a list or a vector) is an empty sequence \clocode{()}. This makes sense because there are no elements that belong to this sequence. Taking \clocode{first} of an empty sequence is more interesting: it is supposed to return the first element, but there is no element to return, so what should the program do? 
 
-One may think that an attempt to take the first element would result in an error (which is what happens in some other languages), but that's not what happens. Instead \clocode{first} of an empty sequence returns a special value \clocode{nil}. \clocode{nil} stands for \fut{nothing}. It is often returned from functions that failed to find an elements with desired properties in a sequence. In this case \clocode{first} failed to find the first element, thus \clocode{nil} is a proper thing to return. 
+One may think that an attempt to take the first element would result in an error (which is what happens in some other languages), but that's not what happens in Clojure. Instead \clocode{first} of an empty sequence returns a special value \clocode{nil} which is a value that stands for \fut{nothing}. It is often returned from functions that failed to find an elements with desired properties in a sequence. In this case \clocode{first} failed to find the first element, thus \clocode{nil} is a proper thing to return. 
 
 Since we will be encountering \clocode{nil} quite often, it is helpful to study it a bit more. We will also look into the corresponding function \clocode{nil?} that checks whether a given value is nil. Below are some tests that we ran on  \clocode{nil}:
 \begin{framed}
@@ -140,12 +140,14 @@ We notice that while \clocode{nil} is considered to be empty, an empty list (or 
 To summarize: \takeaway{\clocode{nil} is a special value in Clojure that means ``nothing at all''. It is often returned from functions that cannot find an element with certain properties in a sequence, such as the first element in an empty sequence. While \clocode{nil} is considered an empty sequence, an empty sequence is not considered nil.}
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
-It is quite common to create collections from existing ones by adding elements to them. Since Clojure is a functional language, its data storage is  immutable which means that every time you add an element to a collection you are actually creating a new one, not modifying the existing one. \elenacomment{add a back reference to discussion of immutability} It seems very inefficient, but keep in mind that collections are designed in such a way that, even though a new collection is created with every added (or removed) element, common parts of the old and the new collection are reused.  \elenacomment{add a forward reference to the corresponding discussion - need some diagrams!}
+It is quite common to create collections from existing ones by adding elements to them. Recall that Clojure collections are immutable which means that every time you add an element to a collection you are actually creating a new one, not modifying the existing one. %\elenacomment{add a back reference to discussion of immutability} 
+It seems very inefficient, but keep in mind that collections are designed in such a way that, even though a new collection is created with every added (or removed) element, common parts of the old and the new collection are reused (see section~\ref{subsec:implement} for details).  
+%\elenacomment{add a forward reference to the corresponding discussion - need some diagrams!}
 
-There are two ways to add an element to a collection: \fut{collection-specific} and \fut{collection-independent}. In a collection-specific approach you create a collection of exactly the same type as the one you are adding to. In a collection-independent approach your result is some type of  sequence, and since all sequences act the same, it doesn't matter how the resulting sequence is implemented internally. Both approaches have their benefits which we discuss after we introduce both. 
+There are two ways to add an element to a collection: \fut{collection-specific} and \fut{collection-independent}. In a collection-specific approach you create a collection of exactly the same type as the one you are adding to. In a collection-independent approach your result is some type of  sequence, and since all sequences act the same, it doesn't matter how the resulting sequence is implemented internally. Both approaches have their benefits and their drawbacks, as we discuss later. 
 
 \subsubsection{Collection-specific addition of elements to lists and vectors. }\label{subsubsec:conj}
-Every Clojure collection supports a function \clocode{conj} that takes this collection and an element and produces a new collection (of the same type) with the element added. What this means is that if I add an element using  \clocode{conj} to a vector, I get a new vector, and if I add it to a list, I get a new list. Let's try this in REPL:
+Every Clojure collection supports a function \clocode{conj} that takes this collection and an element and produces a new collection (of the same type) with the element added. In other words, if I add an element using  \clocode{conj} to a vector, I get a new vector, and if I add it to a list, I get a new list. Let's try this in REPL:
 \begin{framed}
 \begin{verbatim}
 intro.core=> (conj '() 5)
@@ -158,9 +160,9 @@ intro.core=> (conj [1 5 3] 2)
 [1 5 3 2]
 \end{verbatim}
 \end{framed}
-You can see that adding an element \clocode{5} to an empty list creates a list \clocode{(5)}, and adding this element to an empty vector creates a vector \clocode{[5]}, as one would expect. Interestingly, adding an element to a non-empty list or vector using \clocode{conj} results in a different order of elements: adding \clocode{2} to a list \clocode{(1 5 3)} places the new element in the beginning of the list, resulting in \clocode{(2 1 5 3)}, and adding an element to a vector with the same elements \clocode{[1 5 3]} results in a vector with the new element added at the end: \clocode{[1 5 3 2]}. Recall that in section~\ref{subsec:coll-seq} we described lists as something similar to a stack of plates, and vectors as similar to a queue in a cafeteria. When you add a new plate to a stack, you put it on top of the stack. When a new person gets into a queue, they get in at the end of the queue. The function \clocode{conj} is collection-specific, thus it follows the collection's behavior, producing different results for lists and vectors. 
+You can see that adding an element \clocode{5} to an empty list creates a list \clocode{(5)}, and adding this element to an empty vector creates a vector \clocode{[5]}, as one would expect. Interestingly, adding an element to a non-empty list or vector using \clocode{conj} results in a different order of elements: adding \clocode{2} to a list \clocode{(1 5 3)} places the new element in the beginning of the list, resulting in \clocode{(2 1 5 3)}, and adding the same element \clocode{2} to a vector with the same elements \clocode{[1 5 3]} results in a vector with the new element added at the end: \clocode{[1 5 3 2]}. Recall that in section~\ref{subsec:coll-seq} we described lists as something similar to a stack of plates, and vectors as similar to a queue in a cafeteria. When you add a new plate to a stack, you put it on top of the stack  (LIFO behavior). When a new person gets into a queue, they get in at the end of the queue (FIFO behavior). The function \clocode{conj} is collection-specific, thus it follows the collection's behavior, producing different results for lists and vectors. 
 
-This difference in behavior has important implications for using \clocode{conj}: if you start off with a vector and a list containing the same elements and add the same element to both of them using \clocode{conj}, they will have a different order of elements. For instance: 
+This difference in behavior has important implications for using \clocode{conj}: if you start with a vector and a list containing the same elements and add the same element to both of them using \clocode{conj}, they will have a different order of elements. For instance: 
 \begin{framed}
 \begin{verbatim}
 intro.core=> (def list1 (conj '(1 5 3) 2))
@@ -173,10 +175,13 @@ intro.core=> (first vec1)
 1
 \end{verbatim}
 \end{framed}
-Since \clocode{first} always takes the first, i.e. the ``leftmost'', element of a collection, it returns different elements for \clocode{list1} and \clocode{vec1}, despite the fact that both were created by adding the same element \clocode{2} to a collection that contained the same initial elements \clocode{1, 5, 3} in the same order. If your program depends on \clocode{first} returning an element at a specific position, switching from lists to vectors in your program would make a significant difference. 
+Since \clocode{first} always takes the first, i.e. the leftmost/front/top, element of a collection, it returns different elements for \clocode{list1} and \clocode{vec1}, despite the fact that both were created by adding the same element \clocode{2} to a collection that contained the same initial elements \clocode{1, 5, 3} in the same order. If your program depends on \clocode{first} returning an element at a specific position, switching from lists to vectors (or from vectors to lists) in your program would make a significant difference. 
 
+One may wonder why Clojure has such a difference in behavior of such a fundamental function as \clocode{conj}. The reason for this is that collection-specific functions have the behavior that fits the collections \fut{internal representation} in the best way. In other words, because of the difference in internal representation of lists and vectors it is faster to create a new list with an element added to the front and it is faster to create a new vector with an element added at the end. We give more details about internal representation of lists and vectors in section~\ref{subsec:implement}. Depending on properties of your data, you may choose to use lists or vectors, and \clocode{conj} would guarantee the fastest behavior of your chosen collection\footnote{This is the case not only for lists and vectors, but also for other types of collection that we will see later, such as sets, hash maps, etc. In fact, anyone can define their own collection in Clojure, and provide their own \clocode{conj} that adds an element to it in the way that best fits the collection's internal representation.}. Even if the internal representation of the collection changes, you don't need to change your program in any way to accommodate the change. 
 
+However, the speed of your program is a secondary consideration. The primary one is correctness since an incorrect program is of no use, no matter how fast it is. Using collection-specific functions, such as \clocode{conj}, requires that you constantly think of whether the newly added element appears at the front or at the end, and the confusion between the two may lead to an incorrect program. Since for the most part speed doesn't matter for the programs you are writing at this point, we recommend that you stay away from using \clocode{conj} (and another collection-dependent function, \clocode{into}, described in section~\ref{subsubsec:into-concat}) and use collection-independent functions given in the next section. 
 
+One final important reminder about adding elements to lists and vectors. 
 
 \elenacomment{show a test in REPL that demonstrates that a new list/vector is created and the original is unchanged}
 
