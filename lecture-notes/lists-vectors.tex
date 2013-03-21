@@ -210,8 +210,44 @@ To summarize what we have learned:
 %\elenacomment{show a test in REPL that demonstrates that a new list/vector is created and the original is unchanged}
 
 \subsubsection{Collection-independent addition of elements to lists and vectors. }\label{subsubsec:add-first-last}
+An alternative way to add an element to a collection is to follow the \fut{sequence abstraction}: create some collection of the old elements and the new one that acts just like any sequence, without being dependent on collection-specific behavior. In this approach you ``tell'' the collection to add the new element at the beginning or at the end, instead of at the position that's convenient for the collection's implementation. 
 
-\elenacomment{add-first, add-last}
+We provide two functions, \clocode{add-first} and \clocode{add-last}, that do just that: 
+\begin{framed}
+\begin{verbatim}
+intro.core=> (add-first '(1 5 3) 2)
+(2 1 5 3)
+intro.core=> (add-first [1 5 3] 2)
+(2 1 5 3)
+intro.core=> (add-last '(1 5 3) 2)
+(1 5 3 2)
+intro.core=> (add-last [1 5 3] 2)
+(1 5 3 2)
+\end{verbatim}
+\end{framed}
+The results of both functions look like lists, regardless of whether the given collection is a vector or a list. In fact, the results are sequences which may or may not be lists, but this is not important: for all practical purposes they act like lists.  Note that taking \clocode{first} of the result of \clocode{add-first} or \clocode{add-last} now is the same, regardless of whether the original collection is a vector or a list:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (first (add-first '(1 5 3) 2))
+2
+intro.core=> (first (add-first [1 5 3] 2))
+2
+\end{verbatim}
+\end{framed}
+You can check this for \clocode{add-last} on your own. 
+
+Just like \clocode{conj}, \clocode{add-first} and \clocode{add-last} create a new collection rather than modify the original one (you can easily verify this). Since this is a standard feature in Clojure (and in other functional languages), we will not be mentioning it from this point on when introducing new Clojure functions.  
+
+There are a few important things to know about \clocode{add-first} and \clocode{add-last}:
+\begin{itemize}
+\item These functions are not a part of core Clojure, we added them to allow for easier collection-independent programming. They are, however, very easy to add to Clojure in terms of functions that already exist. 
+\item They are not as efficient as collection-specific \clocode{conj}. This may become a problem if you are working with large data sets, but we don't expect to encounter those in this class. 
+\item These functions return a sequence, not any specific collection. If you need a specific collection, such as a vector, use \clocode{conj} or techniques described in section~\ref{subsec:sequences}.
+\item While  \clocode{add-first} and \clocode{add-last} are very convenient and intuitive on vectors and lists, their result on other  collection types that we introduce later (such as sets and hash maps) can be somewhat unexpected. For those collections \clocode{conj} may be a better choice since it respects collection-specific behavior. 
+\end{itemize}
+
+
+%\elenacomment{add-first, add-last}
 
 \subsubsection{Combining two lists or vectors}\label{subsubsec:into-concat}
 
@@ -220,6 +256,8 @@ To summarize what we have learned:
 \subsection{Working with sequences}\label{subsec:sequences}
 
 Sequences generally act like lists. 
+
+\elenacomment{Mention how to create a list or a vector of a bunch of elements or a sequence}
 
 \elenacomment{introduce \clocode{seq?}}
 
