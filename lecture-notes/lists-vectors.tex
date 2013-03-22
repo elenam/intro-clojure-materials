@@ -260,8 +260,58 @@ To summarize this section:
 }
 
 \subsubsection{Combining two lists or vectors}\label{subsubsec:into-concat}
+It is quite common in various programming tasks to combine elements of two collections into one. Just as with adding an element to a collection, this can be done in a \fut{collection-specific} or \fut{collection-independent} way. 
 
-\elenacomment{into, concat}
+A collection-specific way of combining two lists or vectors is via a function \clocode{into}. We explore its behavior on lists and vectors in REPL:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (into [1 5 3] [2 6 4])
+[1 5 3 2 6 4]
+intro.core=> (into [1 5 3] '(2 6 4))
+[1 5 3 2 6 4]
+intro.core=> (into '(1 5 3) [2 6 4])
+(4 6 2 1 5 3)
+intro.core=> (into '(1 5 3) '(2 6 4))
+(4 6 2 1 5 3)
+\end{verbatim}
+\end{framed}
+First thing we observe is that the first argument to \clocode{into} determines the type of the resulting collection and the order in which the elements are added. If the \fut{first argument is a vector} then the result is a vector, regardless of whether the second argument is a vector or a list (or any other collection, as we will find out later). In this case the elements are added at the end of the resulting vector in the same order in which they appear in the second argument. 
+
+Now let's see what happens if the \fut{first argument of \clocode{into} is a list}. The resulting collection is a list, regardless of the collection type of the second argument. The elements are added at the front of the list, and their order seems to be reversed. This seems strange until we realize that if we use \clocode{conj} to add the elements of the second collection one-by-one, this is exactly the order we get! So we have just discovered that \clocode{into} uses \clocode{conj} to add every element of the second collection to the first one, making the above examples act like the following: 
+\begin{framed}
+\begin{verbatim}
+intro.core=> (conj (conj (conj [1 5 3] 2) 6) 4)
+[1 5 3 2 6 4]
+intro.core=> (conj (conj (conj '(1 5 3) 2) 6) 4)
+(4 6 2 1 5 3)
+\end{verbatim}
+\end{framed}
+As we introduce other types of collections, you will see that \clocode{into} always uses a collection-specific \clocode{conj} to add elements of the second collection to the first one one-by-one. 
+
+While it is clear now why \clocode{into} works the way it does, its behavior on lists (and consequently on arbitrary sequences) is rarely what you would like. It is more likely that you expect it to behave as it does on vectors, ``appending'' the second sequence at the end of the first one in \fut{collection-independent} manner. Based on what we have learned about collection-independent \clocode{add-first} and \clocode{add-last}, we expect the result of this function to be a sequence, and not any particular collection. The function that works like this is \clocode{concat}:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (concat [1 5 3] [2 6 4])
+(1 5 3 2 6 4)
+intro.core=> (concat [1 5 3] '(2 6 4))
+(1 5 3 2 6 4)
+intro.core=> (concat '(1 5 3) [2 6 4])
+(1 5 3 2 6 4)
+intro.core=> (concat '(1 5 3) '(2 6 4))
+(1 5 3 2 6 4)
+\end{verbatim}
+\end{framed}
+Unlike \clocode{add-first} and \clocode{add-last} that we added to Clojure to make collection-independent operations easier, \clocode{concat} is a part of Clojure core functions. The name ``concat'' stands for \fut{concatenation} (meaning, ``to connect or link together'')\footnote{In Computer Science concatenation is also sometimes abbreviated as \fut{cat}, so Clojure function \clocode{lazy-cat} produces a lazy sequence of concatenations and has nothing to do with a lazy feline. We will discuss the concept of laziness later in the course.}.
+
+Once again, if you do not have any reasons to create a vector or a list, \clocode{concat} is an easier choice than \clocode{into} since its behavior is uniform on all types of collections. 
+
+Another interesting feature of \clocode{concat} is that, unlike \clocode{into}, it takes an arbitrary number of collections (of any type) and concatenates them into one sequence, just like \clocode{+} takes an arbitrary number of numbers and adds them together:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (concat [1 2] '(3 4) [5 6 7])
+(1 2 3 4 5 6 7)
+\end{verbatim}
+\end{framed}
 
 \subsection{Working with sequences}\label{subsec:sequences}
 
