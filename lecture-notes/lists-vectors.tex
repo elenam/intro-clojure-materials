@@ -246,8 +246,18 @@ There are a few important things to know about \clocode{add-first} and \clocode{
 \item While  \clocode{add-first} and \clocode{add-last} are very convenient and intuitive on vectors and lists, their result on other  collection types that we introduce later (such as sets and hash maps) can be somewhat unexpected. For those collections \clocode{conj} may be a better choice since it respects collection-specific behavior. 
 \end{itemize}
 
+{\bf Implementation (for the curious).} Both \clocode{add-first} and \clocode{add-last} are defined in the file \clocode{corefns/core}. \clocode{add-first} is actually just a different name for a Clojure function \clocode{cons}, with one difference: \clocode{cons} takes its arguments in a different order (the element first, and the collection second). The name \clocode{cons} and the order of arguments come from the original Lisp language. However, the similarity with the name ``conj''  and the difference in argument order can be confusing, so we gave it a different name. 
 
-%\elenacomment{add-first, add-last}
+There are many possible implementations of \clocode{add-last}. The one that we are currently using is joining together two sequences: the original collection and the one-element sequence of just the new element. We use a function \clocode{concat} (covered in section~\ref{subsubsec:into-concat}) in the definition of \clocode{add-last}. This is likely to be slow on very long sequences.
+
+To summarize this section:
+\takeaway{
+\begin{itemize}
+\item  \clocode{add-first} and \clocode{add-last} provide a collection-independent way to add elements at the first or the last position in a collection. 
+\item Both functions return a sequence that acts like a list.
+\item The functions are convenient since they act the same on lists and vectors. However, they may be slower than collection-specific \clocode{conj} and may be less convenient for collections other than lists and vectors.
+\end{itemize}
+}
 
 \subsubsection{Combining two lists or vectors}\label{subsubsec:into-concat}
 
