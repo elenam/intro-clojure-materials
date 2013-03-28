@@ -101,6 +101,18 @@ The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe
 
 This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them following sequence abstraction rather than being concerned with details of a specific collection type. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
 
+Notice that \clocode{first} and \clocode{rest} work on lists and vectors of any kind of items. Below we have a list that consists of a vector \clocode{[1 2]}, a string \clocode{"Hi there"}, and a function \clocode{+}. As expected, \clocode{first} returns the first item in the list which is the vector \clocode{[1 2]}, and \clocode{rest} returns the list of the remaining items. 
+\begin{framed}
+\begin{verbatim}
+intro.core=> (def listofstuff '([1 2] "Hi there" +))
+intro.core/listofstuff
+intro.core=> intro.core=> (first listofstuff)
+[1 2]
+intro.core=> (rest listofstuff)
+("Hi there" +)
+\end{verbatim}
+\end{framed}
+
 To summarize, \takeaway{vectors are similar to lists in how they are created and worked with}, although they have a slightly different syntax.  \takeaway{The function \clocode{rest} on both lists and vectors returns a sequence, not any particular collection type.}
 
 
@@ -339,7 +351,8 @@ intro.core=> (count (rest [1 4 1 7]))
 3
 \end{verbatim}
 \end{framed}
-Note that the function does not know anything about what the elements are. \elenacomment{Perhaps this needs to be explained when we talk about "first"}
+Note that the function does not know anything about what the elements are. 
+%\elenacomment{Perhaps this needs to be explained when we talk about "first"}
 
 
 
