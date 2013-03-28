@@ -324,7 +324,28 @@ In summary, \takeaway{
 
 \subsection{Working with sequences}\label{subsec:sequences}
 
+Clojure has numerous functions that work with sequences in a \fut{collection-independent} way: they may take in a sequence or sequences and may return a sequence. We have seen \clocode{add-first}, \clocode{add-last}, and \clocode{concat} that follow this setup. In this section we will examine a few more of such functions (focusing in their collection-independent nature), and then introduce more \elenacomment{perhaps not in this subsection}. These functions are widely used and will be very helpful for any work you do in Clojure. 
+
+We start by introducing a function \clocode{count}. It takes in any collection and returns the number of elements in it:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (count '(5 2 7))
+3
+intro.core=> (count [1 4 1 7])
+4
+intro.core=> (count [])
+0
+intro.core=> (count (rest [1 4 1 7]))
+3
+\end{verbatim}
+\end{framed}
+Note that the function does not know anything about what the elements are. \elenacomment{Perhaps this needs to be explained when we talk about "first"}
+
+
+
 Sequences generally act like lists. 
+
+\elenacomment{should have links to documentation and the like}
 
 \elenacomment{Mention how to create a list or a vector of a bunch of elements or a sequence}
 
