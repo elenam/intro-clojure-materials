@@ -18,7 +18,7 @@ Lists store their items in way that acts like a stack of plates: new items are a
 Vectors store their items similarly to a queue in a cafeteria: items are added at ``the end'' and removed from ''the beginning''. Once again, ``the end'' and removed from ''the beginning'' are just a convenient analogy, and do not correspond to the internal implementation. This way of accessing elements in often called \fut{first-in-first-out} and is abbreviated as \fut{FIFO}. 
 
 \subsection{The very basics of lists}\label{subsec:lists}
-Examples below show how to create a list and to work with it. Note that the single quotation mark in front of the list is needed: without it the parentheses would be interpreted as a function application. However, when the interpreter evaluates the list, the quotation mark is not printed. One can define an empty list, i.e. a list with no elements at all, by not putting any elements in the list: \clocode{'()}.
+Examples below\elenacomment{Stephen says: it would be better to use example numbers} show how to create a list and to work with it. Note that the single quotation mark in front of the list is needed: without it the parentheses would be interpreted as a function application. However, when the interpreter evaluates the list, the quotation mark is not printed. One can define an empty list, i.e. a list with no elements at all, by not putting any elements in the list: \clocode{'()}.
 \begin{framed}
 \begin{verbatim}
 intro.core=> '(1 2 3)  ; creating a list
@@ -65,7 +65,7 @@ true
 \end{framed}
 
 \subsection{The very basics of vectors}\label{subsec:vectors}
-As we mentioned earlier, vectors are Clojure-specific collection with a faster implementation than lists. They are similar to lists in many ways, so the examples below may look like lists, just with a different notation, although there are a few differences that we will discuss. Section~\ref{subsec:conj-lists-vectors} focuses more on the differences between lists and vectors. 
+As we mentioned earlier, vectors are Clojure-specific collection with a faster implementation than lists. They are similar to lists in many ways, so the examples below may look like lists, just with a different notation, although there are a few differences that we will discuss more in section~\ref{subsec:conj-lists-vectors}.
 
 When creating a vector of particular elements, use square brackets (without a quotation). An empty vector is written as an empty set of square brackets.
 \begin{framed}
@@ -99,7 +99,7 @@ true
 \end{framed}
 The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe, however, that even though \clocode{rest} returns all but the first elements of the vector (just like for lists), it returns it as something that looks like a list, not a vector: \clocode{(3 4)}. That is because  \clocode{rest}, just like most other functions on collections, returns the result as a sequence, not any specific collection\footnote{In fact, \clocode{rest} for lists also returns a sequence that's not necessarily a list, but sequences are shown just like lists, so there is no way at this point to observe the difference.}. 
 
-This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them following sequence abstraction rather than being concerned with details of a specific collection type. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
+This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them because you don't need to worry about what function returns which collection. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
 
 \elenacomment{Need to explain nested vectors/lists more}
 
@@ -138,7 +138,7 @@ nil
 \end{framed}
 The first four lines of code show that \clocode{rest} of an empty collection (a list or a vector) is an empty sequence \clocode{()}. This makes sense because there are no elements that belong to this sequence. Taking \clocode{first} of an empty sequence is more interesting: it is supposed to return the first element, but there is no element to return, so what should the program do? 
 
-One may think that an attempt to take the first element would result in an error (which is what happens in some other languages), but that's not what happens in Clojure. Instead \clocode{first} of an empty sequence returns a special value \clocode{nil} which is a value that stands for \fut{nothing}. It is often returned from functions that failed to find an elements with desired properties in a sequence. In this case \clocode{first} failed to find the first element, thus \clocode{nil} is a proper thing to return. 
+One may think that an attempt to take the first element would result in an error (which is what happens in some other languages), but that's not what happens in Clojure. Instead \clocode{first} of an empty sequence returns a special value \clocode{nil} which is a value that stands for \fut{nothing}. It is often returned from functions that failed to find any elements with desired properties in a sequence. In this case \clocode{first} failed to find the first element, thus \clocode{nil} is the proper thing to return. 
 
 Since we will be encountering \clocode{nil} quite often, it is helpful to study it a bit more. We will also look into the corresponding function \clocode{nil?} that checks whether a given value is nil. Below are some tests that we ran on  \clocode{nil}:
 \begin{framed}
@@ -147,18 +147,20 @@ intro.core=> (empty? nil)
 true
 intro.core=> (nil? '())
 false
+intro.core=> (nil? nil)
+true
 \end{verbatim}
 \end{framed}
-We notice that while \clocode{nil} is considered to be empty, an empty list (or any other empty sequence, as you can easily check) is not nil. One may think of  \clocode{nil} as ``emptier than empty''. 
+We notice that while \clocode{nil} is considered to be empty, an empty list (or any other empty sequence, as you can easily check) is not nil. One may think of  \clocode{nil} as ``emptier than empty''. In fact, \clocode{nil?} returns \clocode{true} only when passed \clocode{nil}, and returns \clocode{false} for everything else. 
 
 To summarize: \takeaway{\clocode{nil} is a special value in Clojure that means ``nothing at all''. It is often returned from functions that cannot find an element with certain properties in a sequence, such as the first element in an empty sequence. While \clocode{nil} is considered an empty sequence, an empty sequence is not considered nil.}
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
-It is quite common to create collections from existing ones by adding elements to them. Recall that Clojure collections are immutable which means that every time you add an element to a collection you are actually creating a new one, not modifying the existing one. %\elenacomment{add a back reference to discussion of immutability} 
+It is quite common to create collections from existing ones by adding elements to them. Recall that Clojure collections are immutable which means that every time you add an element to a collection \elenacomment{Stephen suggested "every time you change a collection; I think in this context talking about adding an element is sufficient} you are actually creating a new collection, not modifying the existing one. %\elenacomment{add a back reference to discussion of immutability} 
 It seems very inefficient, but keep in mind that collections are designed in such a way that, even though a new collection is created with every added (or removed) element, common parts of the old and the new collection are reused (see section~\ref{subsec:implement} for details).  
 %\elenacomment{add a forward reference to the corresponding discussion - need some diagrams!}
 
-There are two ways to add an element to a collection: \fut{collection-specific} and \fut{collection-independent}. In a collection-specific approach you create a collection of exactly the same type as the one you are adding to. In a collection-independent approach your result is some type of  sequence, and since all sequences act the same, it doesn't matter how the resulting sequence is implemented internally. Both approaches have their benefits and their drawbacks, as we discuss later. 
+There are two ways to add an element to a collection: \fut{collection-specific} and \fut{collection-independent}. In a collection-specific approach you create a collection of exactly the same type as the one you are adding to. In a collection-independent approach your result is some type of  sequence, and since all sequences act the same, it doesn't matter how the resulting sequence is implemented internally. \elenacomment{Stephen pointed out that it's unclear what "internal" actually means. I agree, but I am not sure at this point how to approach this.} Both approaches have their benefits and their drawbacks, as we discuss later. 
 
 \subsubsection{Collection-specific addition of elements to lists and vectors. }\label{subsubsec:conj}
 Every Clojure collection supports a function \clocode{conj} that takes this collection and an element and produces a new collection (of the same type) with the element added. In other words, if I add an element using  \clocode{conj} to a vector, I get a new vector, and if I add it to a list, I get a new list. Let's try this in REPL:
@@ -269,6 +271,7 @@ To summarize this section:
 \begin{itemize}
 \item  \clocode{add-first} and \clocode{add-last} provide a collection-independent way to add elements at the first or the last position in a collection. 
 \item Both functions return a sequence that acts like a list.
+\item These functions are not a part of standard Clojure, although they can be easily added. 
 \item The functions are convenient since they act the same on lists and vectors. However, they may be slower than collection-specific \clocode{conj} and may be less convenient for collections other than lists and vectors.
 \end{itemize}
 }
