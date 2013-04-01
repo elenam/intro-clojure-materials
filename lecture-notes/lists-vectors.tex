@@ -101,6 +101,8 @@ The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe
 
 This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them following sequence abstraction rather than being concerned with details of a specific collection type. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
 
+\elenacomment{Need to explain nested vectors/lists more}
+
 Notice that \clocode{first} and \clocode{rest} work on lists and vectors of any kind of items. Below we have a list that consists of a vector \clocode{[1 2]}, a string \clocode{"Hi there"}, and a function \clocode{+}. As expected, \clocode{first} returns the first item in the list which is the vector \clocode{[1 2]}, and \clocode{rest} returns the list of the remaining items. 
 \begin{framed}
 \begin{verbatim}
@@ -334,84 +336,5 @@ In summary, \takeaway{
 \end{itemize}
 }
 
-\subsection{Working with sequences}\label{subsec:sequences}
-\elenacomment{Might want to break this into subsubsections and name better}
 
-Clojure has numerous functions that work with sequences in a \fut{collection-independent} way: they may take in a sequence or sequences and may return a sequence. We have seen \clocode{add-first}, \clocode{add-last}, and \clocode{concat} that follow this setup. In this section we will examine a few more of such functions (focusing in their collection-independent nature), and then introduce more \elenacomment{perhaps not in this subsection}. These functions are widely used and will be very helpful for any work you do in Clojure. 
-
-We start by introducing a function \clocode{count}. It takes in any collection and returns the number of elements in it:
-\begin{framed}
-\begin{verbatim}
-intro.core=> (count '(5 2 7))
-3
-intro.core=> (count [1 4 1 7])
-4
-intro.core=> (count [])
-0
-intro.core=> (count (rest [1 4 1 7]))
-3
-intro.core=> (count [[1 2] "Hello" false])
-3
-\end{verbatim}
-\end{framed}
-Note that the function does not know anything about what the elements are. For example, if an element is itself a vector or a list, it is counted as one element. 
-%\elenacomment{Perhaps this needs to be explained when we talk about "first"}
-
-There are many functions that take in a sequence (or several) and return a sequence. As an example, consider \clocode{take}. The function takes a number $n$ and a collection and returns the first $n$ items in the collection, or all the items in the collection if it has $n$ or fewer elements. Let's look at some examples:
-\begin{framed}
-\begin{verbatim}
-intro.core=> (take 5 '(10 9 8 7 6 5 4 3 2 1))
-(10 9 8 7 6)
-intro.core=> (take 3 ["a" "b" "c" "d" "e"])
-("a" "b" "c")
-intro.core=> (take 5 '(3 2 1))
-(3 2 1)
-intro.core=> (take 3 [])
-()
-intro.core=> (take 3 '())
-()
-\end{verbatim}
-\end{framed} 
-The interesting thing to observe is that, just as \clocode{rest} and \clocode{concat}, the function \clocode{take} always returns a sequence. 
-
-Now that we have seen this pattern of taking in a collection (or collections) and returning a sequence many times, let us examine it closer. Recall that the term \fut{collection} refers to a specific way of storing items, a particular type of a \fut{"container"}. A \fut{sequence} is an abstraction that refers to accessing elements in a specific order. If I have a vector \clocode{[3 2 5]} stored in memory, its items, when accessed as a sequence, should appear in the order $3, 2, 5$. In other words, the \fut{sequence} \clocode{(3 2 5)} corresponds to the vector \clocode{[3 2 5]}. If I call \clocode{first} on a vector  \clocode{[3 2 5]}, it produces a sequence corresponding to the vector and then takes its first element. 
-
-This procedure seems almost trivial for vectors and lists, but it's important to realize that this is how collection-independent functions work on any collection: they first take the sequence that corresponds to the collection, and then apply the required function to it. This means that \clocode{count} first produces a sequence corresponding to the collection passed to it, and then counts the elements in that sequence. Likewise, \clocode{concat} concatenates sequences corresponding to the two given collections into one. 
-
-It is reasonable to expect that Clojure has a function that produces a sequence corresponding to a collection. This function is called \clocode{seq}. It works as follows:
-\begin{framed}
-\begin{verbatim}
-intro.core=> (seq '(3 4 2))
-(3 4 2)
-intro.core=> (seq [3 4 2])
-(3 4 2)
-intro.core=> (seq '([1 2] 7 true))
-([1 2] 7 true)
-\end{verbatim}
-\end{framed} 
-
-\elenacomment{nil acts as an empty sequence; also in functions such as concat}
-\begin{framed}
-\begin{verbatim}
-intro.core=> (seq [])
-nil
-intro.core=> (seq '())
-nil
-\end{verbatim}
-\end{framed} 
-
-Sequences generally act like lists. 
-
-\elenacomment{should have links to documentation and the like}
-
-\elenacomment{Mention how to create a list or a vector of a bunch of elements or a sequence}
-
-\elenacomment{introduce \clocode{seq?}}
-
-\subsection{In-depth: implementation of lists and vectors}\label{subsec:implement}
-
-\subsection{Section resources:}
-\begin{itemize}
-\item \url{http://bpeirce.me/clojure-sequence-implementations.html}
-\end{itemize}
 
