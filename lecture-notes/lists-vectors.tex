@@ -101,9 +101,10 @@ The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe
 
 This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them because you don't need to worry about what function returns which collection. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
 
-\elenacomment{Need to explain nested vectors/lists more}
+%\elenacomment{Need to explain nested vectors/lists more}
+%\subsubsection{Mixed-element and nested lists and vectors}\albel{subsub:nested}
 
-Notice that \clocode{first} and \clocode{rest} work on lists and vectors of any kind of items. Below we have a list that consists of a vector \clocode{[1 2]}, a string \clocode{"Hi there"}, and a function \clocode{+}. As expected, \clocode{first} returns the first item in the list which is the vector \clocode{[1 2]}, and \clocode{rest} returns the list of the remaining items. 
+Notice that \clocode{first} and \clocode{rest} work on lists and vectors of any kind of items: numbers, booleans, strings, functions, and even other vectors and lists. Below we have a list that consists of a vector \clocode{[1 2]}, a string \clocode{"Hi there"}, and a function \clocode{+}. As expected, \clocode{first} returns the first item in the list which is the vector \clocode{[1 2]}, and \clocode{rest} returns the list of the remaining items. 
 \begin{framed}
 \begin{verbatim}
 intro.core=> (def listofstuff '([1 2] "Hi there" +))
@@ -114,9 +115,33 @@ intro.core=> (rest listofstuff)
 ("Hi there" +)
 \end{verbatim}
 \end{framed}
-
 To summarize, \takeaway{vectors are similar to lists in how they are created and worked with}, although they have a slightly different syntax.  \takeaway{The function \clocode{rest} on both lists and vectors returns a sequence, not any particular collection type.}
 
+\subsubsection{Exercises}\label{subsub:lists-vectors-exercises}
+\begin{exercise}
+Assume the following definition
+\begin{framed}
+\begin{verbatim}
+intro.core=> (def stuff [true '(3 "Hi") 8])
+\end{verbatim}
+\end{framed}
+\begin{enumerate}
+\item\label{q:first-rest-results} What would be the result of each of the following function calls? 
+\begin{framed}
+\begin{verbatim}
+intro.core=> (first stuff)
+intro.core=> (rest stuff)
+intro.core=> (first (rest stuff))
+intro.core=> (first (first (rest stuff)))
+intro.core=> (first (rest (rest stuff)))
+\end{verbatim}
+\end{framed}
+\item\label{q:first-rest-expr} Write a sequence of calls to functions \clocode{first} and \clocode{rest} that, when applied to the vector \clocode{stuff}, returns the string \clocode{"Hi"}. 
+\item\label{q:second} The function \clocode{second} returns the second item in a vector or a list. Where possible, simplify the expressions in question~\ref{q:first-rest-results} and the answer to question~\ref{q:first-rest-expr} using \clocode{second}.
+\end{enumerate}
+\end{exercise}
+
+\elenacomment{Include an example of writing \clocode{third}}
 
 \subsection{\clocode{nil}: representing ``nothing" in Clojure}\label{subsec:nil}
 What happens if we call \clocode{first} or \clocode{rest} on an empty list or a vector?  Let us try it in REPL:
