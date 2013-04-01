@@ -69,7 +69,7 @@ In a similar fashion, a call \clocode{ (concat [1 2 3] '(4 5))} is equivalent to
 
 Also note that \clocode{add-first} and \clocode{add-last} first produce a sequence out of their first argument, and then add the element to the resulting sequence at the appropriate position. 
 
-\elenacomment{nil acts as an empty sequence; also in functions such as concat}
+The \clocode{seq} function returns a sequence that looks like a list, with one important exception: it returns \clocode{nil} as an empty sequence.
 \begin{framed}
 \begin{verbatim}
 intro.core=> (seq [])
@@ -78,14 +78,36 @@ intro.core=> (seq '())
 nil
 \end{verbatim}
 \end{framed} 
+This doesn't create any problems because \clocode{nil} acts like an empty sequence in all functions that take sequences:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (count nil)
+0
+intro.core=> (concat '(7 8) nil)
+(7 8)
+intro.core=> (concat nil nil)
+()
+intro.core=> (take 2 nil)
+()
+\end{verbatim}
+\end{framed} 
+The reason an empty sequence is represented by \clocode{nil} and not \clocode{'()} is because it makes checking for an empty sequence easier in some Clojure programs. We are not going into these details right now. 
 
-Sequences generally act like lists. 
-
-\elenacomment{should have links to documentation and the like}
+\subsubsection{More on relation between sequences and collections}\label{subsub:seq-coll-convert}
 
 \elenacomment{Mention how to create a list or a vector of a bunch of elements or a sequence}
 
-\elenacomment{introduce \clocode{seq?}}
+\elenacomment{introduce \clocode{seq?} and \clocode{coll?}}
+
+
+%\elenacomment{nil acts as an empty sequence; also in functions such as concat}
+
+\subsection{Working with sequence functions}\label{subsec:seq-functions}
+
+\elenacomment{program examples}
+
+\elenacomment{should have links to documentation and the like}
+
 
 \subsection{In-depth: implementation of lists and vectors}\label{subsec:implement}
 
