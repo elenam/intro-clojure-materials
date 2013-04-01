@@ -156,10 +156,26 @@ false
 \end{framed} 
 Since numbers, booleans, and functions aren't collections, you cannot apply \clocode{seq} to them either. For instance, \clocode{(seq 5)} gives an error \cloerr{Don't know how to create a sequence from a number}. This error message now should be very clear: \clocode{5} is not already a sequence, so Clojure is trying to create one, but sequences can only be created from collections, and \clocode{5} is a number, not a collection. Note that you are going to get a similar error message if you are trying to pass a number (or a boolean or a function) to a function that takes a sequence or a collection. For instance, the same error  \cloerr{Don't know how to create a sequence from a number} happens when one of the arguments of \clocode{concat} is not sequence or a collection: \clocode{(concat [1 2] 5)}. This confirms our guess that \clocode{concat} creates a sequence out of its arguments (if they aren't sequences already) before concatenation. 
 
+Observe that since sequences store data, they are considered collections in Clojure:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (coll? (seq [1 2 3]))
+true
+intro.core=> (coll? (concat [1 2] [6 7]))
+true
+intro.core=> (coll? (rest '(8 9 0)))
+true
+intro.core=> (coll? (add-first [1 2] 3))
+true
+\end{verbatim}
+\end{framed} 
+
+\elenacomment{talk about vector? and list?}
+
+Just like there is a way to create sequences from collections (such as vectors and lists) using \clocode{seq}, there is a way to create a list or a vector from any sequence. \elenacomment{more complicated than that: list takes multiple arguments, vec takes a single argument that's a sequence}
+
 You may have noticed that we haven't shown any examples of strings in relation to sequences and collections. This is because strings are in a class of their own in this regard. We discuss strings and characters in relation to collections and sequences in section~\ref{subsec:str}.
 
-
-Just like there is a way to create 
 
 %\elenacomment{introduce \clocode{seq?} and \clocode{coll?}}
 
