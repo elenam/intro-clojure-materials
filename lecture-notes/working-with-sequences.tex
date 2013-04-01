@@ -1,7 +1,8 @@
 \subsection{Working with sequences}\label{subsec:sequences}
 \elenacomment{Might want to break this into subsubsections and name better; perhaps make into a separate section}
+Clojure has numerous functions that work with sequences in a \fut{collection-independent} way: they may take in a sequence or sequences and may return a sequence. We have seen \clocode{add-first}, \clocode{add-last}, and \clocode{concat} that follow this setup. In this section we will examine a few more of such functions, focusing in their collection-independent nature. These functions are widely used and will be very helpful for any work you do in Clojure. 
 
-Clojure has numerous functions that work with sequences in a \fut{collection-independent} way: they may take in a sequence or sequences and may return a sequence. We have seen \clocode{add-first}, \clocode{add-last}, and \clocode{concat} that follow this setup. In this section we will examine a few more of such functions (focusing in their collection-independent nature), and then introduce more \elenacomment{perhaps not in this subsection}. These functions are widely used and will be very helpful for any work you do in Clojure. 
+It is useful to keep in mind that for all practical purposes sequences act and look like lists. Regardless of the way they are stored, sequences can be viewed as devices that produce elements in a specific order. Note that sequences don't have to be finite: we will see \fut{lazy} sequences in Clojure that have no limit on the number of elements they produce \elenacomment{Reference}. However, at this point we will only work with finite sequences. 
 
 We start by introducing a function \clocode{count}. It takes in any collection and returns the number of elements in it:
 \begin{framed}
@@ -53,6 +54,20 @@ intro.core=> (seq '([1 2] 7 true))
 ([1 2] 7 true)
 \end{verbatim}
 \end{framed} 
+Since sequences look and act like lists, the result of applying \clocode{seq} to a list doesn't change anything (at least as far as we can observe at this point). Applying \clocode{seq} to a vector returns a sequence of all its elements in order. The last example illustrates that \clocode{seq} returns all the elements of the original collection without descending into its sub-collections, such as the nested vector \clocode{[1 2]} which is returned as is. 
+
+Now that we have introduced \clocode{seq}, we can observe that \clocode{take} on a vector can be viewed as following: first it makes a sequence out of a vector by applying \clocode{seq} to the vector, and then it takes the first $n$ elements of the resulting sequence. The following function calls illustrates how the call \clocode{(take 3  ["a" "b" "c" "d" "e"])} works behind the scenes:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (take 3  (seq ["a" "b" "c" "d" "e"]))
+("a" "b" "c")
+\end{verbatim}
+\end{framed} 
+Clojure performs the call to \clocode{seq} automatically, as a part of \clocode{take}, so you never need to make this call explicitly. 
+
+In a similar fashion, a call \clocode{ (concat [1 2 3] '(4 5))} is equivalent to \clocode{(concat (seq [1 2 3]) (seq '(4 5)))}, so \clocode{concat} applies \clocode{seq} to both (or all, if more than two) its arguments, and then concatenates the resulting sequences. Examining this further, we realize that \clocode{first} and \clocode{rest} also turn their argument into a sequence, and then get the result. That's why \clocode{rest} always returns a sequence. Of course, at this point we can be guessing about this behavior since vectors and lists are so simple that we don't have any evidence that they are converted to sequences before these functions are applied. Our study of other types of collections will confirm this guess. 
+
+Also note that \clocode{add-first} and \clocode{add-last} first produce a sequence out of their first argument, and then add the element to the resulting sequence at the appropriate position. 
 
 \elenacomment{nil acts as an empty sequence; also in functions such as concat}
 \begin{framed}
@@ -74,6 +89,10 @@ Sequences generally act like lists.
 
 \subsection{In-depth: implementation of lists and vectors}\label{subsec:implement}
 
+\subsection{Strings in relation to collections and sequences}\label{subsec:str}
+\elenacomment{A string is not a collection, but it's seqable - not sure where that should be covered. Probably introduce strings earlier, but relate them to vectors and lists after the section on vectors and lists in a separate section}
+
+\elenacomment{We may need to change the section title}
 
 \subsection{Section resources:}
 \begin{itemize}

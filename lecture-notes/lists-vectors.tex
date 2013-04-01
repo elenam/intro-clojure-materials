@@ -115,6 +115,15 @@ intro.core=> (rest listofstuff)
 ("Hi there" +)
 \end{verbatim}
 \end{framed}
+While it is possible to combine different types of elements in the same list or vector, in many cases this would be confusing and difficult to work with, so make sure that you aren't creating such collections unnecessarily. 
+However, mixed-element and nested vectors and lists, however, have their purpose. For instance, if you are a teaching assistant for a class, you might want to store student homework scores in the following format:
+\begin{framed}
+\begin{verbatim}
+(def scores [["Jill S." 12 20 28] ["Bill J." 15 17 23]])
+\end{verbatim}
+\end{framed}
+Here scores are stored as a vector of vectors, each with the name of a student (a string) followed by numeric grades for assignments. Clojure also provides more specialized collections for keeping this type of data that we will see later. 
+
 To summarize, \takeaway{vectors are similar to lists in how they are created and worked with}, although they have a slightly different syntax.  \takeaway{The function \clocode{rest} on both lists and vectors returns a sequence, not any particular collection type.}
 
 \subsubsection{Exercises}\label{subsub:lists-vectors-exercises}
