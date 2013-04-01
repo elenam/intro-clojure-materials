@@ -94,11 +94,78 @@ intro.core=> (take 2 nil)
 The reason an empty sequence is represented by \clocode{nil} and not \clocode{'()} is because it makes checking for an empty sequence easier in some Clojure programs. We are not going into these details right now. 
 
 \subsubsection{More on relation between sequences and collections}\label{subsub:seq-coll-convert}
+Examining even further what is a collection and what is a sequence, we use two Clojure predicates \elenacomment{make sure to define the term earlier; need an index}: \clocode{coll?} that returns \clocode{true} if its argument is a collection and \clocode{false} otherwise, and \clocode{seq?} that returns \clocode{true} if its argument is a sequence and \clocode{false} otherwise. 
+
+As always, we do a bit of exploring in REPL:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (coll? [1 true "apple"])
+true
+intro.core=> (coll? '(1 true "apple"))
+true
+intro.core=> (coll? [])
+true
+intro.core=> (coll? '())
+true
+intro.core=> (seq? [1 true "apple"])
+false
+intro.core=> (seq? '(1 true "apple"))
+true
+intro.core=> (seq? [])
+false
+intro.core=> (seq? '())
+true
+\end{verbatim}
+\end{framed} 
+We discover that lists and vectors (empty and non-empty) are collections. Lists are also sequence, but vectors aren't. However, the result of applying \clocode{seq} to a non-empty vector is a sequence:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (seq? (seq [1 true "apple"]))
+true
+\end{verbatim}
+\end{framed} 
+What about the result of applying \clocode{seq} to empty vectors or lists? The result of such application is \clocode{nil}, and, as we see below, \clocode{nil} is not a sequence:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (seq? nil)
+false
+intro.core=> (seq? (seq []))
+false
+intro.core=> (seq? (seq '()))
+false
+\end{verbatim}
+\end{framed} 
+The last two tests are actually unnecessary because we have already observed that \clocode{seq} of an empty collection is \clocode{nil} and we have just established that \clocode{nil} is not a sequence. Note, however, that \clocode{(empty? nil)} returns \clocode{true}, and so does \clocode{empty?} applied to any empty collection or sequence, and we will be using \clocode{empty?} in our programs to check for an empty sequence.
+
+Of course, Clojure has plenty of things that aren't collections or sequences, such as numbers, booleans, and functions:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (coll? 5)
+false
+intro.core=> (seq? 5)
+false
+intro.core=> (coll? true)
+false
+intro.core=> (seq? false)
+false
+intro.core=> (coll? +)
+false
+intro.core=> (seq? +)
+false
+\end{verbatim}
+\end{framed} 
+Since numbers, booleans, and functions aren't collections, you cannot apply \clocode{seq} to them either. For instance, \clocode{(seq 5)} gives an error \cloerr{Don't know how to create a sequence from a number}. This error message now should be very clear: \clocode{5} is not already a sequence, so Clojure is trying to create one, but sequences can only be created from collections, and \clocode{5} is a number, not a collection. Note that you are going to get a similar error message if you are trying to pass a number (or a boolean or a function) to a function that takes a sequence or a collection. For instance, the same error  \cloerr{Don't know how to create a sequence from a number} happens when one of the arguments of \clocode{concat} is not sequence or a collection: \clocode{(concat [1 2] 5)}. This confirms our guess that \clocode{concat} creates a sequence out of its arguments (if they aren't sequences already) before concatenation. 
+
+You may have noticed that we haven't shown any examples of strings in relation to sequences and collections. This is because strings are in a class of their own in this regard. We discuss strings and characters in relation to collections and sequences in section~\ref{subsec:str}.
+
+
+Just like there is a way to create 
+
+%\elenacomment{introduce \clocode{seq?} and \clocode{coll?}}
 
 \elenacomment{Mention how to create a list or a vector of a bunch of elements or a sequence}
 
-\elenacomment{introduce \clocode{seq?} and \clocode{coll?}}
-
+\elenacomment{May need to fix a ref on how to convert a sequence to a vector, to point to this sec}
 
 %\elenacomment{nil acts as an empty sequence; also in functions such as concat}
 
