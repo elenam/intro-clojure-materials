@@ -127,7 +127,7 @@ Here scores are stored as a vector of vectors, each with the name of a student (
 To summarize, \takeaway{vectors are similar to lists in how they are created and worked with}, although they have a slightly different syntax.  \takeaway{The function \clocode{rest} on both lists and vectors returns a sequence, not any particular collection type.}
 
 \subsubsection{Exercises}\label{subsub:lists-vectors-exercises}
-\begin{exercise}
+\begin{exercise}\label{ex:lists-vectors}
 Assume the following definition
 \begin{framed}
 \begin{verbatim}
@@ -150,7 +150,14 @@ intro.core=> (first (rest (rest stuff)))
 \end{enumerate}
 \end{exercise}
 
-\elenacomment{Include an example of writing \clocode{third}}
+\subsubsection{A programming example: third element of a list}\label{subsubsec:third}
+In question~\ref{q:second} of exercise~\ref{ex:lists-vectors} you have seen a function \clocode{second} that returns the second element of a list or a vector. If you were curious, you probably tried to call \clocode{third} to see if it is defined in Clojure, and discovered that it wasn't. So what do you do if you frequently need to get a third element of a list or a vector? Define your own function \clocode{third}, of course! 
+
+Since it's a function that you would like to save for a future use, we will define it in your Clojure project in the text editor window. \elenacomment{It may be useful to have all students keep their helper functions in a namespace with a standard name - need to think about it} 
+We are defining a function, so we need to use \clocode{defn}. It takes one parameter which is a collection. It is common to name a collection parameter \clocode{coll}, so we will follow this convention. 
+
+\elenacomment{finish the example}
+
 
 \subsection{\clocode{nil}: representing ``nothing" in Clojure}\label{subsec:nil}
 What happens if we call \clocode{first} or \clocode{rest} on an empty list or a vector?  Let us try it in REPL:
