@@ -169,10 +169,93 @@ intro.core=> (coll? (add-first [1 2] 3))
 true
 \end{verbatim}
 \end{framed} 
+There are also functions that check if there argument is a specific collection. For instance, \clocode{vector?} is a function that returns \clocode{true} if and only if its argument is a vector. Likewise, \clocode{list?} returns \clocode{true} if and only if its argument is a list. Let's take a look at some examples:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (list? '(1 2 3))
+true
+intro.core=> (list? '())
+true
+intro.core=> (list? nil)
+false
+intro.core=> (list? [1 2 3])
+false
+intro.core=> (vector? [1 2 3])
+true
+intro.core=> (vector? [])
+true
+intro.core=> (vector? nil)
+false
+intro.core=> (vector? '(1 2 3))
+false
+intro.core=> (list? (rest '(1 2 3)))
+true
+intro.core=> (list? (rest [1 2 3]))
+false
+intro.core=> (vector? (rest '(1 2 3)))
+false
+intro.core=> (vector? (rest [1 2 3]))
+false
+\end{verbatim}
+\end{framed} 
+Most of the results are as expected: lists are lists, vectors are vectors, and they differ from each other. A couple of things to note: \clocode{nil} is neither a vector nor a list. This makes sense since \clocode{nil} is not even a collection or a sequence, so it can't be a specific collection such as a list or a vector. We also note that the \clocode{rest} of a list is a list and not a vector, whereas the \clocode{rest} of a vector is neither a list nor a vector.
 
-\elenacomment{talk about vector? and list?}
+At first it may seem strange that \clocode{rest} of a list is a list, but keep in mind that all \clocode{rest} ``promised'' is to return a sequence (i.e. something for which \clocode{seq?} returns \clocode{true}), and it would return whatever sequence is easier to return. For a list it turns out that the easiest sequence to return is a list, and for a vector a different sequence must be created (since a vector is not a list). 
 
-Just like there is a way to create sequences from collections (such as vectors and lists) using \clocode{seq}, there is a way to create a list or a vector from any sequence. \elenacomment{more complicated than that: list takes multiple arguments, vec takes a single argument that's a sequence}
+Whether a list or another type of sequence gets returned from a function is somewhat unpredictable, as the following tests show:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (list? (concat '(1 2) '(3 4)))
+false
+intro.core=> (list? (seq '(1 2 3)))
+true
+\end{verbatim}
+\end{framed} 
+Here \clocode{conact} of two lists is not a list, and a sequence produced from a list is a list. In general you shouldn't rely on results of collection-independent functions (such as \clocode{concat, rest, seq, add-last}) being lists, but they are guaranteed to be sequences. 
+
+Sometimes we would like to create a specific type of collection out of a sequence or individual elements. In order to create a list out of elements, one can use a function \clocode{list}:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (def mylist (list 1 "a" true))
+#'intro.core/mylist
+intro.core=> (list? mylist)
+true
+\end{verbatim}
+\end{framed} 
+The elements of the resulting list are guaranteed to be in the same order as given to \clocode{list}. 
+
+There are several ways of creating a vector: \clocode{vector} creates a vector out of individual elements, similarly to \clocode{list}, and \clocode{vec} created a vector out of a sequence:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (def vec1 (vector 1 "a" true))
+#'intro.core/vec1
+intro.core=> vec1
+[1 "a" true]
+intro.core=> (vector? vec1)
+true
+intro.core=> (def vec2 (vec (rest '(1 2 3 4))))
+#'intro.core/vec2
+intro.core=> vec2
+[2 3 4]
+intro.core=> (vector? vec2)
+true
+\end{verbatim}
+\end{framed} 
+Another way of creating a vector is often used when you would like to put values of several variables into a vector: if you juts surround these variables with square brackets, you get the vector that contains them:
+\begin{framed}
+\begin{verbatim}
+intro.core=> (def x 4)
+#'intro.core/x
+intro.core=> (def y "a")
+#'intro.core/y
+intro.core=> (def vec3 [x y])
+#'intro.core/vec3
+intro.core=> vec3
+[4 "a"]
+intro.core=> (vector? vec3)
+true
+\end{verbatim}
+\end{framed} 
 
 You may have noticed that we haven't shown any examples of strings in relation to sequences and collections. This is because strings are in a class of their own in this regard. We discuss strings and characters in relation to collections and sequences in section~\ref{subsec:str}.
 
