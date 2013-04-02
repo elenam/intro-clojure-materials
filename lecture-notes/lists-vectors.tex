@@ -150,15 +150,6 @@ intro.core=> (first (rest (rest stuff)))
 \end{enumerate}
 \end{exercise}
 
-\subsubsection{A programming example: third element of a list}\label{subsubsec:third}
-In question~\ref{q:second} of exercise~\ref{ex:lists-vectors} you have seen a function \clocode{second} that returns the second element of a list or a vector. If you were curious, you probably tried to call \clocode{third} to see if it is defined in Clojure, and discovered that it wasn't. So what do you do if you frequently need to get a third element of a list or a vector? Define your own function \clocode{third}, of course! 
-
-Since it's a function that you would like to save for a future use, we will define it in your Clojure project in the text editor window. \elenacomment{It may be useful to have all students keep their helper functions in a namespace with a standard name - need to think about it} 
-We are defining a function, so we need to use \clocode{defn}. It takes one parameter which is a collection. It is common to name a collection parameter \clocode{coll}, so we will follow this convention. 
-
-\elenacomment{finish the example}
-
-
 \subsection{\clocode{nil}: representing ``nothing" in Clojure}\label{subsec:nil}
 What happens if we call \clocode{first} or \clocode{rest} on an empty list or a vector?  Let us try it in REPL:
 \begin{framed}
@@ -195,6 +186,41 @@ true
 We notice that while \clocode{nil} is considered to be empty, an empty list (or any other empty sequence, as you can easily check) is not nil. One may think of  \clocode{nil} as ``emptier than empty''. In fact, \clocode{nil?} returns \clocode{true} only when passed \clocode{nil}, and returns \clocode{false} for everything else. 
 
 To summarize: \takeaway{\clocode{nil} is a special value in Clojure that means ``nothing at all''. It is often returned from functions that cannot find an element with certain properties in a sequence, such as the first element in an empty sequence. While \clocode{nil} is considered an empty sequence, an empty sequence is not considered nil.}
+
+\subsubsection{A programming example: third element of a list}\label{subsubsec:third}
+In question~\ref{q:second} of exercise~\ref{ex:lists-vectors} you have seen a function \clocode{second} that returns the second element of a list or a vector. If you were curious, you probably tried to call \clocode{third} to see if it is defined in Clojure, and discovered that it wasn't. So what do you do if you frequently need to get a third element of a list or a vector? Define your own function \clocode{third}, of course! 
+
+We start by defining tests for it. \elenacomment{may need to change this to "with tests" or some such} 
+We will try it on a list and a vector of at least three elements, and it should return the third element. 
+In order to find out what should happen when the collection has fewer than three elements, we will see what \clocode{second} does in this case. \clocode{(second [1])} returns \clocode{nil} so it is natural to expect that \clocode{third} returns \clocode{nil} as well. I alternate between lists and vectors in tests for \clocode{nil} to make sure that it works on both. Thus the tests become:
+\begin{framed}
+\begin{verbatim}
+(third [1 2 3 4]) ; expected value: 3
+(third '(1 2 3 4)) ; expected value: 3
+(third [1 2])  ; expected value: nil
+(third '(1)) ; expected value: nil
+(third []) ; expected value: nil
+\end{verbatim}
+\end{framed}
+Now that we understand how the function is supposed to behave, we can write its description for the documentation: \clocode{"Returns the third element in a collection, or nil if the collection has fewer than three elements"}. \elenacomment{should we just be writing Clojure doc metadata?}
+
+Since it's a function that you would like to save for a future use, we will define it in your Clojure project in the text editor window. \elenacomment{It may be useful to have all students keep their helper functions in a namespace with a standard name - need to think about it} 
+We are defining a function, so we need to use \clocode{defn}. It takes one parameter which is a collection. It is common to name a collection parameter \clocode{coll}, so we will follow this convention. Thus we start off with
+\begin{framed}
+\begin{verbatim}
+(defn third [coll]
+  "Returns the third element in a collection, or nil if the collection has fewer than three elements"
+\end{verbatim}
+\end{framed}
+Now we need to fill in the body of the function. How do we get the third element of a collection? The first element is given by the function \clocode{first}. The function \clocode{rest} gives a sequence of elements of a collection starting with the second one, so taking the first of the rest of a collection gives you the second element. If we want to get to the third element, we need to take the rest of the rest of the collection, and then take the first of that. The function becomes:
+\begin{framed}
+\begin{verbatim}
+(defn third [coll]
+  "Returns the third element in a collection, or nil if the collection has fewer than three elements"
+  (first (rest (rest coll))))
+\end{verbatim}
+\end{framed}
+Running the tests shows that the function works as expected. 
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
 It is quite common to create collections from existing ones by adding elements to them. Recall that Clojure collections are immutable which means that every time you add an element to a collection \elenacomment{Stephen suggested "every time you change a collection; I think in this context talking about adding an element is sufficient} you are actually creating a new collection, not modifying the existing one. %\elenacomment{add a back reference to discussion of immutability} 
