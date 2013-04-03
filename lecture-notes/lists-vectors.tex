@@ -115,8 +115,8 @@ intro.core=> (rest listofstuff)
 ("Hi there" +)
 \end{verbatim}
 \end{framed}
-While it is possible to combine different types of elements in the same list or vector, in many cases this would be confusing and difficult to work with, so make sure that you aren't creating such collections unnecessarily. 
-However, mixed-element and nested vectors and lists, however, have their purpose. For instance, if you are a teaching assistant for a class, you might want to store student homework scores in the following format:
+
+Mixed-element and nested vectors and lists have their purpose. For instance, if you are a teaching assistant for a class, you might want to store student homework scores in the following format:
 \begin{framed}
 \begin{verbatim}
 (def scores [["Jill S." 12 20 28] ["Bill J." 15 17 23]])
@@ -124,7 +124,9 @@ However, mixed-element and nested vectors and lists, however, have their purpose
 \end{framed}
 Here scores are stored as a vector of vectors, each with the name of a student (a string) followed by numeric grades for assignments. Clojure also provides more specialized collections for keeping this type of data that we will see later. 
 
-To summarize, \takeaway{vectors are similar to lists in how they are created and worked with}, although they have a slightly different syntax.  \takeaway{The function \clocode{rest} on both lists and vectors returns a sequence, not any particular collection type.}
+However, be careful not to combine  different types of elements in the same list or vector unnecessarily since it is harder and more confusing to work with such collections than with those in which all elements are of the same type. 
+
+To summarize, \takeaway{vectors are similar to lists in how they are created and worked with}, although they have a slightly different syntax.  \takeaway{The function \clocode{rest} on both lists and vectors returns a sequence, not any particular collection type}. Lists and vectors can contain \takeaway{any type of elements, including other collections}, but it is best \takeaway{not to combine different types unnecessarily.}
 
 \subsubsection{Exercises}\label{subsub:lists-vectors-exercises}
 \begin{exercise}\label{ex:lists-vectors}
@@ -209,18 +211,22 @@ We are defining a function, so we need to use \clocode{defn}. It takes one param
 \begin{framed}
 \begin{verbatim}
 (defn third [coll]
-  "Returns the third element in a collection, or nil if the collection has fewer than three elements"
+  "Returns the third element in a collection,
+   or nil if the collection has fewer than three elements"
 \end{verbatim}
 \end{framed}
 Now we need to fill in the body of the function. How do we get the third element of a collection? The first element is given by the function \clocode{first}. The function \clocode{rest} gives a sequence of elements of a collection starting with the second one, so taking the first of the rest of a collection gives you the second element. If we want to get to the third element, we need to take the rest of the rest of the collection, and then take the first of that. The function becomes:
 \begin{framed}
 \begin{verbatim}
 (defn third [coll]
-  "Returns the third element in a collection, or nil if the collection has fewer than three elements"
+  "Returns the third element in a collection,
+   or nil if the collection has fewer than three elements"
   (first (rest (rest coll))))
 \end{verbatim}
 \end{framed}
 Running the tests shows that the function works as expected. 
+
+\elenacomment{Need an exercise here: has-at-least-two?}
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
 It is quite common to create collections from existing ones by adding elements to them. Recall that Clojure collections are immutable which means that every time you add an element to a collection \elenacomment{Stephen suggested "every time you change a collection; I think in this context talking about adding an element is sufficient} you are actually creating a new collection, not modifying the existing one. %\elenacomment{add a back reference to discussion of immutability} 
