@@ -101,6 +101,8 @@ The results of   \clocode{first} and  \clocode{empty?}  are as expected. Observe
 
 This approach allows for a more uniform treatment of collections: since most functions on collections take and return sequences rather than specific collection types (such as lists and vectors), it's much easier to combine them because you don't need to worry about what function returns which collection. Sections~\ref{subsec:conj-lists-vectors} and~\ref{subsec:sequences} discuss this approach further. 
 
+\elenacomment{Explain that function arguments are vectors, refer to section~\ref{sec:functions}}
+
 %\elenacomment{Need to explain nested vectors/lists more}
 %\subsubsection{Mixed-element and nested lists and vectors}\albel{subsub:nested}
 
@@ -226,7 +228,17 @@ Now we need to fill in the body of the function. How do we get the third element
 \end{framed}
 Running the tests shows that the function works as expected. 
 
-\elenacomment{Need an exercise here: has-at-least-two?}
+\begin{exercise}\label{ex:simple-coll-functions}
+Write a function \clocode{has-at-least-two?} that, given a collection, returns \clocode{true} if the collection has two or more elements, and \clocode{false} otherwise. Hint 1: use \clocode{empty?}. Hint 2: it is possible to write this function without an \clocode{if} statement or any other conditionals. 
+\end{exercise}
+
+\begin{exercise}\label{ex:last}
+Study a function \clocode{last} that returns the last element of a collection. Write a function \clocode{same-first-last?} that returns \clocode{true} if the first and the last elements of a collection are equal or if the collection is empty, and false otherwise. Make sure to write a comprehensive set of tests for the function. This function also can be written without conditionals. 
+\end{exercise}
+
+\begin{exercise}\label{ex:butlast}
+Study a function \clocode{butlast} that returns all the elements of a collection except the last one. Write a function \clocode{drop-first-last} that returns a sequence of all elements of the collection (in order) except the first and the last one. If the collection has fewer than two elements, an empty sequence should be returned.  
+\end{exercise}
 
 \subsection{Creating lists and vectors out of existing ones}\label{subsec:conj-lists-vectors}
 It is quite common to create collections from existing ones by adding elements to them. Recall that Clojure collections are immutable which means that every time you add an element to a collection \elenacomment{Stephen suggested "every time you change a collection; I think in this context talking about adding an element is sufficient} you are actually creating a new collection, not modifying the existing one. %\elenacomment{add a back reference to discussion of immutability} 
@@ -295,6 +307,22 @@ To summarize what we have learned:
 \item Because the position of the resulting elements is collection-dependent, \clocode{conj} may be confusing to use. 
 \end{itemize}
 }
+
+\begin{exercise}\label{ex:conj}
+\begin{enumerate}
+\item What would be the result of each of the following calls? Try it on paper first, then check your answer in REPL. Explain the results briefly. 
+\begin{framed}
+\begin{verbatim}
+(conj [2 3] 8)
+(conj '(2 3) 8)
+(conj (conj [] 5) 6)
+(conj (conj '() 5) 6)
+\end{verbatim}
+\end{framed}
+\item Write a sequence of three calls to \clocode{conj} that creates a list \clocode{'(3 5 7)} from an empty list. 
+\item  Write a sequence of three calls to \clocode{conj} that creates a vector \clocode{[3 5 7]} from an empty vector. 
+\end{enumerate}
+\end{exercise}
 
 %\elenacomment{show a test in REPL that demonstrates that a new list/vector is created and the original is unchanged}
 
