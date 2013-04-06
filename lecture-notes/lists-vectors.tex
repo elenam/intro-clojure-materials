@@ -363,6 +363,35 @@ There are a few important things to know about \clocode{add-first} and \clocode{
 \item While  \clocode{add-first} and \clocode{add-last} are very convenient and intuitive on vectors and lists, their result on other  collection types that we introduce later (such as sets and hash maps) can be somewhat unexpected. For those collections \clocode{conj} may be a better choice since it respects collection-specific behavior. 
 \end{itemize}
 
+\subsuibsection{A programming example}\label{subsub:add-first-last-example}
+Let's write a function \clocode{replace-last} that takes a collection and an element and replaces the last element of a list or a vector with the given element, returning the result as a sequence. 
+
+As always, we start by writing tests and a description. Keep in mind that, regardless of whether a list or a vector is given, the result is a sequence. Let's start with the obvious cases:
+\begin{framed}
+\begin{verbatim}
+(replace-last [3 4 5] 8) ; expected value (3 4 8)
+(replace-last '(3 4 5) 8) ; expected value (3 4 8)
+(replace-last [7] 8) ; expected value (8)
+(replace-last '(7) 8) ; expected value  (8)
+\end{verbatim}
+\end{framed}
+The interesting case is when the given sequence is empty. Since the function is supposed to replace the last element, it is natural to expect that it will be returning an empty sequence of sorts when the given sequence is empty. We have two options: \clocode{nil} and an empty list \clocode{'()}. They behave approximately the same, so it doesn't matter much which of the two we choose. Let's go with  \clocode{'()} since \clocode{nil} stands for ``emptier than empty'' and this would make the result of for an empty sequence ``even emptier''. Having decided on the result for an empty sequence, we complete the tests as follows:
+\begin{framed}
+\begin{verbatim}
+(replace-last [] 8) ; expected value ()
+(replace-last '() 8) ; expected value ()
+\end{verbatim}
+\end{framed}
+We also need the function description: 
+
+Now let's start writing the function:
+\begin{framed}
+\begin{verbatim}
+(defn replace-last [coll x] 
+
+\end{verbatim}
+\end{framed}
+
 {\bf Implementation (for the curious).} Both \clocode{add-first} and \clocode{add-last} are defined in the file \clocode{corefns/core}. \clocode{add-first} is actually just a different name for a Clojure function \clocode{cons}, with one difference: \clocode{cons} takes its arguments in a different order (the element first, and the collection second). The name \clocode{cons} and the order of arguments come from the original Lisp language. However, the similarity with the name ``conj''  and the difference in argument order can be confusing, so we gave it a different name. 
 
 There are many possible implementations of \clocode{add-last}. The one that we are currently using is joining together two sequences: the original collection and the one-element sequence of just the new element. We use a function \clocode{concat} (covered in section~\ref{subsubsec:into-concat}) in the definition of \clocode{add-last}. This is likely to be slow on very long sequences.
