@@ -37,15 +37,26 @@ Abstract goes here.
 \section{Introduction}
 
 \section{Overview and history of Clojure}
-Clojure  is a dialect of Lisp developed by Rich Hickey and released in 2007. Clojure was developed to answer the need for a practical  functional language that supports convenient, efficient, and safe programming for concurrency. Clojure provides a rich set of immutable data structures, augmented with several kinds of mutable reference types. Clojure in its classical implementation is complied into Java bytecode and can be fully integrated with Java, both by using Java objects and methods and by providing code that can be invoked from Java. It was carefully designed with efficiency in mind, and provides constructs for tail call optimization (at compilation time, due to Java's lack of support of tail call optimizations), data structures with fast traversal to any element that maximize sharing when a modified version is created, and efficient handling of lazy structures, among other mechanisms for providing efficiency. As the result, Clojure is as fast as Java on its underlying platform (the JVM), and much more efficient for concurrent execution due to immutability of data structures and significantly reduced need for locking and synchronization. 
+Clojure  is a dialect of Lisp developed by Rich Hickey and released in 2007~\cite{Hickey:2008}. Clojure was developed to answer the need for a practical  functional language that supports convenient, efficient, and safe programming for concurrency. Clojure provides a rich set of immutable data structures, augmented with several kinds of mutable reference types. Clojure in its classical implementation is complied into Java bytecode and can be fully integrated with Java, both by using Java objects and methods and by providing code that can be invoked from Java. It was carefully designed with efficiency in mind, and provides constructs for tail call optimization (at compilation time, due to Java's lack of support of tail call optimizations), data structures with fast traversal to any element that maximize sharing when a modified version is created, and efficient handling of lazy structures, among other mechanisms for providing efficiency. As the result, Clojure is as fast as Java on its underlying platform (the JVM), and much more efficient for concurrent execution due to immutability of data structures and significantly reduced need for locking and synchronization. 
 
-Because of its convenience, efficiency, and elegant model Clojure is gaining a rapid popularity in software development community. \elenacomment{data goes here; perhaps reference some papers, perhaps the bioinformatics paper? Searching on "clojure" in ACM digital library gives some useful stuff.}
+Because of its convenience, efficiency, and elegant model Clojure is rapidly gaining popularity in software development community. \elenacomment{data goes here; perhaps reference some papers, perhaps the bioinformatics paper? Searching on "clojure" in ACM digital library gives some useful stuff.}
 
 \elenacomment{Perhaps combine some sections, make them subsections.}
 
-\section{Benefits of teaching Clojure as the first language}
+\elenacomment{A bit about assumed setup of CS curriculum}
 
-\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular, is done right, is a great language to program for oneself, introduces parallel computation}
+
+\section{Benefits of teaching Clojure as the first language}
+Benefits of teaching the functional programming paradigm in the first programming class for CS majors and minors are well-known \elenacomment{a citation?}. Functional languages focus on functions as programming units, provide abstraction, generalization, and modularity, and give a better understanding of recursion which is a basis of important data structures and algorithms. Functional languages tend to have simpler, more uniform syntax that students master quickly. There are several successful introductory curricula that use functional languages, including \elenacomment{reference Racket, Haskell, ML?}
+
+Developing a similar undergraduate curriculum based on Clojure would provide additional benefits. The immediate practical benefit of Clojure is that it fully integrates with Java since both compile to Java bytecode: Java code can be called from Clojure, and Clojure code can be called from Java. It is important to keep in mind that Clojure integrates with Java without losing efficiency, and Clojure itself is as efficient as Java and does not impede Java optimizations. Related to CS curriculum, this allows seamless integration of Clojure into projects developed in Java or labs that use pre-written Java code. This gives students a choice of languages and paradigms that can even be made by a student or a group individually, without need for uniformity with the rest of the class or the rest of the project. 
+
+A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization, locking objects, or adjustments to the number of processors. While Clojure concurrency cannot be fully covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or, if needs to be, independently for a project or an internship. The key concepts, such as immutable persistent data structures, would be natural to students. \elenacomment{work in this citation: ~\cite{Brown:2010}}
+
+Clojure is a language that was developed for real-life software development. It combines a rich set of features (including a variety of mechanisms for concurrency) with elegant uniform underlying model based on abstraction. While it would be impossible (and unnecessary) to present all of its features in an undergraduate course, understanding the underlying abstractions and concepts makes it easy for students to build upon what 
+
+
+\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
 
 \section{Technical challenges of teaching Clojure as the first language}
 
@@ -58,76 +69,82 @@ Because of its convenience, efficiency, and elegant model Clojure is gaining a r
 
 \section{Bibliography}
 
+\bibliographystyle{eptcs}
+\bibliography{overview}
+\end{document}
+
+
+
 Sample stuff from example for now.
 
-We request that you use
-\href{http://www.cse.unsw.edu.au/~rvg/EPTCS/eptcs.bst}
-{\tt $\backslash$bibliographystyle$\{$eptcs$\}$}
-\cite{bibliographystylewebpage}. Compared to the original {\LaTeX}
-{\tt $\backslash$biblio\-graphystyle$\{$plain$\}$},
-it ignores the field {\tt month}, and uses the extra
-bibtex fields {\tt eid}, {\tt doi}, {\tt ee} and {\tt url}.
-The first is for electronic identifiers (typically the number $n$
-indicating the $n^{\rm th}$ paper in an issue) of papers in electronic
-journals that do not use page numbers. The other three are to refer,
-with life links, to electronic incarnations of the paper.
-
-Almost all publishers use digital object identifiers (DOIs) as a
-persistent way to locate electronic publications. Prefixing the DOI of
-any paper with {\tt http://dx.doi.org/} yields a URI that resolves to the
-current location (URL) of the response page\footnote{Nowadays, papers
-  that are published electronically tend
-  to have a \emph{response page} that lists the title, authors and
-  abstract of the paper, and links to the actual manifestations of
-  the paper (e.g.\ as {\tt dvi}- or {\tt pdf}-file). Sometimes
-  publishers charge money to access the paper itself, but the response
-  page is always freely available.}
-of that paper. When the location of the response page changes (for
-instance through a merge of publishers), the DOI of the paper remains
-the same and (through an update by the publisher) the corresponding
-URI will then resolve to the new location. For that reason a reference
-ought to contain the DOI of a paper, with a life link to corresponding
-URI, rather than a direct reference or link to the current URL of
-publisher's response page. This is the r\^ole of the bibtex field {\tt doi}.
-DOIs of papers can often be found through
-\url{http://www.crossref.org/guestquery};\footnote{For papers that will appear
-  in EPTCS and use \href{http://www.cse.unsw.edu.au/~rvg/EPTCS/eptcs.bst}
-  {\tt $\backslash$bibliographystyle$\{$eptcs$\}$} there is no need to
-  find DOIs on this website, as EPTCS will look them up for you
-  automatically upon submission of a first version of your paper;
-  these DOIs can then be incorporated in the final version, together
-  with the remaining DOIs that need to found at DBLP or publisher's webpages.}
-the second method {\it Search on article title}, only using the {\bf
-surname} of the first-listed author, works best.  
-Other places to find DOIs are DBLP and the response pages for cited
-papers (maintained by their publishers).
-{\bf EPTCS requires the inclusion of a DOI in each cited paper, when available.}
-
-Often an official publication is only available against payment, but
-as a courtesy to readers that do not wish to pay, the authors also
-make the paper available free of charge at a repository such as
-\url{arXiv.org}. In such a case it is recommended to also refer and
-link to the URL of the response page of the paper in such a
-repository.  This can be done using the bibtex fields {\tt ee} or {\tt
-url}, which are treated as synonyms.  These fields should not be used
-to duplicate information that is already provided through the DOI of
-the paper.
-You can find archival-quality URL's for most recently published papers
-in DBLP---they are in the bibtex-field {\tt ee}. In fact, it is often
-useful to check your references against DBLP records anyway, or just find
-them there in the first place.
-
-When using {\LaTeX} rather than {\tt pdflatex} to typeset your paper, by
-default no linebreaking within long URLs is allowed. This leads often
-to very ugly output, that moreover is different from the output
-generated when using {\tt pdflatex}. This problem is repaired when
-invoking \href{http://www.cse.unsw.edu.au/~rvg/EPTCS/breakurl.sty}
-{\tt $\backslash$usepackage$\{$breakurl$\}$}: it allows linebreaking
-within links and yield the same output as obtained by default with
-{\tt pdflatex}. 
-When invoking {\tt pdflatex}, the package {\tt breakurl} is ignored.
-
-\nocite{*}
-\bibliographystyle{eptcs}
-\bibliography{generic}
-\end{document}
+%We request that you use
+%\href{http://www.cse.unsw.edu.au/~rvg/EPTCS/eptcs.bst}
+%{\tt $\backslash$bibliographystyle$\{$eptcs$\}$}
+%\cite{bibliographystylewebpage}. Compared to the original {\LaTeX}
+%{\tt $\backslash$biblio\-graphystyle$\{$plain$\}$},
+%it ignores the field {\tt month}, and uses the extra
+%bibtex fields {\tt eid}, {\tt doi}, {\tt ee} and {\tt url}.
+%The first is for electronic identifiers (typically the number $n$
+%indicating the $n^{\rm th}$ paper in an issue) of papers in electronic
+%journals that do not use page numbers. The other three are to refer,
+%with life links, to electronic incarnations of the paper.
+%
+%Almost all publishers use digital object identifiers (DOIs) as a
+%persistent way to locate electronic publications. Prefixing the DOI of
+%any paper with {\tt http://dx.doi.org/} yields a URI that resolves to the
+%current location (URL) of the response page\footnote{Nowadays, papers
+%  that are published electronically tend
+%  to have a \emph{response page} that lists the title, authors and
+%  abstract of the paper, and links to the actual manifestations of
+%  the paper (e.g.\ as {\tt dvi}- or {\tt pdf}-file). Sometimes
+%  publishers charge money to access the paper itself, but the response
+%  page is always freely available.}
+%of that paper. When the location of the response page changes (for
+%instance through a merge of publishers), the DOI of the paper remains
+%the same and (through an update by the publisher) the corresponding
+%URI will then resolve to the new location. For that reason a reference
+%ought to contain the DOI of a paper, with a life link to corresponding
+%URI, rather than a direct reference or link to the current URL of
+%publisher's response page. This is the r\^ole of the bibtex field {\tt doi}.
+%DOIs of papers can often be found through
+%\url{http://www.crossref.org/guestquery};\footnote{For papers that will appear
+%  in EPTCS and use \href{http://www.cse.unsw.edu.au/~rvg/EPTCS/eptcs.bst}
+%  {\tt $\backslash$bibliographystyle$\{$eptcs$\}$} there is no need to
+%  find DOIs on this website, as EPTCS will look them up for you
+%  automatically upon submission of a first version of your paper;
+%  these DOIs can then be incorporated in the final version, together
+%  with the remaining DOIs that need to found at DBLP or publisher's webpages.}
+%the second method {\it Search on article title}, only using the {\bf
+%surname} of the first-listed author, works best.  
+%Other places to find DOIs are DBLP and the response pages for cited
+%papers (maintained by their publishers).
+%{\bf EPTCS requires the inclusion of a DOI in each cited paper, when available.}
+%
+%Often an official publication is only available against payment, but
+%as a courtesy to readers that do not wish to pay, the authors also
+%make the paper available free of charge at a repository such as
+%\url{arXiv.org}. In such a case it is recommended to also refer and
+%link to the URL of the response page of the paper in such a
+%repository.  This can be done using the bibtex fields {\tt ee} or {\tt
+%url}, which are treated as synonyms.  These fields should not be used
+%to duplicate information that is already provided through the DOI of
+%the paper.
+%You can find archival-quality URL's for most recently published papers
+%in DBLP---they are in the bibtex-field {\tt ee}. In fact, it is often
+%useful to check your references against DBLP records anyway, or just find
+%them there in the first place.
+%
+%When using {\LaTeX} rather than {\tt pdflatex} to typeset your paper, by
+%default no linebreaking within long URLs is allowed. This leads often
+%to very ugly output, that moreover is different from the output
+%generated when using {\tt pdflatex}. This problem is repaired when
+%invoking \href{http://www.cse.unsw.edu.au/~rvg/EPTCS/breakurl.sty}
+%{\tt $\backslash$usepackage$\{$breakurl$\}$}: it allows linebreaking
+%within links and yield the same output as obtained by default with
+%{\tt pdflatex}. 
+%When invoking {\tt pdflatex}, the package {\tt breakurl} is ignored.
+%
+%%\nocite{*}
+%%\bibliographystyle{eptcs}
+%%\bibliography{generic}
+%\end{document}
