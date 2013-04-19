@@ -63,9 +63,60 @@ Clojure has a well-developed community with online community-maintained document
 \section{Technical challenges of teaching Clojure as the first language}
 The key technical (as opposed to conceptual) challenges in teaching Clojure as the first programming language stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from the Java implementation and mention Java types and other notions (such as null pointer exceptions) that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. There are a few common functions with names that may be misleading to new students. Below we describe our work in progress to address these issues. 
 
-\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
+\subsection{Error messages}\label{subsec:errors}
+Clojure error messages are Java exceptions. 
+
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Original type & Beginner-friendly type \\
+\hline
+java.lang.Number & a number \\
+java.lang.Integer & a number \\
+java.lang.Double  & a number \\
+java.lang.Float & a number \\
+java.lang.String & a string \\
+java.lang.Character & a symbol \\
+clojure.lang.Symbol  & a symbol \\
+clojure.lang.ISeq & a sequence \\
+\hline
+\end{tabular}
+\caption{Sample type conversion}\label{table:types}
+\end{table}
+
+ \begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+Exception type & Original message & Beginner-friendly message \\
+\hline 
+{\tt ClassCastException} & $X$ cannot be cast to $Y$ & {\parbox{5cm}{Attempted to use $X'$, \\ 
+but $Y'$ was expected.}} \\[0.3cm]
+\hline
+{\tt IllegalArgumentException} & 
+Don't know how to create $X$ from:  $Y$ & 
+{\parbox{5cm}{Don't know how to \\ create  $X'$ from $Y'$}} \\[0.3cm]
+\hline
+{\tt IndexOutOfBoundsException} & $n$ & {\parbox{5cm}{An index in a vector or a list \\ 
+is out of bounds. The index is: $n$}} \\[0.3cm]
+\hline
+{\tt NullPointerException} & -- &  {\parbox{5cm}{An attempt to access a 
+\\ non-existing object
+\\ (NullPointerException)}} \\[0.3cm]
+\hline
+\end{tabular}
+\caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types. }\label{table:messages}
+\end{table}
 
 \todo{an example of error messages before and after}
+
+\elenacomment{issues: compilation error messages; laziness and project setup}
+
+\subsection{Development environment}\label{subsec:envt}
+
+
+\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
+
+
 
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
 
