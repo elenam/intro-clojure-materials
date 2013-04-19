@@ -53,19 +53,25 @@ Developing a similar undergraduate curriculum based on Clojure would provide add
 
 A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization, locking objects, or adjustments to the number of processors. While Clojure concurrency cannot be fully covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or, if needs to be, independently for a project or an internship. The key concepts, such as immutable persistent data structures, would be natural to students. \elenacomment{work in this citation: ~\cite{Brown:2010}}
 
-Clojure is a language that was developed for real-life software development. It combines a rich set of features (including a variety of mechanisms for concurrency) with elegant uniform underlying model based on abstraction. While it would be impossible (and unnecessary) to present all of its features in an undergraduate course, understanding the underlying abstractions and concepts makes it easy for students to build upon what 
+Clojure is a language that was developed for real-life software development. It combines a rich set of features (including a variety of mechanisms for concurrency) with elegant uniform underlying model based on abstraction. Clojure ``collection'' (i.e. data structures) include lists, vectors, sets, and hashmaps. However, all of them can be worked with as sequences (more on that in section~\ref{sec:approaches}). While it would be impossible (and unnecessary) to present all of Clojure features in an undergraduate course, understanding the underlying abstractions and concepts makes it easy for students to build upon what they learn in the class and learn on their own. The underlying abstractions also teach students about a good language design and problem solving that focuses on the essence of the problem and not on specifics of a given structure. 
+
+Clojure has a well-developed community with online community-maintained documentation and examples, multiple blogs, several Google groups and an IRC channel, numerous open-source projects, a large number of meetups in many cities, and several excellent quality books (although not at a beginner programmer level). All these resources would enable students to continue their Clojure development past the introductory course. 
 
 
-\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
+%\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
 
 \section{Technical challenges of teaching Clojure as the first language}
+The key technical (as opposed to conceptual) challenges in teaching Clojure as the first programming language stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from the Java implementation and mention Java types and other notions (such as null pointer exceptions) that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. There are a few common functions with names that may be misleading to new students. Below we describe our work in progress to address these issues. 
 
 \todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
-\section{Approaches to teaching Clojure to beginners}
+\todo{an example of error messages before and after}
+
+\section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
 
 \todo{Clojure concepts: sequence abstraction vs concrete collections, laziness}
 
+\section{Conclusions}
 
 \section{Bibliography}
 
