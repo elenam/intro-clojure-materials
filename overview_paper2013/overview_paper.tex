@@ -64,7 +64,7 @@ Clojure has a well-developed community with online community-maintained document
 The key technical (as opposed to conceptual) challenges in teaching Clojure as the first programming language stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from the Java implementation and mention Java types and other notions (such as null pointer exceptions) that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. There are a few common functions with names that may be misleading to new students. Below we describe our work in progress to address these issues. 
 
 \subsection{Error messages}\label{subsec:errors}
-Clojure error messages are Java exceptions. 
+Clojure error messages are Java exceptions and tend to mention Java types (some native to Java and some coming from Clojure implementation in Java) that are unclear to beginners, especially because Clojure is dynamically typed, and as a beginner you never have to specify any types explicitly. Types used in Clojure implementation form a rich Java hierarchy (for instance, numerous types implement an interface that represents a Clojure sequence type). These details do not matter to students, but would get in the way of their learning experience. There are other cases when an error message does not make sense to new students, such as {\tt NullPointerException}. 
 
 \begin{table}
 \begin{tabular}{|c|c|}
@@ -96,7 +96,7 @@ but $Y'$ was expected.}} \\[0.3cm]
 Don't know how to create $X$ from:  $Y$ & 
 {\parbox{5cm}{Don't know how to \\ create  $X'$ from $Y'$}} \\[0.3cm]
 \hline
-{\tt IndexOutOfBoundsException} & $n$ & {\parbox{5cm}{An index in a vector or a list \\ 
+{\tt IndexOutOfBoundsException} & $n$ & {\parbox{5cm}{An index in a sequence \\ 
 is out of bounds. The index is: $n$}} \\[0.3cm]
 \hline
 {\tt NullPointerException} & -- &  {\parbox{5cm}{An attempt to access a 
@@ -107,12 +107,33 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 \caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types. }\label{table:messages}
 \end{table}
 
-\todo{an example of error messages before and after}
+The run-time environment that we are developing \elenacomment{mention earlier that we are developing an environment} intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting the error message. 
+As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to {\tt cons} an element onto something that is not a sequence and cannot be converted to one:
 
-\elenacomment{issues: compilation error messages; laziness and project setup}
+{\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
+
+While the wording of the message is reasonably clear, the types used in it would not be understandable to beginner programmers at all. {\tt ISeq} is an interface that represents a Clojure sequence, but beginner students are not familiar with interfaces. Numbers in Clojure can be represented as a variety of types, and it is quite common for them to be represented as the {\tt  java.lang.Long} type. The exception type itself also is not useful to beginners for the most part. 
+
+The error can be made clearer for beginners if we replace type names by those that make sense to beginners and remove the exception type:
+
+{\tt Error: Don't know how to create a sequence from a number}. 
+
+Table~\ref{table:types} shows more examples of type conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
+
+There are other error messages that require conversion to more beginner-friendly wording, see table~\ref{table:messages} for more examples. 
+
+Another issue that can be solved by catching and reformatting Clojure error messages is its stack trace. A complete stack trace of an error message often can contain over a hundred of Clojure and Java function calls. The way we approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
+
+%\todo{an example of error messages before and after}
+
+The error message filtering has worked well in tests and gives messages that make sense to beginners (our testing group includes two sophomores with no prior experience with Clojure \elenacomment{Might move it earlier}). Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager (see section~\ref{subsec:envt} for details). 
+
+%\elenacomment{issues: compilation error messages; laziness and project setup}
 
 \subsection{Development environment}\label{subsec:envt}
 
+
+\subsection{Other language modifications}\label{subsec:other}
 
 \todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
@@ -120,7 +141,7 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
 
-\todo{Clojure concepts: sequence abstraction vs concrete collections, laziness}
+\todo{Clojure concepts: sequence abstraction vs concrete collections, laziness; providing examples for beginners + knowledge of complete language to understand other examples.}
 
 \section{Conclusions}
 
