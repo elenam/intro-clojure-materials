@@ -24,9 +24,15 @@
 \institute{University of Minnesota, Morris
 \email{elenam@morris.umn.edu}}
 \and
+<<<<<<< HEAD
+Stephen Adams 
+\institute{Thomson Reuters
+\email{adams601@morris.umn.edu}}
+=======
 Stephen J Adams 
 \institute{University of Minnesota, Morris}
 \email{\quad adams601@morris.umn.edu}
+>>>>>>> da383d0370b1fcb5888bbd327f043f7778099307
 \and 
 Joe Einertson 
 \institute{University of Minnesota, Morris
@@ -80,7 +86,7 @@ Students continuing in the CS program would take a version of a discrete mathema
 %\todo{A bit about assumed setup of CS curriculum; learning goals}
 
 \subsection{Benefits of teaching Clojure in an introductory class}
-The benefits of using a functional programming language in introductory Computer Science classes are well-known  \elenacomment{a citation?}. Functional languages focus on functions as programming units, provide abstraction, generalization, and modularity, and give a better understanding of recursion, one of the key learning goals in an introductory course. 
+The benefits of using a functional programming language in introductory computer science classes are well-known  \elenacomment{a citation?}. Functional languages focus on functions as programming units, provide abstraction, generalization, and modularity, and give a better understanding of recursion, one of the key learning goals in an introductory course. 
 %\elenacomment{I moved explanation of why recursion is important to the earlier section}
 Functional languages tend to have simpler, more uniform syntax that students master quickly. There are several successful introductory curricula that use functional languages, including the How To Design Programs curriculum using a Lisp dialect Racket~\cite{htdp} and introductory courses that use Haskell, e.g.~\cite{haskell}.
 
@@ -92,21 +98,36 @@ Clojure is a language that was
 %\joecomment{I like Stephen's other suggestion of "for use in industry" better. Industrial software development parses ambiguously (we are not talking about a factory which generates code)}
 developed for use in industry. It combines a rich set of features (including a variety of mechanisms for concurrency) with an elegant uniform underlying model based on abstraction. Clojure ``collections'' (i.e. data structures) include lists, vectors, sets, and hashmaps. However, 
 %all of them can be worked with as sequences \stephencomment{"
-all of these collections can be worked with as sequences. (more on that in section~\ref{sec:approaches}). While it would be impossible (and unnecessary) to present all of Clojure's features in an undergraduate course, understanding the underlying abstractions and concepts makes it easier for students to build upon what they learn in the class.
-%\stephencomment{End sentence here} and learn on their own. 
-The underlying abstractions also teach students about a good language design and problem solving that focuses on the essence of the problem and not on specifics of a given structure. \elenacomment{talk about focus on abstraction}
+all of these collections can be worked with as sequences. (more on this in section~\ref{sec:approaches}). 
+%While it would be impossible (and unnecessary) to present all of Clojure's features in an undergraduate course, 
+Abstraction-based program development teaches students use and appreciate abstraction and modularity in their own solutions. A uniform abstraction-based language model also makes it easier for students to learn language features and libraries not covered in class on their own. 
+%Understanding the underlying abstractions and concepts makes it easier for students to build upon what they learn in the class.
+%%\stephencomment{End sentence here} and learn on their own. 
+%The underlying abstractions also teach students about a good language design and problem solving that focuses on the essence of the problem and not on specifics of a given structure. \elenacomment{talk about focus on abstraction}
 
-\elenacomment{Make it clear that these benefits are as students move forward}
-The immediate practical benefit of Clojure is that it fully integrates with Java since both compile to Java bytecode: Java code can be called from Clojure and vice versa.%, and Clojure code can be called from Java  \joecomment{and vice versa?}. 
-It is important to keep in mind that Clojure integrates with Java without losing efficiency, and Clojure itself is as efficient as Java and does not impede Java optimizations. As students continue in the CS curriculum\stephencomment{??} \elenacomment{better (changed the rest of the sentence slightly as well)? This may address your later question as well}, they can  integrate Clojure into projects developed in Java or labs that use pre-written Java code. This gives students a choice of languages and paradigms that can be made by a student or a group individually \joecomment{everything from "that can..." is redundant: "This gives students a choice...that can be made by a student"}, without need for uniformity with the rest of the class or the rest of the project.\stephencomment{I think this paragraph needs to clarify what Java interop accomplishes for intro students. I'm not seeing how this would be successfully incorporated into 1301 from what you say here.} \elenacomment{I don't think intro students will be using Java interop. Not sure what you mean.} \stephencomment{We are in the "Benefits of teaching Clojure in an introductory class" subsection and started talking about Java interop so I got a little confused when intro students would be using these features. If we want to mention how our curriculum leads into Java code and that introducing Clojure in our intro class can ease the transition into Java.}
+%\elenacomment{Make it clear that these benefits are as students move forward}
+Clojure is beneficial in preparing students for moving forward in the CS program. 
+Clojure is fully integrated with Java since both compile to Java bytecode: Java code can be called from Clojure and vice versa.
+%, and Clojure code can be called from Java  \joecomment{and vice versa?}. 
+Integration with Java does not have an efficiency penalty for either of the languages. 
+%It is important to keep in mind that Clojure integrates with Java without losing efficiency, and Clojure itself is as efficient as Java and does not impede Java optimizations. 
+%As students continue in the CS curriculum\stephencomment{??} \elenacomment{better (changed the rest of the sentence slightly as well)? This may address your later question as well}, 
+Students can  integrate Clojure into projects developed in Java or labs that use pre-written Java code in their upper-division classes, allowing them to incorporate functional style of programming as needed, even in a part of a project. 
+%This gives students a choice of languages and paradigms 
+%that can be made by a student or a group individually \joecomment{everything from "that can..." is redundant: "This gives students a choice...that can be made by a student"}, 
+%without need for uniformity with the rest of the class or the rest of the project.\stephencomment{I think this paragraph needs to clarify what Java interop accomplishes for intro students. I'm not seeing how this would be successfully incorporated into 1301 from what you say here.} \elenacomment{I don't think intro students will be using Java interop. Not sure what you mean.} \stephencomment{We are in the "Benefits of teaching Clojure in an introductory class" subsection and started talking about Java interop so I got a little confused when intro students would be using these features. If we want to mention how our curriculum leads into Java code and that introducing Clojure in our intro class can ease the transition into Java.}
 
-A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization, locking objects \joecomment{object locking? Locking objects sounds like a weird euphemism for safes or keys or something}, or adjustments to the number of processors. While Clojure concurrency cannot be fully covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or, if need be \joecomment{I think this interjection is unnecessary.}, independently for a project or an internship. The students would already be familiar with key concepts, such as immutable persistent data structures. \elenacomment{work in this citation: ~\cite{Brown:2010}}
+A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization,  locks, 
+%objects \joecomment{object locking? Locking objects sounds like a weird euphemism for safes or keys or something}, 
+or adjustments to the number of processors. While Clojure concurrency cannot be fully covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course.
+% or, if need be \joecomment{I think this interjection is unnecessary.}, independently for a project or an internship. 
+The students would already be familiar with key concepts, such as immutable persistent data structures. Clojure fits the recent 
+emphasis on teaching concurrency in undergraduate curriculum (e.g.~\cite{Brown:2010}) perfectly. 
 
 Clojure has a friendly, well-developed
 %\elenacomment{added "friendly" - thoughts?} \stephencomment{I haven't had any problems with people and I'm sure conference attendees will know that this is an issue with several FP communities.} \joecomment{Swapped word order so sentence flows better.}
 community with online community-maintained documentation and examples, multiple blogs, several Google groups and an IRC channel, numerous open-source projects, a large number of meetups in many cities, and several excellent quality books (although not at a beginning programmer level). All these resources would enable students to continue their Clojure development past the introductory course. 
-
-\stephencomment{I feel like the biggest issue with this subsection is that it is supposed to be about what Clojure has to offer introductory students. However a large section of it is about two fairly advanced features (interop, and concurrency) that don't seem to be useful to an introductory student. If you are trying to talk about these advanced features as helpful for transitioning intro students into higher level classes I think that needs to be more explicit.}\elenacomment{Good point. Will change.}
+%\stephencomment{I feel like the biggest issue with this subsection is that it is supposed to be about what Clojure has to offer introductory students. However a large section of it is about two fairly advanced features (interop, and concurrency) that don't seem to be useful to an introductory student. If you are trying to talk about these advanced features as helpful for transitioning intro students into higher level classes I think that needs to be more explicit.}\elenacomment{Good point. Will change.}
 \joecomment{This section feels a little disorganized in places, but makes many good points. I would try to improve the flow by leading from each paragraph/point into the next.}
 
 %\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
