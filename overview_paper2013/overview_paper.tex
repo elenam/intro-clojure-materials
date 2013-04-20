@@ -107,13 +107,13 @@ community with online community-maintained documentation and examples, multiple 
 %\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
 
 \section{Technical challenges of teaching Clojure as the first language}
-The key technical (as opposed to conceptual) challenges in teaching Clojure as the first programming language \stephencomment{"The key technical... challenges of teaching Clojure to beginners"} stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from the Java implementation \stephencomment{...from Java and mention...} and mention Java types and other notions (such as null pointer exceptions) that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. There are a few common functions with names that may be misleading to new students. Below we describe our work in progress to address these issues.\stephencomment{Watch the positioning of the tables. For me they are currently appearing in the middle of the preceding paragraph which is a little confusing.}
-
+The key technical (as opposed to conceptual) challenges of teaching Clojure to beginners stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from Java and mention Java types and other notions (such as null pointer exceptions) that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. There are a few common functions with names that may be misleading to new students. Below we describe our work in progress to address these issues.
 
 \subsection{Error messages}\label{subsec:errors}
 Clojure error messages are Java exceptions and therefore mention Java types (some native to Java and some coming from Clojure's implementation in Java) that are unclear to beginners, especially because Clojure is dynamically typed, and as a beginner you never have to specify any types explicitly \joecomment{This last part should be clarified. It reads like all beginners are magically exempt from explicit typing}. Types used in Clojure implementation form a rich Java hierarchy (for instance, numerous types implement an interface that represents a Clojure sequence type) \stephencomment{awk} \elenacomment{I'll think about phrasing here} \joecomment{A semicolon rather than parenthetical phrase would make this read less confusingly.}. These details do not matter to students, but would get in the way of their learning experience. There are other cases when an error message does not make sense to new students, such as {\tt NullPointerException}. 
 
 \begin{table}
+\centering
 \begin{tabular}{|c|c|}
 \hline
 Original type & Beginner-friendly type \\
@@ -128,7 +128,7 @@ clojure.lang.Symbol  & a symbol \\
 clojure.lang.ISeq & a sequence \\
 \hline
 \end{tabular}
-\caption{Sample type conversion}\label{table:types} \stephencomment{Do we want to center table 1?}
+\caption{Sample type conversion}\label{table:types}
 
 \end{table}
 
