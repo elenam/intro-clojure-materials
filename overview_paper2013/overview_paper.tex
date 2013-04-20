@@ -37,6 +37,8 @@ Abstract goes here.
 
 \section{Introduction}
 
+\todo{Mention the state of work in progress}
+
 \section{Overview and history of Clojure}
 Clojure  is a dialect of Lisp developed by Rich Hickey and released in 2007~\cite{Hickey:2008}. Clojure was developed to answer the need for a practical  functional language that supports convenient, efficient, and safe programming for concurrency. Clojure provides a rich set of immutable data structures, augmented with several kinds of mutable reference types. Clojure in its classical implementation is complied into Java bytecode and can be fully integrated with Java, both by using Java objects and methods and by providing code that can be invoked from Java. It was carefully designed with efficiency in mind, and provides constructs for tail call optimization (at compilation time, due to Java's lack of support of tail call optimizations), data structures with fast traversal to any element that maximize sharing when a modified version is created, and efficient handling of lazy structures, among other mechanisms for providing efficiency. As the result, Clojure is as fast as Java on its underlying platform (the JVM), and much more efficient \stephencomment{I think we should specify that this is programmer efficiency rather than runtime efficiency} \elenacomment{Actually, it's run-time efficiency due to lack of waiting for locks. But we can say "effective" instead of "efficient" if you think that's better} for concurrent execution due to immutability of data structures and significantly reduced need for locking and synchronization. 
 
@@ -172,11 +174,15 @@ There are a few functions that we would like to provide as an alternative to com
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
 Clojure provides a rich set of immutable collections (lists, vectors, sets, hash-maps). Each collection has a specific implementation in Clojure. For instance, lists are singly-linked lists, similar in a concept to Common Lisp lists that are a chain of cons-cells. Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning since it takes advantage of sharing the rest of the elements after the one we are adding or removing. The new list is just a reference to its first element. However, adding an element at the end takes a linear time since the entire list needs to be copied. 
 
-Vectors are a highly efficient data structure for both insertion and deletion at any position in a close to constant time: $log_{32} N$, where $N$ is the number of elements in the vector. 
+Vectors are a highly efficient data structure for both insertion and deletion at any position in a close to constant time: $log_{32} N$, where $N$ is the number of elements in the vector. Vectors are represented internally as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one constructed out of it. Hash-maps and sets are also optimized in their own way for efficient creation of modified versions via insertion, deletion, or modification. 
+
+%Because the 
 
 \todo{Clojure concepts: sequence abstraction vs concrete collections, laziness; providing examples for beginners + knowledge of complete language to understand other examples.}
 
 \section{Conclusions}
+
+\section{Acknowledgments}
 
 \section{Bibliography}
 
