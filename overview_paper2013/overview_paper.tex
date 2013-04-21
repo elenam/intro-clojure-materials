@@ -43,7 +43,7 @@ The Clojure programming language is a new language in the LISP family that is ga
 \section{Introduction}
 %\joecomment{Any particular reason I'm listed as Joseph rather than Joe? Either one is fine but Joe is what I usually go by/is most Googleable}
 %\joecomment{Typo in the title. Pick either 'of' or 'to' in the beginning.}
-The Clojure programming language is a new language in the LISP family that is gaining rapid popularity in industry due to its elegant design and suitability for concurrent programming. Clojure has been incorporated into upper-division undergraduate course, including those at University of Minnesota, Morris (UMM). In this paper we argue that Clojure has benefits for being taught as a programming language in an introductory course (section~\ref{sec:benefits}). We discuss several challenges that need to be overcome in order to teach Clojure to students with no programming experience, such as modifying error messages and providing a beginner-friendly development environment. We describe our efforts towards these goals (section~\ref{sec:technical}). We also discuss conceptual approaches towards teaching Clojure to beginners that make use of Clojure sequence abstraction (section~\ref{sec:approaches}). 
+The Clojure programming language is a new language in the LISP family that is gaining rapid popularity in industry due to its elegant design and suitability for concurrent programming. Clojure has been incorporated into upper-division undergraduate courses, including those at University of Minnesota, Morris (UMM). In this paper we argue that Clojure has benefits for being taught as a programming language in an introductory course (section~\ref{sec:benefits}). We discuss several challenges that need to be overcome in order to teach Clojure to students with no programming experience, such as modifying error messages and providing a beginner-friendly development environment. We describe our efforts towards these goals (section~\ref{sec:technical}). We also discuss conceptual approaches towards teaching Clojure to beginners that make use of Clojure sequence abstraction (section~\ref{sec:approaches}). 
 
 The project on adopting Clojure as a language for an introductory class is work in progress conducted at UMM as a combined effort of faculty, students, and alumni. Currently we are implementing and improving beginner-friendly Clojure development environment and utilizing testing feedback from two sophomores (computer science majors) who have no prior experience with Clojure, and one of whom has no experience with functional programming. The introductory level class that uses Clojure is scheduled  in the Fall semester of 2013. 
 
@@ -87,9 +87,9 @@ Students work on understanding a problem's requirements and gradually develop so
 %\stephencomment{Perhaps expand on why we value recursion?}. 
 Towards the end of the course students develop their own implementations of simple searching and sorting algorithms and are informally introduced to the notion of big-O. Course exercises include both concrete assignments and open-ended projects, such as graphics and simple game development. Students often work in groups, which promotes inter-personal communication and a code style that conveys intention. 
 
-Students continuing in the CS program would take 
-%a version of a discrete mathematics class as their second CS  course and 
-Data Structures (in Java) as their next programing course. The rest of our curriculum incorporates a variety of languages and systems, but assumes solid understanding of Java by all students. 
+%Students continuing in the CS program would take 
+%%a version of a discrete mathematics class as their second CS  course and 
+%Data Structures (in Java) as their next programing course. The rest of our curriculum incorporates a variety of languages and systems, but assumes solid understanding of Java by all students. 
 %It is important to note that not all students in subsequent CS courses have come from this introductory course: at UMM, for instance, we have an alternative entry point for the CS major that explores the same introductory concepts using digital media (images, music, etc.) and the Python programming language, to better accommodate students who approach CS from the design and artistic standpoints. \elenacomment{while this is important from the practical standpoint, I am not sure we have room for this here} \stephencomment{Doesn't seem super necessary from this paper's perspective.}
 
 %\todo{A bit about assumed setup of CS curriculum; learning goals}
@@ -97,7 +97,8 @@ Data Structures (in Java) as their next programing course. The rest of our curri
 \subsection{Benefits of teaching Clojure in an introductory class}
 The benefits of using a functional programming language in introductory computer science classes are well-known~\cite{thomsonEducation}. Functional languages focus on functions as programming units, provide abstraction, generalization, and modularity, and give a better understanding of recursion, one of the key learning goals in an introductory course. 
 %\elenacomment{I moved explanation of why recursion is important to the earlier section}
-Functional languages tend to have simpler, more uniform syntax that students master quickly. There are several successful introductory curricula that use functional languages, including the How To Design Programs curriculum using a Lisp dialect Racket~\cite{htdp} and introductory courses that use Haskell, e.g.~\cite{haskell}.
+Functional languages tend to have simpler, more uniform syntax that students master quickly. There are several successful introductory functional languages curricula, such as the How To Design Programs course with %a Lisp dialect
+ Racket~\cite{htdp} and introductory courses with Haskell, e.g.~\cite{haskell}.
 
 %\elenacomment{reference Racket, Haskell, ML?}\stephencomment{I think Racket definitely should be mentioned here. Not so sure about the other two. I know that Harvard uses a little ML, but Kent is the first school that I've heard of using Haskell for their intro classes and they are switching to Erlang next year.}\elenacomment{My colleagues in Frankfurt teach Haskell. I think it's fairly common in Europe. Less sure about ML, I don't know of anyone who teaches it as the first language} \stephencomment{Harvard seem to be using OCaml in their second CS course for majors (CS51) which seems to be a lot about OO programming. Either way they are the only school I've heard of using it but since it's Harvard there are sure to be imitators. It seems that Racket and Haskell should be mentioned, ML maybe not as much.}
 
@@ -140,17 +141,26 @@ Clojure has a friendly, well-developed
 %\elenacomment{added "friendly" - thoughts?} \stephencomment{I haven't had any problems with people and I'm sure conference attendees will know that this is an issue with several FP communities.} \joecomment{Swapped word order so sentence flows better.}
 community with online users-maintained 
 %\joecomment{Don't like the double "community" here. Is there a different way to say "community-maintained"?} 
-documentation and examples, multiple blogs, several Google groups and an IRC channel, numerous open-source projects, a large number of meetups in many cities, and several excellent quality books (although not at a beginning programmer level). All these resources would enable students to continue their Clojure development past the introductory course. 
+documentation and examples, multiple blogs, several Google groups and an IRC channel, numerous open-source projects, and several excellent quality books (although not at a beginning programmer level). All these resources would enable students to continue their Clojure development past the introductory course. 
 %\stephencomment{I feel like the biggest issue with this subsection is that it is supposed to be about what Clojure has to offer introductory students. However a large section of it is about two fairly advanced features (interop, and concurrency) that don't seem to be useful to an introductory student. If you are trying to talk about these advanced features as helpful for transitioning intro students into higher level classes I think that needs to be more explicit.}\elenacomment{Good point. Will change.}
 %\joecomment{This section feels a little disorganized in places, but makes many good points. I would try to improve the flow by leading from each paragraph/point into the next.}
 
 %\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
 
 \section{Technical challenges of teaching Clojure as the first language}\label{sec:technical}
-The key technical (as opposed to conceptual) challenges of teaching Clojure to beginners stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from Java and mention Java types and other notions (such as null pointer exceptions) that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. There are a few common functions with names that may be misleading to new students. Below we describe our work developing a custom environment that addresses these problems.
+The key technical (as opposed to conceptual) challenges of teaching Clojure to beginners stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from Java and mention Java types and other notions %(such as null pointer exceptions) 
+that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. 
+%There are a few common functions with names that may be misleading to new students. 
+Below we describe our work developing a custom environment that addresses these problems.
+
+Clojure error messages are Java exceptions and therefore mention Java types (some native to Java and some coming from Clojure's implementation in Java) that are unclear to beginners, especially because Clojure is dynamically typed with no need need to specify types explicitly. 
+%, and as a beginner you never have to specify any types explicitly \joecomment{This last part should be clarified. It reads like all beginners are magically exempt from explicit typing}. 
+Types used in Clojure implementation form a rich Java hierarchy; for instance, numerous types implement an interface that represents a Clojure sequence type. 
+These details do not matter to students, but would get in the way of their learning experience. There are other cases when an error message does not make sense to new students at all, such as {\tt NullPointerException}. 
+%\stephencomment{awk} \elenacomment{I'll think about phrasing here} \joecomment{A semicolon rather than parenthetical phrase would make this read less confusingly.}. 
 
 \subsection{Error messages}\label{subsec:errors}
-\begin{table}[b]
+\begin{table}[t]
 \centering
 \begin{tabular}{|c|c|}
 \hline
@@ -169,13 +179,21 @@ clojure.lang.ISeq & a sequence \\
 \caption{Sample type conversion}\label{table:types}
 \end{table}
 
-Clojure error messages are Java exceptions and therefore mention Java types (some native to Java and some coming from Clojure's implementation in Java) that are unclear to beginners, especially because Clojure is dynamically typed with no need need to specify types explicitly. 
-%, and as a beginner you never have to specify any types explicitly \joecomment{This last part should be clarified. It reads like all beginners are magically exempt from explicit typing}. 
-Types used in Clojure implementation form a rich Java hierarchy; for instance, numerous types implement an interface that represents a Clojure sequence type. 
-These details do not matter to students, but would get in the way of their learning experience. There are other cases when an error message does not make sense to new students at all, such as {\tt NullPointerException}. 
-%\stephencomment{awk} \elenacomment{I'll think about phrasing here} \joecomment{A semicolon rather than parenthetical phrase would make this read less confusingly.}. 
+%\elenacomment{mention earlier that we are developing an environment}
+The run-time environment that we are developing intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
+As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
 
- \begin{table}
+{\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
+
+While the wording of the message is reasonably clear, the types used in it would not be understandable to beginner programmers at all. {\tt ISeq} is an interface that represents a Clojure sequence, but beginner students are not familiar with interfaces. Numbers in Clojure can be represented as a variety of types, and it is quite common for them to be represented as the {\tt  java.lang.Long} type. The exception type itself also is not useful to beginners for the most part. 
+The error can be made clearer for beginners if we replace type names by those that make sense to beginners and remove the exception type:
+
+{\tt Error: Don't know how to create a sequence from a number}. 
+
+Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
+There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
+
+ \begin{table}[b]
 \begin{tabular}{|c|c|c|}
 \hline
 Exception type & Original message & Beginner-friendly message \\
@@ -197,33 +215,17 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 \end{tabular}
 \caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types. }\label{table:messages}
 \end{table}
-%\elenacomment{mention earlier that we are developing an environment}
-The run-time environment that we are developing intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
-As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
-
-{\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
-
-While the wording of the message is reasonably clear, the types used in it would not be understandable to beginner programmers at all. {\tt ISeq} is an interface that represents a Clojure sequence, but beginner students are not familiar with interfaces. Numbers in Clojure can be represented as a variety of types, and it is quite common for them to be represented as the {\tt  java.lang.Long} type. The exception type itself also is not useful to beginners for the most part. 
-
-The error can be made clearer for beginners if we replace type names by those that make sense to beginners and remove the exception type:
-
-{\tt Error: Don't know how to create a sequence from a number}. 
-
-Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
-
-There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
 
 Catching and reformatting Clojure error messages also allows us to simplify the standard stack trace. A complete stack trace of an error message often contains over a hundred Clojure and Java function calls. The way we approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
-
 %\todo{an example of error messages before and after}
-
 The error message filtering has worked well in tests and gives messages that make sense to beginners. %\elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. 
 %Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen (see section~\ref{subsec:envt} for details).
 %\elenacomment{issues: compilation error messages; laziness and project setup}
 
 \subsection{Development environment}\label{subsec:envt}
 Even though new students will start off by simply writing code in a basic text editor, their code will typically be a part of a project.
-We will provide a template project that contains all of the necessary libraries and project settings and will provide a file for the students to write their code. It provides the exception-catching and reformatting and some predefined Clojure functions that we need to supply for students to use in their own code. We will also be using some libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. We would like to be able to run students' code as a complete program (designated in a project setup) as well as in a REPL %\elenacomment{make sure to clarify what that is earlier} 
+We will provide a template project that contains all of the necessary libraries and project settings and %will provide 
+a file for the students to write their code. It includes the exception-catching and reformatting and predefined Clojure functions that we need to supply for students to use in their own code. We also include libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. The environment makes it possible to run students' code as a complete program (designated in a project setup) as well as in a REPL %\elenacomment{make sure to clarify what that is earlier} 
 for interactive testing. 
 %Our plan is to provide a template project that contains all of the necessary libraries and project settings \joecomment{This may need to be higher in the paragraph.}. 
 
@@ -240,9 +242,7 @@ an IDE must have the following characteristics:
 \end{itemize}
 Unfortunately, there is not a perfect IDE for Clojure. 
 %Both text editor {\tt emacs} and a plugin for a common Java IDE {\tt Eclipse} are too complicated for beginners \stephencomment{
-Advanced text editors, e.g. {\tt emacs}, and the plugin for the common Java IDE, Eclipse, are too complicated for beginners. There are several text editors developed specifically for Clojure, but they are still in development stages and are currently unreliable or lack functionality. Our current decision is to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands.  We are working on creating a jEdit plugin that provides a GIU to call Leiningen commands.
-
-We are also working on enabling beginner-friendly error reporting not only when running {\tt main}, but also for compilation errors and those generated while using the REPL. Currently we still get unconverted error messages in these two cases because they are outside of the try/catch block in {\tt main}. 
+Advanced text editors, e.g. {\tt emacs}, and the plugin for the common Java IDE, Eclipse, are too complicated for beginners. There are several text editors developed specifically for Clojure, but they are still in development stages and are currently unreliable or lack functionality. Our current decision is to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands.  We are working on creating a jEdit plugin that provides a GIU to call Leiningen commands. Another work-in-progress item is to enabe beginner-friendly error reporting not only when running {\tt main}, but also for compilation errors and those generated while using the REPL. Currently we still get unconverted error messages in these two cases because they are outside of the try/catch block in {\tt main}. 
 
 \subsection{Other language modifications}\label{subsec:other}
 There are a few functions that we would like to provide as an alternative to complicated \elenacomment{rephrase "complicated"} functions or those misleading for beginners. For instance, the {\tt contains?} function returns {\tt true} if a key is present in a data structure, and not the element. This means that it would return {\tt true} if passed any vector of with a length of at least $2$ and the number $1$, regardless of the actual elements of the vector, since indices in a vector are considered keys. Providing a function with a more intuitive name, such as {\tt contains-value?}, would solve this issue. There are other similar examples of functions that may confuse beginners, and we are providing alternatives with more precise names.
