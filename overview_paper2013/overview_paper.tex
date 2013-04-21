@@ -74,15 +74,17 @@ Clojure is rapidly gaining popularity in the software development community. \el
 In this work we explore incorporating Clojure into an introductory undergraduate computer science course. We describe the course setup at UMM which is fairly typical for a small university. At UMM we have about 3.5 contact hours per week that include lecture and lab time and other activities, e.g. group discussions. There are 30-40 students in the course that  include CS majors/minors, undecided students with  interest in CS, and those taking it to satisfy an elective requirement for another discipline (e.g. math) or as a general education course. The majority of the students (even those who intend to major in CS) do not have any prior programming experience and very little understanding of the process of computing. 
 %\stephencomment{This paragraph seems unnecessarily generic especially since the next two paragraphs talk fairly specifically about our program with very "concrete" language. I think we can reword it to talk more specifically about Morris's program or at least in the 1st person plural. Rather than saying "Such a course has" we could say "We have about 3.5 contact hours" thoughts?}\elenacomment{I suppose. I am not entirely sure how this is typically written. I can rephrase it}
 
-The course focuses on general problem solving and its specifics as related to computer science 
-\stephencomment{"The course focuses on general problem solving and the specifics of implementing solutions in a programming language."?? I feel like the second half of this sentence should be a little less vague.}.
-\elenacomment{I don't think it's just a programming language connection. I meant generally the way computers operate. So I'd argue for my wording.}
-\joecomment{I also didn't like this section, but I agree with Elena's point. How about "the course focuses on both general and computer science-specific problem solving?"}
+The course focuses on problem solving in general and and its applications to computer science. \elenacomment{How 'bout this phrasing?}
+%\stephencomment{"The course focuses on general problem solving and the specifics of implementing solutions in a programming language."?? I feel like the second half of this sentence should be a little less vague.}.
+%\elenacomment{I don't think it's just a programming language connection. I meant generally the way computers operate. So I'd argue for my wording.}
+%\joecomment{I also didn't like this section, but I agree with Elena's point. How about "the course focuses on both general and computer science-specific problem solving?"}
 Students work on understanding a problem's requirements and gradually develop solutions in a programming language, with an emphasis on effective design and testing strategies. In the process they learn about language syntax and behavior, key programming concepts such as conditionals and functions, data representation in a program, and similar introductory-level concepts. Mastering the concept of recursion is one of the key learning objectives in the course since it is a basis of many important data structures and algorithms. 
 %\stephencomment{Perhaps expand on why we value recursion?}. 
 Towards the end of the course students develop their own implementations of simple searching and sorting algorithms and are informally introduced to the notion of big-O. Course exercises include both concrete assignments and open-ended projects, such as graphics and simple game development. Students often work in groups, which promotes inter-personal communication and a code style that conveys intention. 
 
-Students continuing in the CS program would take a version of a discrete mathematics class as their second CS  course and Data Structures (in Java) as the next course that involves programming. The rest of our curriculum incorporates a variety of languages and systems, but assumes solid understanding of Java by all students. 
+Students continuing in the CS program would take 
+%a version of a discrete mathematics class as their second CS  course and 
+Data Structures (in Java) as their next programing course. The rest of our curriculum incorporates a variety of languages and systems, but assumes solid understanding of Java by all students. 
 %It is important to note that not all students in subsequent CS courses have come from this introductory course: at UMM, for instance, we have an alternative entry point for the CS major that explores the same introductory concepts using digital media (images, music, etc.) and the Python programming language, to better accommodate students who approach CS from the design and artistic standpoints. \elenacomment{while this is important from the practical standpoint, I am not sure we have room for this here} \stephencomment{Doesn't seem super necessary from this paper's perspective.}
 
 %\todo{A bit about assumed setup of CS curriculum; learning goals}
@@ -121,17 +123,19 @@ Students can  integrate Clojure into projects developed in Java or labs that use
 
 A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization,  locks, 
 %objects \joecomment{object locking? Locking objects sounds like a weird euphemism for safes or keys or something}, 
-or adjustments to the number of processors. While Clojure concurrency cannot be fully covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course.
+or adjustments to the number of processors. While Clojure concurrency cannot be fully covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or independently for a project or an internship.
 % or, if need be \joecomment{I think this interjection is unnecessary.}, independently for a project or an internship. 
-\joecomment{My previous comment may have been unclear - I meant you should only remove the "if need be." I think there is value in mentioning the independent/internship part.}
+%\joecomment{My previous comment may have been unclear - I meant you should only remove the "if need be." I think there is value in mentioning the independent/internship part.}
 The students would already be familiar with key concepts, such as immutable persistent data structures. Clojure fits the recent 
 emphasis on teaching concurrency in undergraduate curriculum (e.g.~\cite{Brown:2010}) perfectly. 
 
 Clojure has a friendly, well-developed
 %\elenacomment{added "friendly" - thoughts?} \stephencomment{I haven't had any problems with people and I'm sure conference attendees will know that this is an issue with several FP communities.} \joecomment{Swapped word order so sentence flows better.}
-community with online community-maintained \joecomment{Don't like the double "community" here. Is there a different way to say "community-maintained"?} documentation and examples, multiple blogs, several Google groups and an IRC channel, numerous open-source projects, a large number of meetups in many cities, and several excellent quality books (although not at a beginning programmer level). All these resources would enable students to continue their Clojure development past the introductory course. 
+community with online users-maintained 
+%\joecomment{Don't like the double "community" here. Is there a different way to say "community-maintained"?} 
+documentation and examples, multiple blogs, several Google groups and an IRC channel, numerous open-source projects, a large number of meetups in many cities, and several excellent quality books (although not at a beginning programmer level). All these resources would enable students to continue their Clojure development past the introductory course. 
 %\stephencomment{I feel like the biggest issue with this subsection is that it is supposed to be about what Clojure has to offer introductory students. However a large section of it is about two fairly advanced features (interop, and concurrency) that don't seem to be useful to an introductory student. If you are trying to talk about these advanced features as helpful for transitioning intro students into higher level classes I think that needs to be more explicit.}\elenacomment{Good point. Will change.}
-\joecomment{This section feels a little disorganized in places, but makes many good points. I would try to improve the flow by leading from each paragraph/point into the next.}
+%\joecomment{This section feels a little disorganized in places, but makes many good points. I would try to improve the flow by leading from each paragraph/point into the next.}
 
 %\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
 
