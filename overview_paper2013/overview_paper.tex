@@ -252,7 +252,7 @@ There are a few functions that may be confusing
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
-As mentioned previously, Clojure provides a rich set of immutable collections. Each collection's  implementation  is optimized for efficiency based on the intended use. 
+Clojure provides a rich set of immutable collections. Each collection's  implementation  is optimized for efficiency based on the intended use. 
 For instance, lists are singly-linked lists, similar to Common Lisp lists. Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
 However, adding an element at the end takes linear time since the entire list needs to be copied. 
 Vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time.
