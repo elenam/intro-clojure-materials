@@ -25,8 +25,7 @@
 \email{elenam@morris.umn.edu}}
 \and
 Stephen J Adams 
-\institute{Thomson Reuters
-\email{adams601@morris.umn.edu}}
+\institute{\email{adams601@morris.umn.edu}}
 \and 
 Joe Einertson 
 \institute{University of Minnesota, Morris
@@ -226,7 +225,7 @@ There are a few functions that we would like to provide as an alternative to com
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
-Clojure provides a rich set of immutable collections (lists, vectors, sets, hash-maps) \joecomment{You've already mentioned/listed these. Might want to refer back ("As previously mentioned, ..." or else remove some detail}. Each collection has a specific implementation in Clojure. For instance, lists are singly-linked lists, similar in a concept to Common Lisp lists that are a chain of cons-cells. Creating a new list from an existing one can be done in constant time when an element is added or removed from the beginning since it takes advantage of sharing the rest of the elements after the one we are adding or removing. The new list is just a reference to its first element. However, adding an element at the end takes linear time since the entire list needs to be copied. 
+As mentioned previously, Clojure provides a rich set of immutable collections : lists, vectors, sets, hash-maps. Each collection has a specific implementation in Clojure. For instance, lists are singly-linked lists, similar in a concept to Common Lisp lists that are a chain of cons-cells. Creating a new list from an existing one can be done in constant time when an element is added or removed from the beginning since it takes advantage of sharing the rest of the elements after the one we are adding or removing. The new list is just a reference to its first element. However, adding an element at the end takes linear time since the entire list needs to be copied. 
 
 Vectors are a highly efficient data structure for both insertion and deletion at any position in a close to constant time: $log_{32} N$, where $N$ is the number of elements in the vector. Vectors are represented internally as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one constructed out of it. Hash-maps and sets are also optimized in their own way for efficient creation of modified versions via insertion, deletion, or modification. 
 
