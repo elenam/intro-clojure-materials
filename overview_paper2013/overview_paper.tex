@@ -49,8 +49,8 @@ Abstract goes here.
 \item Why we chose Clojure
 \item Challenges  that Clojure poses for adoption in introductory material
 \item How we are dealing with these challenges
+\item Who is working on this, mention testers here I think\elenacomment{Who wrote this?}
 \item\elenacomment{The state of the project}
-\item Who is working on this, mention testers here I think
 \end{itemize}
 
 
@@ -189,7 +189,7 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 \end{table}
 %\elenacomment{mention earlier that we are developing an environment}
 The run-time environment that we are developing intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
-As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to {\tt cons} \joecomment{Not sure cons is a commonly-understood verb - might want to use a word like conjoin or append for non-Lisp junkies} an element onto something that is not a sequence and cannot be converted to one:
+As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
 
 {\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
 
@@ -207,17 +207,17 @@ Catching and reformatting Clojure error messages also allows us to simplify the 
 
 %\todo{an example of error messages before and after}
 
-The error message filtering has worked well in tests and gives messages that make sense to beginners (our testing group includes two sophomores with no prior experience with Clojure \elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once}. Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen \joecomment{Careful on the spellings - Leiningen was spelled wrong} (see section~\ref{subsec:envt} for details).
+The error message filtering has worked well in tests and gives messages that make sense to beginners (our testing group includes two sophomores with no prior experience with Clojure \elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen \joecomment{Careful on the spellings - Leiningen was spelled wrong} (see section~\ref{subsec:envt} for details).
 %\elenacomment{issues: compilation error messages; laziness and project setup}
 
 \joecomment{Is it worth mentioning somewhere that we are adding some GUI to the errors too, with the ability to see the original stacktrace if desired? Since we talk a lot about hiding intricacies such as the command line, that might be good to add.}
 
 \subsection{Development environment}\label{subsec:envt}
-Even though new students will start off by simply writing code in a basic text editor, their code will typically be a part of a project. This project provides the exception-catching and reformatting and some predefined Clojure functions that we need to supply for students to use in their own code. We will also be using some libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics} \joecomment{Reordered this sentence to get rid of an awkward end}. We would like to be able to run students' code as a complete program (designated in a project setup) as well as in a REPL \elenacomment{make sure to clarify what that is earlier} for interactive testing. Our plan is to provide a template project that contains all of the necessary libraries and project settings \joecomment{This may need to be higher in the paragraph.}. 
+Even though new students will start off by simply writing code in a basic text editor, their code will typically be a part of a project. This project provides the exception-catching and reformatting and some predefined Clojure functions that we need to supply for students to use in their own code. We will also be using some libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. We would like to be able to run students' code as a complete program (designated in a project setup) as well as in a REPL \elenacomment{make sure to clarify what that is earlier} for interactive testing. Our plan is to provide a template project that contains all of the necessary libraries and project settings \joecomment{This may need to be higher in the paragraph.}. 
 
-Our project, like many Clojure projects, is managed via a command-line tool called Leiningen~\cite{lein}. Leiningen manages \joecomment{I dislike the double "manage". Leiningen handles...? Or another word, not sure.} dependencies, controls compilation, and allows one to run either a function of the project designated as ``main'' or start a REPL with all of the project's code loaded. 
+Our project, like many Clojure projects, is managed via a command-line tool called Leiningen~\cite{lein}. Leiningen handles dependencies, controls compilation, and allows one to run either a function of the project designated as ``main'' or start a REPL with all of the project's code loaded. 
 
-In order to serve as a truly fitting Clojure development environment for beginner programmers, an IDE must have the following characteristics: \joecomment{Add something like "In our view, ..."? Unless we have a citation for this.}
+In order to serve as a truly fitting Clojure development environment for beginner programmers, we think that an IDE must have the following characteristics: 
 \begin{itemize}
 \item Provide at least basic syntax highlighting and formatting. 
 \item Provide at least the basics of Clojure project management. 
