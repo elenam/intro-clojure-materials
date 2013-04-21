@@ -73,17 +73,16 @@ Because of its convenience, efficiency, and elegant design
 Clojure is rapidly gaining popularity in the software development community. This past year Clojure was rated as "Adopt" by the ThoughtWorks Technology Radar; there were four major conferences dedicated to Clojure, two in the US and two in Europe, and the blog aggregator "Planet Clojure" includes over 400 blogs~\cite{clojure:review}. 
 
 \section{Benefits of teaching Clojure as the first language}\label{sec:benefits}
-
 %\subsection{Overview of an introductory CS course and its role in CS curriculum}
 %\joecomment{Capitalizing computer science feels (is) incorrect. Also, I don't know what the distribution of this paper will be, but college has a very different connotation (trade school/community college) in most of the rest of the world. I would use university instead.} 
-In this work we explore incorporating Clojure into an introductory undergraduate computer science course. We describe the course setup at UMM which is fairly typical for a small university. At UMM we have about 3.5 contact hours per week that include lecture and lab time and other activities, e.g. group discussions. There are 30-40 students in the course that  include CS majors/minors, undecided students with  interest in CS, and those taking it to satisfy an elective requirement for another discipline (e.g. math) or as a general education course. The majority of the students (even those who intend to major in CS) do not have any prior programming experience and very little understanding of the process of computing. 
+In this work we explore incorporating Clojure into an introductory undergraduate computer science course. We describe the course setup at UMM which is fairly typical for a small university. At UMM we have about 3.5 contact hours per week that include lecture and lab time and other activities, e.g. group discussions. There are 30-40 students in the course, including CS majors/minors, undecided students with  interest in CS, and those taking it to satisfy an elective or a general education course. The majority of the students (even those who intend to major in CS)  have no prior programming experience and very little understanding of the process of computing. 
 %\stephencomment{This paragraph seems unnecessarily generic especially since the next two paragraphs talk fairly specifically about our program with very "concrete" language. I think we can reword it to talk more specifically about Morris's program or at least in the 1st person plural. Rather than saying "Such a course has" we could say "We have about 3.5 contact hours" thoughts?}\elenacomment{I suppose. I am not entirely sure how this is typically written. I can rephrase it}
 
-The course focuses on problem solving in general and and its applications to computer science.
+The course focuses on problem solving in general and  its applications to computer science.
 %\stephencomment{"The course focuses on general problem solving and the specifics of implementing solutions in a programming language."?? I feel like the second half of this sentence should be a little less vague.}.
 %\elenacomment{I don't think it's just a programming language connection. I meant generally the way computers operate. So I'd argue for my wording.}
 %\joecomment{I also didn't like this section, but I agree with Elena's point. How about "the course focuses on both general and computer science-specific problem solving?"}
-Students work on understanding a problem's requirements and gradually develop solutions in a programming language, with an emphasis on effective design and testing strategies. In the process they learn about language syntax and behavior, key programming concepts such as conditionals and functions, data representation in a program, and similar introductory-level concepts. Mastering the concept of recursion is one of the key learning objectives in the course since it is a basis of many important data structures and algorithms. 
+Students work on understanding a problem's requirements and gradually develop solutions in a programming language, with an emphasis on effective design and testing strategies. They learn about language syntax and behavior, key programming concepts such as conditionals and functions, data representation in a program, and similar introductory-level concepts. Mastering the concept of recursion is one of the key learning objectives in the course since it is a basis of many important data structures and algorithms. 
 %\stephencomment{Perhaps expand on why we value recursion?}. 
 Towards the end of the course students develop their own implementations of simple searching and sorting algorithms and are informally introduced to the notion of big-O. Course exercises include both concrete assignments and open-ended projects, such as graphics and simple game development. Students often work in groups, which promotes inter-personal communication and a code style that conveys intention. 
 
@@ -107,12 +106,14 @@ Developing a similar undergraduate curriculum based on Clojure would provide add
 %developed for real-life software development \stephencomment{"developed for use in industry" or "
 %\joecomment{I like Stephen's other suggestion of "for use in industry" better. Industrial software development parses ambiguously (we are not talking about a factory which generates code)}
 %developed for use in industry \stephencomment{This seems out of place here and unnecessary}. 
-Clojure combines a rich set of features (including a variety of mechanisms for concurrency) with an elegant uniform underlying model based on abstraction. Clojure ``collections'' (i.e. data structures) include lists, vectors, sets, and hashmaps. However, 
+Clojure combines a rich set of features %(including a variety of mechanisms for concurrency) 
+with an elegant uniform underlying model based on abstraction. Clojure ``collections'' (i.e. data structures) include lists, vectors, sets, and hashmaps. However, 
 %all of them can be worked with as sequences \stephencomment{"
 all of these collections can be worked with as sequences (see section~\ref{sec:approaches}). 
 %While it would be impossible (and unnecessary) to present all of Clojure's features in an undergraduate course, 
-Abstraction-based program development teaches students to use and appreciate abstraction and modularity.% in their own solutions. 
-A uniform abstraction-based language model makes it easier for students to learn language features and libraries not covered in class on their own. 
+Abstraction-based language model teaches students to use and appreciate abstraction and modularity
+% in their own solutions. 
+and  makes it easier for students to learn language features and libraries not covered in class on their own. 
 %Understanding the underlying abstractions and concepts makes it easier for students to build upon what they learn in the class.
 %%\stephencomment{End sentence here} and learn on their own. 
 %The underlying abstractions also teach students about a good language design and problem solving that focuses on the essence of the problem and not on specifics of a given structure. \elenacomment{talk about focus on abstraction}
@@ -131,7 +132,7 @@ Students can  integrate Clojure into projects developed in Java or labs that use
 
 A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization,  locks, 
 %objects \joecomment{object locking? Locking objects sounds like a weird euphemism for safes or keys or something}, 
-or adjustments to the number of processors. While Clojure concurrency cannot be  covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or independently for a project or an internship.
+or adjustments to the number of processors. While Clojure concurrency cannot be  covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or independently.% for a project or an internship.
 % or, if need be \joecomment{I think this interjection is unnecessary.}, independently for a project or an internship. 
 %\joecomment{My previous comment may have been unclear - I meant you should only remove the "if need be." I think there is value in mentioning the independent/internship part.}
 The students would already be familiar with key concepts, such as immutable persistent data structures. Clojure fits the recent 
@@ -169,7 +170,7 @@ Original type & Beginner-friendly type \\
 java.lang.Number & a number \\
 java.lang.Integer & a number \\
 java.lang.Double  & a number \\
-java.lang.Float & a number \\
+%java.lang.Float & a number \\
 java.lang.String & a string \\
 java.lang.Character & a symbol \\
 clojure.lang.Symbol  & a symbol \\
@@ -178,22 +179,7 @@ clojure.lang.ISeq & a sequence \\
 \end{tabular}
 \caption{Sample type conversion}\label{table:types}
 \end{table}
-
-%\elenacomment{mention earlier that we are developing an environment}
-The run-time environment that we are developing intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
-As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
-
-{\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
-
-While the wording of the message is reasonably clear, the types used in it would not be understandable to beginner programmers at all. {\tt ISeq} is an interface that represents a Clojure sequence, but beginner students are not familiar with interfaces. Numbers in Clojure can be represented as a variety of types, and it is quite common for them to be represented as the {\tt  java.lang.Long} type. The exception type itself also is not useful to beginners for the most part. 
-The error can be made clearer for beginners if we replace type names by those that make sense to beginners and remove the exception type:
-
-{\tt Error: Don't know how to create a sequence from a number}. 
-
-Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
-There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
-
- \begin{table}[b]
+\begin{table}
 \begin{tabular}{|c|c|c|}
 \hline
 Exception type & Original message & Beginner-friendly message \\
@@ -216,11 +202,28 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 \caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types. }\label{table:messages}
 \end{table}
 
+%\elenacomment{mention earlier that we are developing an environment}
+The run-time environment that we are developing intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
+As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
+
+{\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
+
+While the wording of the message is reasonably clear, the types used in it would not be understandable to beginner programmers at all. {\tt ISeq} is an interface that represents a Clojure sequence, but beginner students are not familiar with interfaces. Numbers in Clojure can be represented as a variety of types, and it is quite common for them to be represented as the {\tt  java.lang.Long} type. The exception type itself also is not useful to beginners for the most part. 
+The error can be made clearer for beginners if we replace type names by those that make sense to beginners and remove the exception type:
+
+{\tt Error: Don't know how to create a sequence from a number}. 
+
+Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
+There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
+
+
 Catching and reformatting Clojure error messages also allows us to simplify the standard stack trace. A complete stack trace of an error message often contains over a hundred Clojure and Java function calls. The way we approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
 %\todo{an example of error messages before and after}
 The error message filtering has worked well in tests and gives messages that make sense to beginners. %\elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. 
 %Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen (see section~\ref{subsec:envt} for details).
 %\elenacomment{issues: compilation error messages; laziness and project setup}
+
+
 
 \subsection{Development environment}\label{subsec:envt}
 Even though new students will start off by simply writing code in a basic text editor, their code will typically be a part of a project.
