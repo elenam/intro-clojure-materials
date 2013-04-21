@@ -74,7 +74,7 @@ Clojure is rapidly gaining popularity in the software development community. Thi
 
 \section{Benefits of teaching Clojure as the first language}\label{sec:benefits}
 
-\subsection{Overview of an introductory CS course and its role in CS curriculum}
+%\subsection{Overview of an introductory CS course and its role in CS curriculum}
 %\joecomment{Capitalizing computer science feels (is) incorrect. Also, I don't know what the distribution of this paper will be, but college has a very different connotation (trade school/community college) in most of the rest of the world. I would use university instead.} 
 In this work we explore incorporating Clojure into an introductory undergraduate computer science course. We describe the course setup at UMM which is fairly typical for a small university. At UMM we have about 3.5 contact hours per week that include lecture and lab time and other activities, e.g. group discussions. There are 30-40 students in the course that  include CS majors/minors, undecided students with  interest in CS, and those taking it to satisfy an elective requirement for another discipline (e.g. math) or as a general education course. The majority of the students (even those who intend to major in CS) do not have any prior programming experience and very little understanding of the process of computing. 
 %\stephencomment{This paragraph seems unnecessarily generic especially since the next two paragraphs talk fairly specifically about our program with very "concrete" language. I think we can reword it to talk more specifically about Morris's program or at least in the 1st person plural. Rather than saying "Such a course has" we could say "We have about 3.5 contact hours" thoughts?}\elenacomment{I suppose. I am not entirely sure how this is typically written. I can rephrase it}
@@ -94,7 +94,7 @@ Towards the end of the course students develop their own implementations of simp
 
 %\todo{A bit about assumed setup of CS curriculum; learning goals}
 
-\subsection{Benefits of teaching Clojure in an introductory class}
+%\subsection{Benefits of teaching Clojure in an introductory class}
 The benefits of using a functional programming language in introductory computer science classes are well-known~\cite{thomsonEducation}. Functional languages focus on functions as programming units, provide abstraction, generalization, and modularity, and give a better understanding of recursion, one of the key learning goals in an introductory course. 
 %\elenacomment{I moved explanation of why recursion is important to the earlier section}
 Functional languages tend to have simpler, more uniform syntax that students master quickly. There are several successful introductory functional languages curricula, such as the How To Design Programs course with %a Lisp dialect
@@ -231,8 +231,8 @@ for interactive testing.
 
 Our project, like many Clojure projects, is managed via a command-line tool called Leiningen~\cite{lein}. Leiningen handles dependencies, controls compilation, and allows one to run either a function of the project designated as ``main'' or start a REPL with all of the project's code loaded. 
 
-In order to serve as a truly fitting Clojure development environment for beginner programmers, %we think that 
-an IDE must have the following characteristics: 
+A good Clojure development environment for beginners %we think that 
+ must have the following characteristics: 
 \begin{itemize}
 \item Provide at least basic syntax highlighting and formatting. 
 \item Provide at least the basics of Clojure project management. 
@@ -242,12 +242,12 @@ an IDE must have the following characteristics:
 \end{itemize}
 Unfortunately, there is not a perfect IDE for Clojure. 
 %Both text editor {\tt emacs} and a plugin for a common Java IDE {\tt Eclipse} are too complicated for beginners \stephencomment{
-Advanced text editors, e.g. {\tt emacs}, and the plugin for the common Java IDE, Eclipse, are too complicated for beginners. There are several text editors developed specifically for Clojure, but they are still in development stages and are currently unreliable or lack functionality. Our current decision is to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands.  We are working on creating a jEdit plugin that provides a GIU to call Leiningen commands. Another work-in-progress item is to enabe beginner-friendly error reporting not only when running {\tt main}, but also for compilation errors and those generated while using the REPL. Currently we still get unconverted error messages in these two cases because they are outside of the try/catch block in {\tt main}. 
+Advanced text editors, e.g. {\tt emacs}, and the plugin for the common Java IDE, Eclipse, are too complicated for beginners.Several text editors intended specifically for Clojure are still in development stages and are unreliable or lack functionality. We decided to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands.  We are working on creating a jEdit plugin that allows to call Leiningen commands. We also work to enabe beginner-friendly error reporting not only when running {\tt main}, but also for compilation errors and those generated while using the REPL. Currently we get original error messages in these  cases since they are outside of the try/catch block in {\tt main}. 
 
 \subsection{Other language modifications}\label{subsec:other}
-There are a few functions that we would like to provide as an alternative to those that may be confusing
+There are a few functions that may be confusing
 %complicated \elenacomment{rephrase "complicated"} functions or those misleading
- for beginners. For instance, the {\tt contains?} function returns {\tt true} if a key is present in a data structure, and not the element. Thus it would return {\tt true} if passed any vector of with a length of at least $2$ and the number $1$, regardless of the actual elements of the vector, since indices in a vector are considered keys. Providing a function with a more intuitive name, such as {\tt contains-value?}, would solve this issue. There are other similar examples that require providing alternatives with more precise names.
+ for beginners. For instance, the {\tt contains?} function returns {\tt true} if a key is present in a data structure, and not the element. It would return {\tt true} if passed any vector of with a length of at least $2$ and the number $1$, regardless of the actual elements of the vector, since indices in a vector are considered keys. Providing a function with a more intuitive name, such as {\tt contains-value?}, would solve this issue. %There are other similar examples that require providing alternatives with more precise names.
 
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
