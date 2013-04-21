@@ -19,7 +19,7 @@
 % \renewcommand{\elenacomment}[1]{}
 
 
-\title{Steps towards teaching the Clojure programming language in an introductory CS  class.}
+\title{Steps towards teaching the Clojure programming language in an introductory CS  class (extended abstract).}
 \author{Elena Machkasova 
 \institute{University of Minnesota, Morris
 \email{elenam@morris.umn.edu}}
@@ -41,17 +41,20 @@ Abstract goes here.
 \end{abstract}
 
 \section{Introduction}
-
 %\joecomment{Any particular reason I'm listed as Joseph rather than Joe? Either one is fine but Joe is what I usually go by/is most Googleable}
 %\joecomment{Typo in the title. Pick either 'of' or 'to' in the beginning.}
-\todo{Mention the state of work in progress}
-\begin{itemize}
-\item Why we chose Clojure
-\item Challenges  that Clojure poses for adoption in introductory material
-\item How we are dealing with these challenges
-\item Who is working on this, mention testers here I think\elenacomment{Who wrote this?} \stephencomment{Me} \elenacomment{Moved from later: (our testing group includes two sophomores with no prior experience with Clojure)}
-\item\elenacomment{The state of the project}
-\end{itemize}
+The Clojure programming language is a new language in the LISP family that is gaining rapid popularity in industry due to its elegant design and suitability for concurrent programming. Clojure has been incorporated into upper-division undergraduate course, including those at University of Minnesota, Morris (UMM). In this paper we argue that Clojure has benefits for being taught as a programming language in an introductory course (section~\ref{sec:benefits}). We discuss several challenges that need to be overcome in order to teach Clojure to students with no programming experience, such as modifying error messages and providing a beginner-friendly program development environment. We describe our efforts towards these goals (section~\ref{sec:technical}). We also discuss conceptual approaches towards teaching Clojure to beginners that make use of Clojure sequence abstraction (section~\ref{sec:approaches}). 
+
+The project on adopting Clojure as a language for an introductory class is work in progress conducted at University of Minnesota, Morris UMM) as a combined effort of faculty and students. Currently we are implementing and improving beginner-friendly Clojure development environment, utilizing testing feedback from two sophomores (computer science majors) who have no prior experience with Clojure, and one of whom has no experience with functional programming. The introductory level class that uses Clojure is scheduled  in the Fall semester of 2013. 
+
+%\todo{Mention the state of work in progress}
+%\begin{itemize}
+%\item Why we chose Clojure
+%\item Challenges  that Clojure poses for adoption in introductory material
+%\item How we are dealing with these challenges
+%\item Who is working on this, mention testers here I think\elenacomment{Who wrote this?} \stephencomment{Me} \elenacomment{Moved from later: (our testing group includes two sophomores with no prior experience with Clojure)}
+%\item\elenacomment{The state of the project}
+%\end{itemize}
 
 
 \section{Overview and history of Clojure}
@@ -69,7 +72,7 @@ Because of its convenience, efficiency, and elegant design
 %\stephencomment{I'm not quite sure what you mean by model. Is this something that will be familiar to the audience?} \elenacomment{how about design?} \stephencomment{better} 
 Clojure is rapidly gaining popularity in the software development community. This past year Clojure was rated as "Adopt" by the ThoughtWorks Technology Radar; there were four major conferences dedicated to Clojure, two in the US and two in Europe, and the blog aggregator "Planet Clojure" includes over 400 blogs~\cite{clojure:review}. 
 
-\section{Benefits of teaching Clojure as the first language}
+\section{Benefits of teaching Clojure as the first language}\label{sec:benefits}
 
 \subsection{Overview of an introductory CS course and its role in CS curriculum}
 %\joecomment{Capitalizing computer science feels (is) incorrect. Also, I don't know what the distribution of this paper will be, but college has a very different connotation (trade school/community college) in most of the rest of the world. I would use university instead.} 
@@ -143,7 +146,7 @@ documentation and examples, multiple blogs, several Google groups and an IRC cha
 
 %\todo{Benefits of teaching Clojure to undergrads: provides all the benefits of teaching functional first, integrates with Java,  is used in industry and becoming quite popular (availability of examples), is done right, is a great language to program for oneself, introduces parallel computation}
 
-\section{Technical challenges of teaching Clojure as the first language}
+\section{Technical challenges of teaching Clojure as the first language}\label{sec:technical}
 The key technical (as opposed to conceptual) challenges of teaching Clojure to beginners stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from Java and mention Java types and other notions (such as null pointer exceptions) that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. There are a few common functions with names that may be misleading to new students. Below we describe our work developing a custom environment that addresses these problems.
 
 \subsection{Error messages}\label{subsec:errors}
