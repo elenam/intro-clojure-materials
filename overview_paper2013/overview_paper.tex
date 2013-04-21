@@ -49,12 +49,13 @@ Abstract goes here.
 \item Why we chose Clojure
 \item Challenges  that Clojure poses for adoption in introductory material
 \item How we are dealing with these challenges
-\item Who is working on this, mention testers here I think\elenacomment{Who wrote this?}
+\item Who is working on this, mention testers here I think\elenacomment{Who wrote this?} \elenacomment{Moved from later: (our testing group includes two sophomores with no prior experience with Clojure)}
 \item\elenacomment{The state of the project}
 \end{itemize}
 
 
 \section{Overview and history of Clojure}
+\elenacomment{Mention REPL in this section somewhere}
 Clojure is a dialect of Lisp developed by Rich Hickey and released in 2007~\cite{Hickey:2008}. Clojure was developed to answer the need for a practical  functional language that supports convenient, efficient, and safe programming for concurrency. Clojure provides a rich set of immutable data structures, augmented with several kinds of mutable reference types. Clojure in its classical implementation is complied into Java bytecode and can be fully integrated with Java, both by using Java objects and methods and by providing code that can be invoked from Java. It was carefully designed with efficiency in mind, and provides constructs for tail call optimization,
 %(at compilation time, due to Java's lack of support of tail call optimizations) 
 %\joecomment{Is this comment necessary? doesn't really relate to the topic of the paper}\elenacomment{people who knwo that Java doesn't do TCO may be surprised otherwise, but fair enough, we need to cut something.}
@@ -203,23 +204,28 @@ The error can be made clearer for beginners if we replace type names by those th
 
 {\tt Error: Don't know how to create a sequence from a number}. 
 
-Table~\ref{table:types} shows more examples of type conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
+Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
 
-There are other error messages that require conversion to more beginner-friendly wording; see table~\ref{table:messages} for examples. 
+There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
 
 Catching and reformatting Clojure error messages also allows us to simplify the standard stack trace. A complete stack trace of an error message often contains over a hundred Clojure and Java function calls. The way we approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
 
 %\todo{an example of error messages before and after}
 
-The error message filtering has worked well in tests and gives messages that make sense to beginners (our testing group includes two sophomores with no prior experience with Clojure \elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen (see section~\ref{subsec:envt} for details).
+The error message filtering has worked well in tests and gives messages that make sense to beginners. %\elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. 
+%Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen (see section~\ref{subsec:envt} for details).
 %\elenacomment{issues: compilation error messages; laziness and project setup}
 
 \subsection{Development environment}\label{subsec:envt}
-Even though new students will start off by simply writing code in a basic text editor, their code will typically be a part of a project. This project provides the exception-catching and reformatting and some predefined Clojure functions that we need to supply for students to use in their own code. We will also be using some libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. We would like to be able to run students' code as a complete program (designated in a project setup) as well as in a REPL \elenacomment{make sure to clarify what that is earlier} for interactive testing. Our plan is to provide a template project that contains all of the necessary libraries and project settings \joecomment{This may need to be higher in the paragraph.}. 
+Even though new students will start off by simply writing code in a basic text editor, their code will typically be a part of a project.
+We will provide a template project that contains all of the necessary libraries and project settings and will provide a file for the students to write their code. It provides the exception-catching and reformatting and some predefined Clojure functions that we need to supply for students to use in their own code. We will also be using some libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. We would like to be able to run students' code as a complete program (designated in a project setup) as well as in a REPL %\elenacomment{make sure to clarify what that is earlier} 
+for interactive testing. 
+%Our plan is to provide a template project that contains all of the necessary libraries and project settings \joecomment{This may need to be higher in the paragraph.}. 
 
 Our project, like many Clojure projects, is managed via a command-line tool called Leiningen~\cite{lein}. Leiningen handles dependencies, controls compilation, and allows one to run either a function of the project designated as ``main'' or start a REPL with all of the project's code loaded. 
 
-In order to serve as a truly fitting Clojure development environment for beginner programmers, we think that an IDE must have the following characteristics: 
+In order to serve as a truly fitting Clojure development environment for beginner programmers, %we think that 
+an IDE must have the following characteristics: 
 \begin{itemize}
 \item Provide at least basic syntax highlighting and formatting. 
 \item Provide at least the basics of Clojure project management. 
@@ -229,12 +235,12 @@ In order to serve as a truly fitting Clojure development environment for beginne
 \end{itemize}
 Unfortunately, there is not a perfect IDE for Clojure. 
 %Both text editor {\tt emacs} and a plugin for a common Java IDE {\tt Eclipse} are too complicated for beginners \stephencomment{
-Advanced text editors text editors, e.g. {\tt emacs}, and the plugin for the common Java IDE, Eclipse, are too complicated for beginners. There are several text editors developed specifically for Clojure, but they are still in development stages and are currently unreliable or lack functionality. Our current decision is to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands.  We are working on creating a jEdit plugin that provides a GIU to call Leiningen commands.
+Advanced text editors, e.g. {\tt emacs}, and the plugin for the common Java IDE, Eclipse, are too complicated for beginners. There are several text editors developed specifically for Clojure, but they are still in development stages and are currently unreliable or lack functionality. Our current decision is to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands.  We are working on creating a jEdit plugin that provides a GIU to call Leiningen commands.
 
 We are also working on enabling beginner-friendly error reporting not only when running {\tt main}, but also for compilation errors and those generated while using the REPL. Currently we still get unconverted error messages in these two cases because they are outside of the try/catch block in {\tt main}. 
 
 \subsection{Other language modifications}\label{subsec:other}
-There are a few functions that we would like to provide as an alternative to complicated functions or those misleading for beginners. For instance, the {\tt contains?} function returns {\tt true} if a key is present in a data structure, and not the element. This means that it would return {\tt true} if passed any vector of with a length of at least $2$ and the number $1$, regardless of the actual elements of the vector, since indices in a vector are considered keys. Providing a function with a more intuitive name, such as {\tt contains-value?}, would solve this issue. There are other similar examples of functions that may confuse beginners, and we are providing alternatives with more precise names.
+There are a few functions that we would like to provide as an alternative to complicated \elenacomment{rephrase "complicated"} functions or those misleading for beginners. For instance, the {\tt contains?} function returns {\tt true} if a key is present in a data structure, and not the element. This means that it would return {\tt true} if passed any vector of with a length of at least $2$ and the number $1$, regardless of the actual elements of the vector, since indices in a vector are considered keys. Providing a function with a more intuitive name, such as {\tt contains-value?}, would solve this issue. There are other similar examples of functions that may confuse beginners, and we are providing alternatives with more precise names.
 
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
