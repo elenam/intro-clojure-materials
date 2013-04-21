@@ -213,7 +213,8 @@ The error can be made clearer for beginners if we replace type names by those th
 
 {\tt Error: Don't know how to create a sequence from a number}. 
 
-Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements (e.g. a variety of types that represent functions that all implement {\tt IFn} interface), then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
+Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements %(e.g. a variety of types that represent functions that all implement {\tt IFn} interface)
+, then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
 There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
 
 
@@ -255,9 +256,9 @@ There are a few functions that may be confusing
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
-As mentioned previously, Clojure provides a rich set of immutable collections. Each collection's  implementation  is optimized for efficiency based on the intended use. 
-For instance, lists are singly-linked lists, similar to Common Lisp lists. Creating a new list from an existing one takes a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
-However, adding an element at the end takes linear time. %since the entire list needs to be copied. 
+Clojure provides a rich set of immutable collections. Each collection's  implementation  is optimized for efficiency based on the intended use. 
+For instance, lists are singly-linked lists, similar to Common Lisp lists. Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
+However, adding an element at the end takes linear time since the entire list needs to be copied. 
 Vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time.
 %: $log_{32} N$, where $N$ is the number of elements in the vector. 
 They are implemented as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one.
