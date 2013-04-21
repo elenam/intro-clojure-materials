@@ -4,8 +4,8 @@
 \usepackage{breakurl}             % Not needed if you use pdflatex only.
 \usepackage{color}
 
-%\newcommand{\allcomments}[1]{{#1}}
-\newcommand{\allcomments}[1]{}
+\newcommand{\allcomments}[1]{{#1}}
+%\newcommand{\allcomments}[1]{}
 
 %% Elena's favorite green (thanks, Fernando!)
 \definecolor{ForestGreen}{RGB}{34,139,34}
@@ -57,8 +57,9 @@ Abstract goes here.
 Clojure is a dialect of Lisp developed by Rich Hickey and released in 2007~\cite{Hickey:2008}. Clojure was developed to answer the need for a practical  functional language that supports convenient, efficient, and safe programming for concurrency. Clojure provides a rich set of immutable data structures, augmented with several kinds of mutable reference types. Clojure in its classical implementation is complied into Java bytecode and can be fully integrated with Java, both by using Java objects and methods and by providing code that can be invoked from Java. It was carefully designed with efficiency in mind, and provides constructs for tail call optimization,
 %(at compilation time, due to Java's lack of support of tail call optimizations) 
 %\joecomment{Is this comment necessary? doesn't really relate to the topic of the paper}\elenacomment{people who knwo that Java doesn't do TCO may be surprised otherwise, but fair enough, we need to cut something.}
-data structures with fast traversal to any element that maximize sharing when a modified version is created, and efficient handling of lazy structures, among other mechanisms for providing efficiency. As the result, Clojure is as fast as Java on its underlying platform (the JVM) \joecomment{Is this proven? Clojure is very fast, but I have never seen a performance analysis that shows Clojure is as fast as native Java code (due to its dynamic nature, yadda yadda ya)}\elenacomment{is commonly considered to be?}\joecomment{Yes, something like that. I would say making a bold statement like that without some sort of proof will throw a lot of people off}, and much more effective %\stephencomment{I think we should specify that this is programmer efficiency rather than runtime efficiency} \elenacomment{Actually, it's run-time efficiency due to lack of waiting for locks. But we can say "effective" instead of "efficient" if you think that's better} \stephencomment{I fine with "effective"} 
-for concurrent execution due to immutability of data structures and significantly reduced need for locking and synchronization. 
+data structures with fast traversal to any element that maximize sharing when a modified version is created, and efficient handling of lazy structures, among other mechanisms for providing efficiency. As a result, Clojure is as fast as Java on their shared underlying platform (the JVM) %\joecomment{Is this proven? Clojure is very fast, but I have never seen a performance analysis that shows Clojure is as fast as native Java code (due to its dynamic nature, yadda yadda ya)}\elenacomment{is commonly considered to be?}\joecomment{Yes, something like that. I would say making a bold statement like that without some sort of proof will throw a lot of people off}
+. It is also much more effective %\stephencomment{I think we should specify that this is programmer efficiency rather than runtime efficiency} \elenacomment{Actually, it's run-time efficiency due to lack of waiting for locks. But we can say "effective" instead of "efficient" if you think that's better} \stephencomment{I fine with "effective"} 
+for concurrent execution due to immutability of data structures and a significantly reduced need for locking and synchronization. 
 
 Because of its convenience, efficiency, and elegant design 
 %\stephencomment{I'm not quite sure what you mean by model. Is this something that will be familiar to the audience?} \elenacomment{how about design?} \stephencomment{better} 
@@ -73,8 +74,9 @@ In this work we explore incorporating Clojure into an introductory undergraduate
 %\stephencomment{This paragraph seems unnecessarily generic especially since the next two paragraphs talk fairly specifically about our program with very "concrete" language. I think we can reword it to talk more specifically about Morris's program or at least in the 1st person plural. Rather than saying "Such a course has" we could say "We have about 3.5 contact hours" thoughts?}\elenacomment{I suppose. I am not entirely sure how this is typically written. I can rephrase it}
 
 The course focuses on general problem solving and its specifics as related to computer science 
-\stephencomment{"The course focuses on general problem solving and the specifics of implementing solutions in a programming language."?? I feel like the second half of this sentence should be a little less vague.}. 
+\stephencomment{"The course focuses on general problem solving and the specifics of implementing solutions in a programming language."?? I feel like the second half of this sentence should be a little less vague.}.
 \elenacomment{I don't think it's just a programming language connection. I meant generally the way computers operate. So I'd argue for my wording.}
+\joecomment{I also didn't like this section, but I agree with Elena's point. How about "the course focuses on both general and computer science-specific problem solving?"}
 Students work on understanding a problem's requirements and gradually develop solutions in a programming language, with an emphasis on effective design and testing strategies. In the process they learn about language syntax and behavior, key programming concepts such as conditionals and functions, data representation in a program, and similar introductory-level concepts. Mastering the concept of recursion is one of the key learning objectives in the course since it is a basis of many important data structures and algorithms. 
 %\stephencomment{Perhaps expand on why we value recursion?}. 
 Towards the end of the course students develop their own implementations of simple searching and sorting algorithms and are informally introduced to the notion of big-O. Course exercises include both concrete assignments and open-ended projects, such as graphics and simple game development. Students often work in groups, which promotes inter-personal communication and a code style that conveys intention. 
