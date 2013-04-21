@@ -245,13 +245,22 @@ There are a few functions that we would like to provide as an alternative to com
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
-As mentioned previously, Clojure provides a rich set of immutable collections : lists, vectors, sets, hash-maps. Each collection has a specific implementation in Clojure. For instance, lists are singly-linked lists, similar in a concept to Common Lisp lists that are a chain of cons-cells. Creating a new list from an existing one can be done in constant time when an element is added or removed from the beginning since it takes advantage of sharing the rest of the elements after the one we are adding or removing. The new list is just a reference to its first element. However, adding an element at the end takes linear time since the entire list needs to be copied. 
+As mentioned previously, Clojure provides a rich set of immutable collections: lists, vectors, sets, hash-maps. Each collection has a specific implementation in Clojure that is optimized for efficiency based on the intended use. 
+For instance, lists are singly-linked lists, similar to Common Lisp lists. Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning since it takes advantage of sharing the rest of the elements after the one we are adding or removing. %The new list is just a reference to its first element.
+However, adding an element at the end takes linear time since the entire list needs to be copied. 
+Vectors are a highly efficient data structure for both insertion and deletion at any position in a close to logarithmic time.
+%: $log_{32} N$, where $N$ is the number of elements in the vector. 
+They are implemented as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one constructed out of it. Hash-maps and sets are also optimized in their own way for efficient creation of modified versions via insertion, deletion, or modification. 
 
-Vectors are a highly efficient data structure for both insertion and deletion at any position in a close to constant time: $log_{32} N$, where $N$ is the number of elements in the vector. Vectors are represented internally as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one constructed out of it. Hash-maps and sets are also optimized in their own way for efficient creation of modified versions via insertion, deletion, or modification. 
+As the result, a function {\tt conj} that adds an element to a collection, returning the result as a collection of the same type as the original, positions the element in the most efficient way for this type of a collection. This means adding it at the beginning for a list and at the end for a vector. While this makes sense from the language implementation standpoint, this behavior is very confusing for new programmers. 
+
+Most functions on collections, however, are not collection-specific: they take any collection that can be converted into a sequence of elements in some order, and return a sequence, rather than a specific collection. For instance, {\tt map} that maps a function, such as ``add 5'', over all elements of a collection, returns a sequence regardless of what kind of collection was passed to it. Sequences are stored as list-like structures, or as a different implementation (e.g. as lazy sequences), but they all function exactly the same in relation to all function that they can be passed to. 
+
+Encouraging students to program in a collection-independent way, i.e. using a sequence abstraction, helps them focus on the concepts, rather than specifics of collections implementations. We accomplish this goal by providing collection-independent functions in a few cases when they do not exist, such as {\tt add-last} that adds an element to a collection at the last position and returns the result as a sequence. We also provide examples of handling data in a collection-independent way as an addition to many online examples in Clojure forums and documentation that use collection-specific functions for efficiency. Thus, students will see both collection-specific and collection-independent functions which would provide a good understanding of abstraction and its benefits. 
 
 %Because the 
 
-\todo{Clojure concepts: sequence abstraction vs concrete collections, laziness; providing examples for beginners + knowledge of complete language to understand other examples.}
+%\todo{Clojure concepts: sequence abstraction vs concrete collections, laziness; providing examples for beginners + knowledge of complete language to understand other examples.}
 
 \section{Conclusions}
 
@@ -267,7 +276,7 @@ Max Magnuson and Paul Schliep for thorough testing of our development environmen
 
 
 
-Sample stuff from example for now.
+%Sample stuff from example for now.
 
 %We request that you use
 %\href{http://www.cse.unsw.edu.au/~rvg/EPTCS/eptcs.bst}
