@@ -98,20 +98,22 @@ Functional languages tend to have simpler, more uniform syntax that students mas
 %\elenacomment{reference Racket, Haskell, ML?}\stephencomment{I think Racket definitely should be mentioned here. Not so sure about the other two. I know that Harvard uses a little ML, but Kent is the first school that I've heard of using Haskell for their intro classes and they are switching to Erlang next year.}\elenacomment{My colleagues in Frankfurt teach Haskell. I think it's fairly common in Europe. Less sure about ML, I don't know of anyone who teaches it as the first language} \stephencomment{Harvard seem to be using OCaml in their second CS course for majors (CS51) which seems to be a lot about OO programming. Either way they are the only school I've heard of using it but since it's Harvard there are sure to be imitators. It seems that Racket and Haskell should be mentioned, ML maybe not as much.}
 
 Developing a similar undergraduate curriculum based on Clojure would provide additional benefits. 
-Clojure is a language that was 
+%Clojure is a language that was 
 %developed for real-life software development \stephencomment{"developed for use in industry" or "
 %\joecomment{I like Stephen's other suggestion of "for use in industry" better. Industrial software development parses ambiguously (we are not talking about a factory which generates code)}
-developed for use in industry \stephencomment{This seems out of place here and unnecessary}. It combines a rich set of features (including a variety of mechanisms for concurrency) with an elegant uniform underlying model based on abstraction. Clojure ``collections'' (i.e. data structures) include lists, vectors, sets, and hashmaps. However, 
+%developed for use in industry \stephencomment{This seems out of place here and unnecessary}. 
+Clojure combines a rich set of features (including a variety of mechanisms for concurrency) with an elegant uniform underlying model based on abstraction. Clojure ``collections'' (i.e. data structures) include lists, vectors, sets, and hashmaps. However, 
 %all of them can be worked with as sequences \stephencomment{"
-all of these collections can be worked with as sequences. (more on this in section~\ref{sec:approaches}). 
+all of these collections can be worked with as sequences (see section~\ref{sec:approaches}). 
 %While it would be impossible (and unnecessary) to present all of Clojure's features in an undergraduate course, 
-Abstraction-based program development teaches students use and appreciate abstraction and modularity in their own solutions. A uniform abstraction-based language model also makes it easier for students to learn language features and libraries not covered in class on their own. 
+Abstraction-based program development teaches students to use and appreciate abstraction and modularity.% in their own solutions. 
+A uniform abstraction-based language model makes it easier for students to learn language features and libraries not covered in class on their own. 
 %Understanding the underlying abstractions and concepts makes it easier for students to build upon what they learn in the class.
 %%\stephencomment{End sentence here} and learn on their own. 
 %The underlying abstractions also teach students about a good language design and problem solving that focuses on the essence of the problem and not on specifics of a given structure. \elenacomment{talk about focus on abstraction}
 
 %\elenacomment{Make it clear that these benefits are as students move forward}
-Clojure is beneficial in preparing students for moving forward in the CS program. 
+Clojure is also beneficial in preparing students for moving forward in the CS program. 
 Clojure is fully integrated with Java since both compile to Java bytecode: Java code can be called from Clojure and vice versa.
 %, and Clojure code can be called from Java  \joecomment{and vice versa?}. 
 Integration with Java does not have an efficiency penalty for either of the languages. 
@@ -124,7 +126,7 @@ Students can  integrate Clojure into projects developed in Java or labs that use
 
 A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization,  locks, 
 %objects \joecomment{object locking? Locking objects sounds like a weird euphemism for safes or keys or something}, 
-or adjustments to the number of processors. While Clojure concurrency cannot be fully covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or independently for a project or an internship.
+or adjustments to the number of processors. While Clojure concurrency cannot be  covered in an introductory course, background in Clojure makes it easy for students to learn this material in a later course or independently for a project or an internship.
 % or, if need be \joecomment{I think this interjection is unnecessary.}, independently for a project or an internship. 
 %\joecomment{My previous comment may have been unclear - I meant you should only remove the "if need be." I think there is value in mentioning the independent/internship part.}
 The students would already be familiar with key concepts, such as immutable persistent data structures. Clojure fits the recent 
