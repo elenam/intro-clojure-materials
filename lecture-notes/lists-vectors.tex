@@ -363,7 +363,7 @@ There are a few important things to know about \clocode{add-first} and \clocode{
 \item While  \clocode{add-first} and \clocode{add-last} are very convenient and intuitive on vectors and lists, their result on other  collection types that we introduce later (such as sets and hash maps) can be somewhat unexpected. For those collections \clocode{conj} may be a better choice since it respects collection-specific behavior. 
 \end{itemize}
 
-\subsuibsection{A programming example}\label{subsub:add-first-last-example}
+\subsubsection{A programming example}\label{subsub:add-first-last-example}
 Let's write a function \clocode{replace-last} that takes a collection and an element and replaces the last element of a list or a vector with the given element, returning the result as a sequence. 
 
 As always, we start by writing tests and a description. Keep in mind that, regardless of whether a list or a vector is given, the result is a sequence. Let's start with the obvious cases:
