@@ -7,8 +7,8 @@
 
 \mode<presentation>
 {
-  \usetheme{Warsaw} %%% Change later
- \usecolortheme{dove}
+  \usetheme{CambridgeUS} %%% Change later
+ \usecolortheme{beaver}
 
 
   \setbeamercovered{transparent}
@@ -123,12 +123,64 @@ We are developing {\tt leiningen} plugins for creating and running student proje
 
 \begin{frame}
 \frametitle{Collections vs sequence abstraction}
-Can I add a reverse example???
+Clojure collections: lists, vectors, hash maps, sets, etc. Collections:
+\begin{itemize}
+\item ...are stored in a way that optimizes their intended use. 
+\begin{itemize}
+\item lists have constant access time to the beginning and linear to the end. 
+\item vectors are shallow trees, provide logarithmic access to any position.
+\end{itemize}
+\item ...have a few functions specialized to a collection type, e.g. {\tt conj} that returns a collection of the same type with a new element added. 
+\begin{itemize}
+\item lists: {\tt (conj '(2 3 1) 4)} results in a list {\tt (4 2 3 1)}.
+\item vectors: {\tt (conj [2 3 1] 4)} results in a vector {\tt [2 3 1 4]}.
+\end{itemize}
+\end{itemize}
+The difference in behavior is likely to be confusing to beginners. 
 \end{frame}
 
 \begin{frame}
-\frametitle{Example, maybe}
-Can I add a reverse example???
+\frametitle{Collections vs sequence abstraction (cont)}
+Sequences are an abstraction for a number of elements (possibly infinite) in a specific order. 
+\begin{itemize}
+\item Most Clojure functions work on sequences and return sequences (e.g. {\tt map}). 
+\item It is easier for beginners to program in a collection-independent (i.e. abstract) way.
+\item We provide several functions that work in a collection-independent way. They return sequences (look like lists):
+\begin{itemize}
+\item {\tt (add-first '(2 3 1) 4)} results in a sequence {\tt (4 2 3 1)}.
+\item {\tt (add-first [2 3 1] 4)} results in a sequence {\tt (4 2 3 1)}.
+\item {\tt (add-last '(2 3 1) 4)} results in a sequence {\tt (2 3 1 4)}.
+\item {\tt (add-last [2 3 1] 4)} results in a sequence {\tt (2 3 1 4)}.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Collections vs sequence abstraction (example)}
+Consider reversing a sequence using {\tt reduce} (same as {\tt fold}). Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda), 
+%%{\tiny
+\begin{verbatim}
+;; works because conj adds to the beginning of a list
+(defn my-reverse [coll]
+    (reduce (fn [c x] (conj c x)) '() coll)) 
+
+;; doesn't work because conj adds at the end of a vector
+(defn my-reverse [coll]
+    (reduce (fn [c x] (conj c x)) [] coll)) 
+
+;; abstract approach (works with a list or a vector)
+(defn my-reverse [coll]
+    (reduce (fn [c x] (add-first x c)) () coll)) 
+\end{verbatim}
+%%} %%% end tiny
+\end{frame}
+
+\begin{frame}
+\frametitle{Abstraction-based teaching approach}
+\begin{itemize}
+\item Students will be introduced to both collection-specific and collection-independent functions. 
+\item Understanding the difference between the specifics of collections and the sequence abstraction is a learning experience that will carry on to data structures and software development. 
+\end{itemize}
 \end{frame}
 
 \end{document}
