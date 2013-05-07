@@ -80,10 +80,56 @@
 \item UMM (University of Minnesota, Morris) is an undergrad-only liberal arts campus of UMN, has a small, very active CS department. 
 \item Included Clojure in upper-division courses (concurrency, functional programming). 
 \item Would like to teach it in intro classes (majors, minors, interested individuals).
+\item Introductory course focuses on problem solving and key concepts, e.g. abstraction, recursion.
 \item Current project: development environment for beginners; developing approaches for teaching Clojure to beginners. 
 \end{itemize}
 \end{frame}
 
+\section{Technical challenges of teaching Clojure as the first language}
+
+\begin{frame}
+\frametitle{Development environment: text editor.}
+Currently there are very few options for a text editor for beginner programmers. 
+
+What doesn't work:
+\begin{itemize}
+\item Emacs, vim (too complicated for beginners).
+\item Eclipse plugin Counterclockwise (too large).
+\item Clojure-specific text editors: Clooj, Catnip (too unstable). 
+\end{itemize}
+What we would like eventually:
+\begin{itemize}
+\item Light Table: a text editor based on functions, not files; instant evaluation, etc. Still in development. 
+\end{itemize}
+What we are using:
+\begin{itemize}
+\item jEdit with LISP/Clojure plugins. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Development environment: project setup.}
+Clojure projects are managed by a tool {\tt leiningen}. We need to include beginner-friendly error handling and beginner-friendly functions; intercept code typed into REPL. 
+
+We are developing {\tt leiningen} plugins for creating and running student projects (work in progress). 
+\end{frame}
+
+\begin{frame}
+\frametitle{Error handling.}
+
+\end{frame}
+
+\section{Approaches to teaching Clojure to beginners}
+
+\begin{frame}
+\frametitle{Collections vs sequence abstraction}
+Can I add a reverse example???
+\end{frame}
+
+\begin{frame}
+\frametitle{Example, maybe}
+Can I add a reverse example???
+\end{frame}
 
 \end{document}
 
