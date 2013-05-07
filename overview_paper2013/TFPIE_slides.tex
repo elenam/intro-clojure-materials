@@ -1,0 +1,89 @@
+\documentclass{beamer}
+\usepackage{beamerthemeshadow}
+\usepackage{color}
+\usepackage[all]{xy}
+
+
+
+\mode<presentation>
+{
+  \usetheme{Warsaw} %%% Change later
+ \usecolortheme{dove}
+
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+\setbeamertemplate{footline}[page number]{}
+
+
+\begin{document}
+\title{Steps towards teaching the Clojure programming language in an introductory CS  class}
+\author{Elena Machkasova, Stephen J Adams, Joe Einertson}
+\institute[UMM] % (optional, but mostly needed)
+{
+ % \inst{1}%
+  University of Minnesota, Morris
+}
+\date[May 13, 2013]  
+{Trends in Functional Programming in Education (TFPIE) 2013.}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Overview of Clojure}
+
+\begin{frame}
+\frametitle{What is Clojure?}
+\begin{itemize}
+\item Clojure is a LISP.
+\item Developed by Rich Hickey, released in 2007, rapidly gaining popularity. 
+\item Supports concurrency.
+\item Provides multiple immutable persistent data structures (lists, vectors, hash maps, sets, etc.).
+\item Runs on the JVM, fully integrated with Java. 
+\item Provides REPL (Read Eval Print Loop).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Why the popularity?}
+\begin{itemize}
+\item Elegant.
+\item Efficient (fast bytecode, tail recursion optimization).
+\item Convenient and safe efficient multi-threading. 
+\item Access to Java (e.g. Clojure seesaw library which uses Java swing). 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Why Clojure in intro CS courses?}
+\begin{itemize}
+\item It's a real-life language done well. 
+\item Introduces multiple data structures; abstraction vs implementation. 
+\item Can be used in later courses  (concurrency, interoperability with Java, purely functional data structures). 
+\item Has a friendly community (online resources, google groups, open source projects, meetups) - easy to continue on your own. 
+\item Rapidly increasing demand in industry. 
+\end{itemize}
+\end{frame}
+
+%\section{Clojure at UMM}
+\begin{frame}
+\frametitle{Clojure at UMM.}
+\begin{itemize}
+\item UMM (University of Minnesota, Morris) is an undergrad-only liberal arts campus of UMN, has a small, very active CS department. 
+\item Included Clojure in upper-division courses (concurrency, functional programming). 
+\item Would like to teach it in intro classes (majors, minors, interested individuals).
+\item Current project: development environment for beginners; developing approaches for teaching Clojure to beginners. 
+\end{itemize}
+\end{frame}
+
+
+\end{document}
+
