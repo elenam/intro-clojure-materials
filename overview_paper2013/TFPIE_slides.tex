@@ -49,7 +49,7 @@
 \begin{itemize}
 \item Clojure is a LISP.
 \item Developed by Rich Hickey, released in 2007, rapidly gaining popularity. 
-\item Designed to supports concurrency. %\joecomment{Add another word to narrow down - C supports concurrency too, but Clojure has much better support}
+\item Designed to support concurrency. %\joecomment{Add another word to narrow down - C supports concurrency too, but Clojure has much better support}
 \item Provides multiple immutable persistent data structures (lists, vectors, hash maps, sets, etc.).
 \item Runs on the JVM, fully integrated with Java. 
 \item Provides REPL (Read Eval Print Loop).
@@ -115,15 +115,15 @@ What we are using:
 
 \begin{frame}
 \frametitle{Development environment: project setup}
-Clojure projects are managed by a tool called {\tt leiningen}. We need to include beginner-friendly error handling and beginner-friendly functions, for program code written in a file and typed into REPL. 
-\elenacomment{Better?}
+Clojure projects are managed by a tool called {\tt leiningen}. We need to include beginner-friendly error handling and functions. Program code will be written in a file and typed into REPL. 
+\elenacomment{Better?} \joecomment{Better...I changed the wording a bit more - now I think it reads well}
 %\joecomment{Awkward. Reword (semicolon is out of place)}
 
 We are developing a {\tt leiningen} plugin for creating and running student projects (work in progress).\joecomment{*a* leiningen plugin? Presumably not more than one} \elenacomment{Actually, possibly more than one, but you are right: we don't need to go into details.}
 \end{frame}
 
 \begin{frame}
-\frametitle{Error handling.}
+\frametitle{Error handling}
 
 \end{frame}
 
@@ -148,7 +148,7 @@ The difference in behavior is likely to be confusing to beginners.
 \end{frame}
 
 \begin{frame}
-\frametitle{Collections vs sequence abstraction (cont)}
+\frametitle{Collections vs sequence abstraction (cont.)}
 Sequences are an abstraction for a number of elements (possibly infinite) in a specific order. 
 \begin{itemize}
 \item Most Clojure functions work on sequences and return sequences (e.g. {\tt map}). 
@@ -169,6 +169,7 @@ Define a function to reverse a sequence, using {\tt reduce}  ({\tt fold}).
 
 Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\tt '()} = empty list, {\tt []} = empty vector.  \joecomment{You may want to include some of these earlier - the list/vector syntax in particular will be confusing on the previous slide} \elenacomment{I will go over the list/vector syntax on the previous slide, this is just a reminder.}
 %%{\tiny
+\joecomment{Think you're missing the ' before the () on the last example?}
 \begin{verbatim}
 ;; works because conj adds to the beginning of a list
 (defn my-reverse [coll]
