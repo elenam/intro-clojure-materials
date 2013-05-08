@@ -5,7 +5,9 @@
 
 \newcommand{\allcomments}[1]{{#1}}
 \definecolor{JoesGold}{RGB}{204,102,0}
+\definecolor{ForestGreen}{RGB}{34,139,34}
 \newcommand{\joecomment}[1]{{\bf \color{JoesGold}{\allcomments{{#1}}}}}
+\newcommand{\elenacomment}[1]{{\bf \textcolor{ForestGreen}{\allcomments{{#1}}}}}
 
 \mode<presentation>
 {
@@ -47,7 +49,7 @@
 \begin{itemize}
 \item Clojure is a LISP.
 \item Developed by Rich Hickey, released in 2007, rapidly gaining popularity. 
-\item Supports concurrency. \joecomment{Add another word to narrow down - C supports concurrency too, but Clojure has much better support}
+\item Designed to supports concurrency. %\joecomment{Add another word to narrow down - C supports concurrency too, but Clojure has much better support}
 \item Provides multiple immutable persistent data structures (lists, vectors, hash maps, sets, etc.).
 \item Runs on the JVM, fully integrated with Java. 
 \item Provides REPL (Read Eval Print Loop).
@@ -92,7 +94,7 @@
 \section{Technical challenges of teaching Clojure as the first language}
 
 \begin{frame}
-\frametitle{Development environment: text editor.}
+\frametitle{Development environment: text editor}
 Currently there are very few options for a text editor for beginner programmers. 
 
 What doesn't work:
@@ -112,10 +114,12 @@ What we are using:
 \end{frame}
 
 \begin{frame}
-\frametitle{Development environment: project setup.}
-Clojure projects are managed by a tool called {\tt leiningen}. We need to include beginner-friendly error handling and beginner-friendly functions; intercept code typed into REPL. \joecomment{Awkward. Reword (semicolon is out of place)}
+\frametitle{Development environment: project setup}
+Clojure projects are managed by a tool called {\tt leiningen}. We need to include beginner-friendly error handling and beginner-friendly functions, for program code written in a file and typed into REPL. 
+\elenacomment{Better?}
+%\joecomment{Awkward. Reword (semicolon is out of place)}
 
-We are developing {\tt leiningen} plugins for creating and running student projects (work in progress). \joecomment{*a* leiningen plugin? Presumably not more than one}
+We are developing a {\tt leiningen} plugin for creating and running student projects (work in progress).\joecomment{*a* leiningen plugin? Presumably not more than one} \elenacomment{Actually, possibly more than one, but you are right: we don't need to go into details.}
 \end{frame}
 
 \begin{frame}
@@ -126,7 +130,7 @@ We are developing {\tt leiningen} plugins for creating and running student proje
 \section{Approaches to teaching Clojure to beginners}
 
 \begin{frame}
-\frametitle{Collections vs sequence abstraction.}
+\frametitle{Collections vs sequence abstraction}
 Clojure collections (lists, vectors, hash maps, sets, etc.): 
 \begin{itemize}
 \item ...are stored in a way that optimizes their intended use. 
@@ -144,7 +148,7 @@ The difference in behavior is likely to be confusing to beginners.
 \end{frame}
 
 \begin{frame}
-\frametitle{Collections vs sequence abstraction (cont).}
+\frametitle{Collections vs sequence abstraction (cont)}
 Sequences are an abstraction for a number of elements (possibly infinite) in a specific order. 
 \begin{itemize}
 \item Most Clojure functions work on sequences and return sequences (e.g. {\tt map}). 
@@ -160,10 +164,10 @@ Sequences are an abstraction for a number of elements (possibly infinite) in a s
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Collections vs sequence abstraction (example).}
+\frametitle{Collections vs sequence abstraction (example)}
 Define a function to reverse a sequence, using {\tt reduce}  ({\tt fold}). 
 
-Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\tt '()} = empty list, {\tt []} = empty vector.  \joecomment{You may want to include some of these earlier - the list/vector syntax in particular will be confusing on the previous slide}
+Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\tt '()} = empty list, {\tt []} = empty vector.  \joecomment{You may want to include some of these earlier - the list/vector syntax in particular will be confusing on the previous slide} \elenacomment{I will go over the list/vector syntax on the previous slide, this is just a reminder.}
 %%{\tiny
 \begin{verbatim}
 ;; works because conj adds to the beginning of a list
@@ -182,18 +186,18 @@ Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\t
 \end{frame}
 
 \begin{frame}
-\frametitle{Abstraction-based teaching approach.}
+\frametitle{Abstraction-based teaching approach}
 \begin{itemize}
 \item Students will see both collection-specific and collection-independent functions. 
 \item Collection-independent functions allow focus on problem-solving, make things easier. 
-\item Understanding the differences between implementation details (collections) and abstraction (sequence) can carry on to data structures and software development. \joecomment{Capitalize DS and SoftwareD so it's obvious they're classes in this context?}
+\item Understanding the differences between implementation details (collections) and abstraction (sequence) can carry on to Data Structures and Software Development. %\joecomment{Capitalize DS and SoftwareD so it's obvious they're classes in this context?}
 \end{itemize}
 \end{frame}
 
 \section{Conclusions}
 
 \begin{frame}
-\frametitle{Benefits and challenges of teaching Clojure in intro classes.}
+\frametitle{Benefits and challenges of teaching Clojure in intro classes}
 Benefits:
 \begin{itemize}
 \item Clojure has a rich collection of data structures.
@@ -206,11 +210,13 @@ Challenges:
 \item Development of beginner-friendly development environment. 
 \item Handling error messages.
 \item Developing approaches to teaching that present the strengths of Clojure without confusing beginners. 
-\end{itemize} \joecomment{Is it worth mentioning the crappy Clojure documentation as a downside?}
+\item Developing beginner-friendly documentation and examples. 
+%Online Clojure documentation and examples is not designed for beginners. 
+\end{itemize}% \joecomment{Is it worth mentioning the crappy Clojure documentation as a downside?}
 \end{frame}
 
 \begin{frame}
-\frametitle{Acknowledgments and selected references.}
+\frametitle{Acknowledgments and selected references}
 Selected references:
 \begin{itemize}
 \item Richard Brown, Elizabeth Shoop, et al: Strategies for preparing computer science students for the multicore world.  ITiCSE working group reports, 2010.
