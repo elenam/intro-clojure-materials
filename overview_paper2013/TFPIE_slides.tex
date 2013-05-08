@@ -3,7 +3,9 @@
 \usepackage{color}
 \usepackage[all]{xy}
 
-
+\newcommand{\allcomments}[1]{{#1}}
+\definecolor{JoesGold}{RGB}{204,102,0}
+\newcommand{\joecomment}[1]{{\bf \color{JoesGold}{\allcomments{{#1}}}}}
 
 \mode<presentation>
 {
@@ -45,7 +47,7 @@
 \begin{itemize}
 \item Clojure is a LISP.
 \item Developed by Rich Hickey, released in 2007, rapidly gaining popularity. 
-\item Supports concurrency.
+\item Supports concurrency. \joecomment{Add another word to narrow down - C supports concurrency too, but Clojure has much better support}
 \item Provides multiple immutable persistent data structures (lists, vectors, hash maps, sets, etc.).
 \item Runs on the JVM, fully integrated with Java. 
 \item Provides REPL (Read Eval Print Loop).
@@ -73,9 +75,11 @@
 \end{itemize}
 \end{frame}
 
+
 %\section{Clojure at UMM}
 \begin{frame}
-\frametitle{Clojure at UMM.}
+% Removed periods from frame titles -Joe
+\frametitle{Clojure at UMM}
 \begin{itemize}
 \item UMM (University of Minnesota, Morris) is an undergrad-only liberal arts campus of UMN, has a small, very active CS department. 
 \item Included Clojure in upper-division courses (concurrency, functional programming). 
@@ -109,9 +113,9 @@ What we are using:
 
 \begin{frame}
 \frametitle{Development environment: project setup.}
-Clojure projects are managed by a tool {\tt leiningen}. We need to include beginner-friendly error handling and beginner-friendly functions; intercept code typed into REPL. 
+Clojure projects are managed by a tool called {\tt leiningen}. We need to include beginner-friendly error handling and beginner-friendly functions; intercept code typed into REPL. \joecomment{Awkward. Reword (semicolon is out of place)}
 
-We are developing {\tt leiningen} plugins for creating and running student projects (work in progress). 
+We are developing {\tt leiningen} plugins for creating and running student projects (work in progress). \joecomment{*a* leiningen plugin? Presumably not more than one}
 \end{frame}
 
 \begin{frame}
@@ -123,7 +127,7 @@ We are developing {\tt leiningen} plugins for creating and running student proje
 
 \begin{frame}
 \frametitle{Collections vs sequence abstraction.}
-Clojure collections: lists, vectors, hash maps, sets, etc. Collections:
+Clojure collections (lists, vectors, hash maps, sets, etc.): 
 \begin{itemize}
 \item ...are stored in a way that optimizes their intended use. 
 \begin{itemize}
@@ -159,7 +163,7 @@ Sequences are an abstraction for a number of elements (possibly infinite) in a s
 \frametitle{Collections vs sequence abstraction (example).}
 Define a function to reverse a sequence, using {\tt reduce}  ({\tt fold}). 
 
-Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\tt '()} = empty list, {\tt []} = empty vector. 
+Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\tt '()} = empty list, {\tt []} = empty vector.  \joecomment{You may want to include some of these earlier - the list/vector syntax in particular will be confusing on the previous slide}
 %%{\tiny
 \begin{verbatim}
 ;; works because conj adds to the beginning of a list
@@ -173,7 +177,7 @@ Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\t
 ;; abstract approach (works with a list or a vector)
 (defn my-reverse [coll]
     (reduce (fn [c x] (add-first x c)) () coll)) 
-\end{verbatim}
+\end{verbatim} \joecomment{Think you're missing the ' before the () on the last example?}
 %%} %%% end tiny
 \end{frame}
 
@@ -182,7 +186,7 @@ Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\t
 \begin{itemize}
 \item Students will see both collection-specific and collection-independent functions. 
 \item Collection-independent functions allow focus on problem-solving, make things easier. 
-\item Understanding the differences between implementation details (collections) and abstraction (sequence) can carry on to data structures and software development. 
+\item Understanding the differences between implementation details (collections) and abstraction (sequence) can carry on to data structures and software development. \joecomment{Capitalize DS and SoftwareD so it's obvious they're classes in this context?}
 \end{itemize}
 \end{frame}
 
@@ -202,7 +206,7 @@ Challenges:
 \item Development of beginner-friendly development environment. 
 \item Handling error messages.
 \item Developing approaches to teaching that present the strengths of Clojure without confusing beginners. 
-\end{itemize}
+\end{itemize} \joecomment{Is it worth mentioning the crappy Clojure documentation as a downside?}
 \end{frame}
 
 \begin{frame}
