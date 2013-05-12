@@ -130,7 +130,7 @@ Clojure projects are managed by a tool called {\tt leiningen}. We need to includ
 %\elenacomment{Better?} \joecomment{Better...I changed the wording a bit more - now I think it reads well}
 %\joecomment{Awkward. Reword (semicolon is out of place)}
 
-\vspace*{.3in}
+\vspace*{.1in}
 
 We are developing a {\tt leiningen} plugin for creating and running student projects (work in progress).
 %\joecomment{*a* leiningen plugin? Presumably not more than one} \elenacomment{Actually, possibly more than one, but you are right: we don't need to go into details.}
@@ -153,19 +153,14 @@ IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
 \end{frame}
 
 \begin{frame}
-\frametitle{Error handling: examples}
-Original:
-
-{\tt
-IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
-}
-
-Transformed:
-
-{\tt Error: Don't know how to create a sequence from a number}. 
-
-
-
+\frametitle{Error handling: work in progress}
+Current work:
+\begin{itemize}
+\item Provide error handling for code typed in REPL.
+\item Handle compilation errors. 
+\item Developing leiningen plugin to run all student code (file and REPL) inside try/catch. 
+\item Provide hints and examples for error messages (``perhaps you swapped the order of arguments?'')
+\end{itemize}
 \end{frame}
 
 \section{Approaches to teaching Clojure to beginners}
