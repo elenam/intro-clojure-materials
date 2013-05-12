@@ -60,7 +60,7 @@
 \frametitle{Why the popularity?}
 \begin{itemize}
 \item Elegant.
-\item Efficient (fast bytecode, tail recursion optimization).
+\item Efficient (fast bytecode, provides constructs for tail recursion optimization).
 \item Convenient and safe efficient multi-threading. 
 \item Access to Java (e.g. Clojure seesaw library which uses Java swing). 
 \end{itemize}
@@ -73,6 +73,7 @@
 \item Introduces multiple data structures; abstraction vs implementation. 
 \item Can be used in later courses  (concurrency, interoperability with Java, purely functional data structures). 
 \item Has a large friendly community (online resources, google groups, open source projects, meetups) - easy to continue on your own. 
+\item Can be easily parallelize on multiple cores (no locking, only a tiny change to the program). 
 \item Rapidly increasing demand in industry. 
 \end{itemize}
 \end{frame}
@@ -98,9 +99,9 @@
 A need for a beginner-friendly development environment:
 \begin{itemize}
 \item Text editor.
-\item Project management.
+\item Project manager.
 \item Error handling.
-\item Some function behave unexpectedly for beginners. 
+\item Some functions behave unexpectedly for beginners. 
 \end{itemize}
 \end{frame}
 
@@ -150,6 +151,37 @@ IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
 \item We ``filter'' stack trace, leaving only student code. 
 \item We replace types to beginner-friendly ones and rephrase error messages. 
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Error handling: examples}
+Code: 
+
+Original:
+
+{\tt
+
+}
+
+Transformed:
+
+{\tt
+
+}
+
+Code: 
+
+Original:
+
+{\tt
+
+}
+
+Transformed:
+
+{\tt
+
+}
 \end{frame}
 
 \begin{frame}
@@ -238,7 +270,7 @@ Note: {\tt defn} = define function, {\tt fn} = anonymous function (lambda),  {\t
 Benefits:
 \begin{itemize}
 \item Clojure has a rich collection of data structures.
-\item Based upon abstraction, which teaches good programming skills. 
+\item Based on abstraction, teaches good programming skills. 
 \item Used in industry and has a well-developed friendly community. 
 \item Provides opportunities for parallelization. 
 \end{itemize}
