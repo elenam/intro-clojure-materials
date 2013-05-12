@@ -100,6 +100,7 @@ A need for a beginner-friendly development environment:
 \item Text editor.
 \item Project management.
 \item Error handling.
+\item Some function behave unexpectedly for beginners. 
 \end{itemize}
 \end{frame}
 
@@ -137,6 +138,33 @@ We are developing a {\tt leiningen} plugin for creating and running student proj
 
 \begin{frame}
 \frametitle{Error handling}
+\begin{itemize}
+\item Clojure error messages are Java exceptions. 
+\item Come with many lines of stack trace. 
+\item Refer to Java types. For example, {\tt (cons 2 3)} causes:
+
+{\tt
+IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
+}
+\item We use {\tt try/catch} to catch exceptions and transform them. 
+\item We ``filter'' stack trace, leaving only student code. 
+\item We replace types to beginner-friendly ones and rephrase error messages. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Error handling: examples}
+Original:
+
+{\tt
+IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
+}
+
+Transformed:
+
+{\tt Error: Don't know how to create a sequence from a number}. 
+
+
 
 \end{frame}
 
