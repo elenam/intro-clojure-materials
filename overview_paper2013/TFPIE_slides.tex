@@ -60,7 +60,7 @@
 \frametitle{Why the popularity?}
 \begin{itemize}
 \item Elegant.
-\item Efficient (fast bytecode, provides constructs for tail recursion optimization).
+\item Efficient (fast bytecode, efficient implementation of data structures).
 \item Convenient and safe efficient multi-threading. 
 \item Access to Java (e.g. Clojure seesaw library which uses Java swing). 
 \end{itemize}
@@ -148,8 +148,8 @@ We are developing a {\tt leiningen} plugin for creating and running student proj
 IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
 }
 \item We use {\tt try/catch} to catch exceptions and transform them. 
-\item We ``filter'' stack trace, leaving only student code. 
-\item We replace types to beginner-friendly ones and rephrase error messages. 
+\item We ``filter'' stack trace, leaving only student's code. 
+\item We replace types with beginner-friendly ones and rephrase error messages. 
 \end{itemize}
 \end{frame}
 
@@ -186,7 +186,7 @@ Error: An index in a sequence is out of bounds
 
 \begin{frame}
 \frametitle{Error handling: work in progress}
-Current work:
+Current work in progress:
 \begin{itemize}
 \item Provide error handling for code typed in REPL.
 \item Handle compilation errors. 
@@ -296,7 +296,7 @@ Dynamic languages, 2008.
 \item Simon Thompson, Steve Hill: Functional programming through the curriculum. Functional
 Programming Languages in Education, 1995. 
 \end{itemize}
-The authors thank Jon Anthony, Brian Goslinga, and Simon Hawkin for helpful discussion and Max Magnuson and Paul Schliep for help in testing. 
+The authors thank Jon Anthony, Brian Goslinga, Nic McPhee, and Simon Hawkin for helpful discussion and Max Magnuson and Paul Schliep for help in testing. 
 \end{frame}
 
 
