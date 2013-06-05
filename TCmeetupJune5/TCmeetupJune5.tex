@@ -65,9 +65,9 @@ Currently use How to Design Programs (HtDP) curriculum developed by Matthias Fel
 \begin{itemize}
 \item Language: Racket (a version of Scheme).
 \item Environment: DrRacket. Features several language levels (Beginner $\to$ Advanced), libraries for incorporating graphics and interaction. 
-\item Online textbook, series of exercises.
+%\item Online textbook, series of exercises.
 \item A large scale open-ended group exercise: develop a game. Interactive, somewhat competitive. Allows students to explore the language and practice/develop design techniques. 
-\item \elenacomment{Something about the timeline?}
+%\item \elenacomment{Something about the timeline?}
 \end{itemize}
 %%%{\tt add a picture}
 \end{frame}
@@ -120,56 +120,81 @@ What we have or are working on:
 
 \section{Beginner-friendly error messages.}
 
-\section{How to teach Clojure to beginners.}
-
-
 \begin{frame}
   \frametitle{Improving error messages}
 Our approach to improving error messages:
 \begin{itemize}
-\item Filtering the stack. 
-\item Wrapping common functions (e.g. map) into pre-conditions with meaningful naming. 
-\item Dictionary of common messages.
+\item Run the code inside try/catch, catch exceptions. 
+\item Filter the stack, removing {\tt clojure} and {\tt java}. 
+\item Wrap common functions (e.g. map) into pre-conditions. 
+\item Record information about an argument that failed a pre-condition.
+\item Rewrite error messages (pattern-matching). 
 \end{itemize}
-Work in progress, by Joe Einertson (UMM CS'13) and myself. The pre-conditions idea is due to Joe. 
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Filtering the stack}
-\begin{itemize}
-\item {\tt clj-stacktrace} library gives access to stack trace info. 
-\item Filter out everything that starts with {\tt clojure} and {\tt java}. More fine-grained and customizable filtering would be preferred eventually. {\it Any pointers on converting between namespaces and package names?}
-\item surround all student code with {\tt try/catch}, catch exceptions, pass through a filtering/prettifying function. 
-\end{itemize}
-%%%{\tt Options, ideally customizable, example}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Pre-conditions for error messages}
+%\begin{frame}
+%  \frametitle{Filtering the stack}
 %\begin{itemize}
-Wrap functions in {\tt clojure.core} in our function with a pre-condition:
-\begin{verbatim}
-(ns corefns.core
-(:refer-clojure :exclude [map])) ; can't overwrite core 
-
-(def is-function? fn?)
-(def is-collection? coll?)
-
-(defn map [argument1 argument2]
-{:pre[(is-function? argument1)(is-collection? argument2)]}
-  (clojure.core/map argument1 argument2))
-\end{verbatim}
+%\item {\tt clj-stacktrace} library gives access to stack trace info. 
+%\item Filter out everything that starts with {\tt clojure} and {\tt java}. 
+%\item surround all student code with {\tt try/catch}, catch exceptions, pass through a filtering/prettifying function. 
 %\end{itemize}
-%{\tt pre-conditions, try/catch, all the plugins}
+%%%%{\tt Options, ideally customizable, example}
+%\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Pre-conditions for error messages.}
+%\begin{itemize}
+\begin{verbatim}
+(defn filter [argument1 argument2]
+  {:pre [(check-if-function? argument1) 
+            (check-if-seqable? argument2)]}
+  (clojure.core/filter argument1 argument2))
+\end{verbatim}
+{\tt check-if-function} uses {\tt fn?} to check if {\tt argument1} is a function. 
+If it's not then records what {\tt argument1} is. 
+
+When {\tt AssertionError} is caught, it matches the pattern and extracts the argument info. 
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Sample error messages}
+  \frametitle{Sample error messages: {\tt filter}}
+{\tt (filter 9 [1 2 3])}
+
+\begin{verbatim}
+ERROR: First argument 9 must be a function but is a number
+
+Sequence of function calls:
+     corefns.core/filter (core.clj line 142)
+     intro.core/eval316 (NO_SOURCE_FILE line 313)
+     intro.core/test-and-continue (core.clj line 21)
+     intro.core/test-filter (core.clj line 313)
+     intro.core/-main (core.clj line 372)
+     user/eval309 (NO_SOURCE_FILE line 1)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sample error messages: {\tt filter}}
+{\tt (filter odd? *)}
+
+{\tt 
+ERROR: Second argument * must be a sequence but is a function
+}
+
+{\tt (filter "abc" "123")}
+
+{\tt 
+ERROR: First argument "abc" must be a function but is a string}
+
+{\tt (filter (+ 2 3) "123")}
+
+{\tt ERROR: First argument 5 must be a function but is a number}
 
 \end{frame}
 
-
+\section{How to teach Clojure to beginners.}
 
 
 \section{Future steps}
