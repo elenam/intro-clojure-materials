@@ -276,6 +276,8 @@ You may have noticed that we haven't shown any examples of strings in relation t
 
 \elenacomment{content tests, e.g. every?, not-every?, not-any?. Careful with contains? and some. Introduce contains-value? and any?}
 
+\elenacomment{Here, or, likely, later: a \clocode{reduce} gotcha: sometime you need a seed even if you are computing something numeric, like a sum, because your initial collection isn't numeric (e.g. a string). See my solution to 4clojure prob 120 for an example}
+
 
 \subsection{In-depth: implementation of lists and vectors}\label{subsec:implement}
 
