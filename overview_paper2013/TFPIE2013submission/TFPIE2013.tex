@@ -157,13 +157,20 @@ that do not appear directly in Clojure (Clojure is implicitly typed) and are not
 %There are a few common functions with names that may be misleading to new students. 
 Below we describe our work developing a custom environment that addresses these problems.
 
-Clojure error messages are Java exceptions and therefore mention Java types (some native to Java and some coming from Clojure's implementation in Java) that are unclear to beginners, especially because Clojure is dynamically typed with no need need to specify types explicitly. 
+\subsection{Customizing Clojure error messages}\label{subsec:errors}
+
+Clojure error messages are Java exceptions and therefore refer to Java types (some native to Java and some coming from Clojure's implementation in Java) that are unclear to beginners, especially because Clojure is dynamically typed with no need  to specify types explicitly. 
 %, and as a beginner you never have to specify any types explicitly \joecomment{This last part should be clarified. It reads like all beginners are magically exempt from explicit typing}. 
-Types used in Clojure implementation form a rich Java hierarchy; for instance, numerous types implement an interface that represents a Clojure sequence type. 
-These details do not matter to students, but would get in the way of their learning experience. There are other cases when an error message does not make sense to new students at all, such as {\tt NullPointerException}. 
+Types used in Clojure implementation form a rich Java hierarchy; for instance, numerous types implement an interface that represents a Clojure sequence type, with subtle differences in internal representations.   
+These nuances do not matter to students, but would get in the way of their learning experience. There are also cases when an error message does not make sense to new students at all, such as {\tt NullPointerException}: students do not understand a concept of a pointer, and understanding it would require background  not only in Clojure, but also in the underlying Java. 
 %\stephencomment{awk} \elenacomment{I'll think about phrasing here} \joecomment{A semicolon rather than parenthetical phrase would make this read less confusingly.}. 
 
-\subsection{Error messages}\label{subsec:errors}
+\subsubsection{Using pre-conditions for commonly used functions}\label{subsub:pre-cond}
+
+
+\subsubsection{Rewriting Clojure error messages}\label{subsub:rewrite}
+
+%\subsection{Error messages}\label{subsec:errors}
 \begin{table}[t]
 \centering
 \begin{tabular}{|c|c|}
@@ -205,8 +212,18 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 \caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types. }\label{table:messages}
 \end{table}
 
+\elenacomment{Update tables to new messages; explain principles (asserts)}
+
 %\elenacomment{mention earlier that we are developing an environment}
-The run-time environment that we are developing intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
+Our run-time environment runs student code in a \clocode{try/catch} block which allows us to catch and customize error messages. 
+We use two approaches to improving Clojure error messages for beginners:
+\begin{itemize}
+\item for frequently used functions, such as \clocode{map, reduce, filter}, we provide \clocode{pre-conditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
+\item for all other errors we rewrite an error message to use more beginner-friendly terminology. 
+\end{itemize}
+
+\elenacomment{cut out from the earlier version, needs rewriting}
+ intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
 As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
 
 {\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
