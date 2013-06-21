@@ -168,7 +168,7 @@ These nuances do not matter to students, but would get in the way of their learn
 Our run-time environment runs student code in a \clocode{try/catch} block which allows us to catch and customize error messages. 
 We use two approaches to improving Clojure error messages for beginners:
 \begin{itemize}
-\item for frequently used functions, such as \clocode{map, reduce, filter}, we provide \clocode{pre-conditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
+\item for frequently used functions, such as \clocode{map, reduce, filter}, we provide \clocode{preconditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
 \item for all other errors we rewrite an error message to use more beginner-friendly terminology. 
 \end{itemize}
 
@@ -284,32 +284,72 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 \caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types. }\label{table:messages}
 \end{table}
 
-\elenacomment{Update tables to new messages; explain principles (asserts)}
+\elenacomment{Update tables to new messages}
+
 
 %\elenacomment{mention earlier that we are developing an environment}
 
-\elenacomment{cut out from the earlier version, needs rewriting}
- intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
-As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
+While preconditions are helpful for commonly used functions, it would not be feasible (or necessary) to provide them for all predefined Clojure functions. Besides, students will be writing their own functions (including anonymous functions) for which no preconditions are defined. Thus we need to provide a way to transform native Clojure messages into beginner-friendly analogs. 
 
-{\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
+There are also cases when simple type checking is not sufficient. For example, even if we check that the first argument to \clocode{map} is a function and the second argument is a sequence, it may be function that is not applicable to the elements of the sequence (such as trying to call \clocode{<} on a string) or expects a wrong number of arguments. 
 
-While the wording of the message is reasonably clear, the types used in it would not be understandable to beginner programmers at all. {\tt ISeq} is an interface that represents a Clojure sequence, but beginner students are not familiar with interfaces. Numbers in Clojure can be represented as a variety of types, and it is quite common for them to be represented as the {\tt  java.lang.Long} type. The exception type itself also is not useful to beginners for the most part. 
-The error can be made clearer for beginners if we replace type names by those that make sense to beginners and remove the exception type:
+Below we give examples of some of these situations and the resulting messages. 
 
-{\tt Error: Don't know how to create a sequence from a number}. 
+Suppose a student uses a predefined, but somewhat less common, function \clocode{drop-while} for which no precondition is provided. The function takes a predicate and a sequence, and removes items in the beginning of the sequence while they satisfy the predicate. Since any non-false and non-nil value in Clojure is considered {\tt true}, the ``predicate'' can be any function applicable to the sequence items. Moreover, since Clojure sequence processing is lazy, the function only needs to be applicable up to the first item in the sequence for which it returns {\tt false}. For instance, \clocode{(drop-while odd? '(1 5 6 "banana"))} (where \clocode{odd?} is a predicate on integers that determines if a number is odd) works without errors and returns \clocode{(6 "banana")}. 
+
+If the first argument is not a function, e.g. \clocode{(drop-while 5 '(1 2 3))}, the Clojure native error message is 
+
+{\tt
+java.lang.ClassCastException java.lang.Long cannot be cast to clojure.lang.IFn
+}
+
+Our modified message is much more understandable:
+
+{\tt
+Attempted to use a number, but a function was expected.
+}
+
+A similar transformation takes place if we pass a number instead of a sequence, for instance \clocode{(drop-while odd? 5)}. The original message is 
+
+{\tt
+java.lang.IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
+}
+
+The transformed message is:
+
+{\tt
+Don't know how to create a sequence from a number
+}
+
+
+
+
+
+
+%\elenacomment{cut out from the earlier version, needs rewriting}
+% intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
+%As an example, consider the following error message for {\tt (cons 2 3)}, i.e. at an attempt to conjoin an element onto something that is not a sequence and cannot be converted to one:
+%
+%{\tt IllegalArgumentException Don't know how to create ISeq from: java.lang.Long}
+%
+%While the wording of the message is reasonably clear, the types used in it would not be understandable to beginner programmers at all. {\tt ISeq} is an interface that represents a Clojure sequence, but beginner students are not familiar with interfaces. Numbers in Clojure can be represented as a variety of types, and it is quite common for them to be represented as the {\tt  java.lang.Long} type. The exception type itself also is not useful to beginners for the most part. 
+%The error can be made clearer for beginners if we replace type names by those that make sense to beginners and remove the exception type:
+%
+%{\tt Error: Don't know how to create a sequence from a number}. 
 
 Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements, %(e.g. a variety of types that represent functions that all implement {\tt IFn} interface)
 then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
 There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
 
 
-Catching and reformatting Clojure error messages also allows us to simplify the standard stack trace. A complete stack trace of an error message often contains over a hundred Clojure and Java function calls. The way we approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
+Catching and reformatting Clojure error messages also allows us to simplify the standard stack trace. A complete stack trace of an error message often contains over a hundred Clojure and Java function calls. We approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
 %\todo{an example of error messages before and after}
 The error message filtering has worked well in tests and gives messages that make sense to beginners. %\elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. 
 %Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen (see section~\ref{subsec:envt} for details).
 %\elenacomment{issues: compilation error messages; laziness and project setup}
 
+\subsubsection{Extending try/catch approach}
+\elenacomment{Compilation errors, laziness}
 
 
 \subsection{Development environment}\label{subsec:envt}
