@@ -165,7 +165,79 @@ Types used in Clojure implementation form a rich Java hierarchy; for instance, n
 These nuances do not matter to students, but would get in the way of their learning experience. There are also cases when an error message does not make sense to new students at all, such as {\tt NullPointerException}: students do not understand a concept of a pointer, and understanding it would require background  not only in Clojure, but also in the underlying Java. 
 %\stephencomment{awk} \elenacomment{I'll think about phrasing here} \joecomment{A semicolon rather than parenthetical phrase would make this read less confusingly.}. 
 
-\subsubsection{Using pre-conditions for commonly used functions}\label{subsub:pre-cond}
+Our run-time environment runs student code in a \clocode{try/catch} block which allows us to catch and customize error messages. 
+We use two approaches to improving Clojure error messages for beginners:
+\begin{itemize}
+\item for frequently used functions, such as \clocode{map, reduce, filter}, we provide \clocode{pre-conditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
+\item for all other errors we rewrite an error message to use more beginner-friendly terminology. 
+\end{itemize}
+
+\subsubsection{Using preconditions for commonly used functions}\label{subsub:pre-cond}
+One of the learning goals in a functionally-focused introductory CS course is mastering abstraction and modularity by using higher-order functions. For example, we expect students to use a predefined function \clocode{map} to apply an operation to every element of a sequence to obtain a new sequence. For instance, \clocode{(map inc '(1 2 3))} applies a function \clocode{inc} (stands for ``increment'') to a sequence \clocode{(1 2 3)}, to produce a sequence \clocode{(2 3 4)}. However, \clocode{map} can be used only when the first argument is a function and the second argument is a sequence\footnote{or a data structure that can be converted to a sequence, such as a string or a set. See Section~\ref{sec:approaches} for a more detailed discussion of Clojure sequences.}. When a wrong type of an argument is passed to the function, the default error messages are not beginner-friendly:
+\clocode{(map inc 4)} results in the error message
+
+{\tt
+java.lang.IllegalArgumentException: Don't know how to create ISeq from: 
+
+java.lang.Long
+}
+
+\noindent
+and \clocode{(map 5 '(1 2 3))} produces the error message
+
+{\tt 
+ClassCastException java.lang.Long cannot be cast to clojure.lang.IFn  
+}
+
+Not only do these error messages mention Java classes and interfaces that students are not familiar with, such as {\tt ISeq} which is an interface for Clojure sequences, or {\tt java.lang.Long} which is the default representation of an integer number, but also they fail to indicate which argument to \clocode{map} is causing the error. 
+
+Our approach to handling this situation is to provide preconditions that check that the first argument is a function and the second one is a sequence. If all the preconditions are satisfied, the predefined function \clocode{map} is called with the given arguments. If any of the conditions is violated, information about the argument is recorded and incorporated into the error message. The error message for \clocode{(map inc 4)} then becomes
+
+{\tt 
+Second argument 4 must be a sequence but is a number
+}
+
+\noindent 
+and the one for \clocode{(map 5 '(1 2 3))} is 
+
+{\tt
+First argument 5 must be a function but is a number
+}
+
+The function \clocode{map} in Clojure is more general than the above examples indicates: it may take any number of arguments. The first argument must be a function, and the rest of the arguments are sequences. \clocode{map} produces a sequence whose first element is the result of applying the function to the first elements of all sequences, the second element is the result of applying it to the second elements, and so on. For instance, \clocode{(map + '(1 2 3) '(1 2 3))} results in the sequence {(2 4 6)}.
+Thus a well-formed call to {\tt map} may have more than two arguments. Our precondition approach allows us to detect which argument is causing the problem. For instance, {(map + '(1 2 3) :a)} results in an error message
+
+{\tt
+ Third argument :a must be a sequence but is a keyword
+}
+
+Functions that take an arbitrary number of arguments are quite common in Clojure. Some of them require a very careful analysis because some arguments are optional. As an example, consider Clojure function \clocode{reduce} which takes a function and a sequence and produces a value by applying the function to combine each element of the sequence with the result being accumulated. For instance, \clocode{(reduce + '(1 2 3))} results in $6$. The analog of \clocode{reduce} in Lisp is \clocode{foldl}. 
+
+It is possible to pass a starting value of the result  (a  ``seed'' ) to \clocode{reduce} as the second argument.  For instance, \clocode{(reduce 4 '(1 2 3))} results in $10$ since $4$ is used as the starting point of the result, and the rest of the elements are added to it. The precondition for \clocode{reduce} then becomes: the first argument must be a function, and if the total number of arguments is two then the second argument must be a sequence, otherwise the third one must be a sequence. Our error messages for \clocode{reduce} handle these situations as follows: 
+
+\clocode{(reduce 4 [1 2 5])} results in the error message
+
+{\tt
+First argument 4 must be a function but is a number
+}
+
+\clocode{(reduce + inc)} has two arguments, and therefore the condition is checking that the second one is a sequence. The resulting error message is:
+
+{\tt
+Second argument inc must be a sequence but is a function
+}
+
+In the case of \clocode{(reduce + 2 5)} the second argument is a seed, and therefore there are no conditions for it. The third, and last, argument must be a sequence, as the error message indicates:
+
+{\tt
+ Third argument 5 must be a sequence but is a number
+}
+
+The advantages of using preconditions include the ability to record the arguments that failed the condition and a high degree of customization for both the conditions and the error messages. Error messages generated with the preconditions report the ``offending'' argument's position, value, expected type, and observed type. 
+
+The disadvantages include the need to write preconditions for each function individually and the extreme care that must be taken to make sure that they are accurate in all circumstances. A precondition that is too strict may disallow a valid use of a function. Another potential disadvantage is that user-defined functions would have somewhat different error messages than the predefined ones. For instance, if a student were to write their own version of \clocode{map}, they would not be getting the same style error messages than the ones the preconditions are providing in the same situation. Finally, if evaluating an argument results in a side effect and the preconditions are satisfied, the side-effect would take place twice: once for checking the precondition, and the second time for calling the function. While this is not a problem in a purely functional computation, an evaluation of a function with side effects (such as graphics) may be unexpected. Interactions of this potential issue with Clojure laziness is a subject of future investigation. One should note, however, that there is always an option of calling the original Clojure functions directly, bypassing the preconditions. Error messages in this case will be generated using techniques covered in Section~\ref{subsub:rewrite}. 
+
+Note that our customized functions with preconditions have the same names as Clojure predefined functions, so they ``overshadow'' these functions. If one would like to call an original Clojure function, such as {\tt map}, a fully qualified name would be required: \clocode{clojure.core/map}. An alternative approach would be to create our versions of predefined functions that follow a naming convention, for instance \clocode{bmap} for a ``beginner map''. The reason we decided to use the same names as core Clojure functions is to simplify access to many online examples that use predefined functions, and, even more importantly, to make it easier for advanced students to transition to ``real'' Clojure for open source projects or other community shared code if they are use the same names as the core Clojure. The beginner-friendly functions would be provided to students in a transparent and flexible way: the source will be fully available and students would be able to switch to between the original predefined functions and the beginner-friendly ones,  so that they can choose a setup that works for the purposes of their project at any given point. 
 
 
 \subsubsection{Rewriting Clojure error messages}\label{subsub:rewrite}
@@ -215,12 +287,6 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 \elenacomment{Update tables to new messages; explain principles (asserts)}
 
 %\elenacomment{mention earlier that we are developing an environment}
-Our run-time environment runs student code in a \clocode{try/catch} block which allows us to catch and customize error messages. 
-We use two approaches to improving Clojure error messages for beginners:
-\begin{itemize}
-\item for frequently used functions, such as \clocode{map, reduce, filter}, we provide \clocode{pre-conditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
-\item for all other errors we rewrite an error message to use more beginner-friendly terminology. 
-\end{itemize}
 
 \elenacomment{cut out from the earlier version, needs rewriting}
  intercepts Clojure errors by providing a {\tt try/catch} block around students' code and reformatting error messages. 
