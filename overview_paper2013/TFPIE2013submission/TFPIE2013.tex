@@ -404,13 +404,13 @@ Wrong number of arguments (1)  passed to an anonymous function
 %\elenacomment{issues: compilation error messages; laziness and project setup}
 
 \subsubsection{Extending try/catch approach}
-While running user code in {\tt try/catch} allows catching and rewriting run-time errors, there are certain type of errors that cannot be caught this way. Since Clojure is an interpreted language, compile time errors also manifest themselves at run time as Java exceptions of the type {\tt CompilerException}. However, the way a Clojure program is typically run the error manifests itself before Clojure \clocode{main} function starts. Therefore such an error bypasses a {\tt try/catch} block in {\tt main}. If an error message bypasses the {\tt try/catch} block, it never gets caught and rewritten, and so it remains the original cryptic Clojure message.
+Running user code in {\tt try/catch} allows catching and rewriting run-time errors, but there are certain types of errors that cannot be caught this way. Since Clojure is an interpreted language, compile time errors manifest themselves at run time as Java exceptions of the type {\tt CompilerException}. However, given the way a Clojure program is typically run, the error takes place before Clojure \clocode{main} function starts. Therefore such an error bypasses a {\tt try/catch} block in {\tt main}. If an error message bypasses the {\tt try/catch} block, it never gets caught and rewritten, and so it remains the original cryptic Clojure message.
 
-Another possibility for an exception to bypass a {\tt try/catch} block in {\tt main} is via laziness. Clojure sequences are by default lazy, and many predefined function work with them in a lazy manner as well: they compute only as much of a sequence as needed. When a lazy sequence is produced in a Clojure program, it is not computed ({\it realized}, in Clojure terminology) until it is needed. If {\tt main} returns a lazy sequence, it then gets printed to the runtime system. In order to get printed, the sequence needs to be realized. However, since this happens technically outside of {\tt main}, the {\tt try/catch} block is bypassed. 
+Another possibility for an exception to bypass a {\tt try/catch} block in {\tt main} is via laziness. Clojure sequences are by default lazy, and many predefined function work with them in a lazy manner as well: they compute only as much of a sequence as needed. When a lazy sequence is produced in a Clojure program, it is not computed ({\it realized}, in Clojure terminology) until it is needed. If {\tt main} returns a lazy sequence, it then gets printed to the runtime system. In order to get printed, the sequence needs to be realized. However, since this happens technically outside of {\tt main}, the {\tt try/catch} block is bypassed, and unprocessed exceptions get thrown. 
 
-A similar problem arises when users run their code in REPL: unless they surround their testing code with a {\tt try/catch block} and call the error handling function, they would still be getting native Clojure error messages. 
+A similar problem arises when users run their code in REPL: unless they surround their testing code with a {\tt try/catch} block and call the error handling function, they would still be getting native Clojure error messages. 
 
-It is clear that in order to deal with these issues, one needs to use an approach other than a {\tt try/catch} block in {\tt main}. We discuss a possible way of deaking with these issues in Section~\ref{subsec:envt}.
+It is clear that in order to deal with these issues, one needs to use an approach other than a {\tt try/catch} block in {\tt main}. We discuss a possible way of dealing with these issues in Section~\ref{subsec:envt}.
 
 %\elenacomment{Compilation errors, laziness}
 
@@ -418,7 +418,7 @@ It is clear that in order to deal with these issues, one needs to use an approac
 \subsection{Development environment}\label{subsec:envt}
 Even though new students will start by simply writing code in a basic text editor, their code will typically be a part of a project.
 We will provide a template project that contains all of the necessary libraries and project settings and %will provide 
-a file for the students to write their code. It includes the exception-catching and reformatting and predefined Clojure functions that we need to supply for students to use in their own code. We also include libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. The environment makes it possible to run students' code as a complete program (designated in a project setup) as well as in a REPL %\elenacomment{make sure to clarify what that is earlier} 
+a file for the students to write their code. It includes the exception-catching and reformatting and predefined Clojure functions that we need to supply for students to use in their own code. We can also include libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. The environment makes it possible to run students' code as a complete program (designated in a project setup) as well as in a REPL %\elenacomment{make sure to clarify what that is earlier} 
 for interactive testing. 
 %Our plan is to provide a template project that contains all of the necessary libraries and project settings \joecomment{This may need to be higher in the paragraph.}. 
 
@@ -430,17 +430,21 @@ A good Clojure development environment for beginners %we think that
 \item Provide at least basic syntax highlighting and formatting. 
 \item Provide at least the basics of Clojure project management. 
 \item Report errors in a reasonable way, with line numbers. 
-\item Be convenient and easy to understand. 
+\item Be convenient and easy to understand for beginners.
 \item Be reliable and bug-free.
 \end{itemize}
-Unfortunately, there is not a perfect IDE for Clojure. 
+Unfortunately, there is no IDE for Clojure that has all these features. 
 %Both text editor {\tt emacs} and a plugin for a common Java IDE {\tt Eclipse} are too complicated for beginners \stephencomment{
-Advanced text editors, e.g. {\tt emacs}, and the plugin for the common Java IDE, Eclipse, are too complicated for beginners. Several text editors intended specifically for Clojure are still in development stages and are unreliable or lack functionality. We decided to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands.  We are working on creating a jEdit plugin that allows to call Leiningen commands. We also work to enabe beginner-friendly error reporting not only when running {\tt main}, but also for compilation errors and those generated while using the REPL. Currently we get original error messages in these  cases since they are outside of the try/catch block in {\tt main}. 
+Advanced text editors, e.g. {\tt emacs}, and the plugin Counterclockwise for the common Java IDE Eclipse, are too complicated for beginners. Several text editors intended specifically for Clojure are still in development stages and are unreliable or lack functionality. We decided to use the text editor {\tt jEdit}~\cite{jedit} which has a plugin for Clojure syntax highlighting, and then manage projects with Leiningen's terminal commands. We are working on creating  a Leiningen plugin that would allow running a program in such a way that beginner-friendly error reporting would be possible not only when running {\tt main}, but also when using REPL, as well as for compilation errors and errors in lazy computations. 
+
+%We are working on creating a jEdit plugin that allows to call Leiningen commands. We also work to enable beginner-friendly error reporting not only when running {\tt main}, but also for compilation errors and those generated while using the REPL. Currently we get original error messages in these  cases since they are outside of the try/catch block in {\tt main}. 
 
 \subsection{Other language modifications}\label{subsec:other}
 There are a few functions that may be confusing
 %complicated \elenacomment{rephrase "complicated"} functions or those misleading
- for beginners. For instance, the {\tt contains?} function returns {\tt true} if a key is present in a data structure, and not the element. It would return {\tt true} if passed any vector of with a length of at least $2$ and the number $1$, regardless of the actual elements of the vector, since indices in a vector are considered keys. Providing a function with a more intuitive name, such as {\tt contains-value?}, would solve this issue. %There are other similar examples that require providing alternatives with more precise names.
+ for beginners. For instance, the {\tt contains?} function returns {\tt true} if a key is present in a data structure, and not the element. It would return {\tt true} if passed any vector of with a length of at least $2$ and the number $1$, regardless of the actual elements of the vector, since indices in a vector are considered keys. Providing a function with a more intuitive name, such as {\tt 
+contains-value?}, would address this issue. 
+There are other similar examples that require providing alternatives with more precise names.
 
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
@@ -469,9 +473,7 @@ Clojure is a promising candidate for an introductory CS course. Its rich collect
 
 \section{Acknowledgments}
 The authors thank Jon Anthony, Brian Goslinga, and Simon Hawkin for helpful discussion and suggestions and %\joecomment{Use the word input? Or else it sounds like we just enjoy talking to them and that deserves mentioning :)}. 
-Max Magnuson and Paul Schliep for thorough testing of our development environment. 
-
-%\section{Bibliography}
+Max Magnuson and Paul Schliep for thorough testing of our development environment. \elenacomment{+ Nic and TFPIE}
 
 \bibliographystyle{eptcs}
 \bibliography{overview}
