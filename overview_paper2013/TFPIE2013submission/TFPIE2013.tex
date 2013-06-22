@@ -458,31 +458,55 @@ There are other similar examples that require providing alternatives with more p
 \centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-Name & Example & {\tt conj} &  {\tt into} & {\tt seq} \\
+Name & Example & {\tt seq} & {\tt conj} &  {\tt into}  \\
 \hline
-list & `(1 2) & {\parbox{3.5cm}{{\tt (conj `(1 2) 3)} \\ $\Rightarrow$ {\tt (3 1 2)}}} & 
-{\parbox{4.2cm}{{\tt (into `(1 2) `(3 4))} \\ $\Rightarrow$ {\tt (4 3 1 2)}}} &
-{\parbox{3cm}{{\tt (seq `(1 2))} \\ $\Rightarrow$ {\tt (1 2)}}}
+list & `(1 2) & {\parbox{3cm}{{\tt (seq `(1 2))} \\ $\Rightarrow$ {\tt (1 2)}}} &
+{\parbox{3.5cm}{{\tt (conj `(1 2) 3)} \\ $\Rightarrow$ {\tt (3 1 2)}}} & 
+{\parbox{4.2cm}{{\tt (into `(1 2) `(3 4))} \\ $\Rightarrow$ {\tt (4 3 1 2)}}} 
 \\
 \hline
-vector & [1 2] & {\parbox{3.5cm}{{\tt (conj [1 2] 3)} \\ $\Rightarrow$ {\tt [1 2 3]}}} & 
-{\parbox{4.2cm}{{\tt (into [1 2] `(3 4))} \\ $\Rightarrow$ {\tt [1 2 3 4]}}} &
-{\parbox{3cm}{{\tt (seq [1 2])} \\ $\Rightarrow$ {\tt (1 2)}}} \\
+vector & [1 2] & 
+{\parbox{3cm}{{\tt (seq [1 2])} \\ $\Rightarrow$ {\tt (1 2)}}} &
+{\parbox{3.5cm}{{\tt (conj [1 2] 3)} \\ $\Rightarrow$ {\tt [1 2 3]}}} & 
+{\parbox{4.2cm}{{\tt (into [1 2] `(3 4))} \\ $\Rightarrow$ {\tt [1 2 3 4]}}} 
+ \\
 \hline
-hashmap & \{1 2\} & {\parbox{3.5cm}{{\tt (conj \{1 2\} [3 4])} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} & 
-{\parbox{4.2cm}{{\tt (into \{1 2\} [[3 4]]} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} &
-{\parbox{3cm}{{\tt (seq \{1 2\})} \\ $\Rightarrow$ {\tt ([1 2])}}} \\
+hashmap & \{1 2\} & 
+{\parbox{3cm}{{\tt (seq \{1 2\})} \\ $\Rightarrow$ {\tt ([1 2])}}} &
+{\parbox{3.5cm}{{\tt (conj \{1 2\} [3 4])} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} & 
+{\parbox{4.2cm}{{\tt (into \{1 2\} [[3 4]]} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} 
+ \\
 \hline
-set & \#\{1 2\} & {\parbox{3.5cm}{{\tt (conj \#\{1 3\} 2)} \\ $\Rightarrow$ {\tt \#\{1 2 3\}}
+set & \#\{1 2\} & 
+{\parbox{3cm}{{\tt (seq \#\{2 1\})} \\ $\Rightarrow$ {\tt (1 2)}}} &
+{\parbox{3.5cm}{{\tt (conj \#\{1 3\} 2)} \\ $\Rightarrow$ {\tt \#\{1 2 3\}}
 \\ {\tt (conj \#\{1 2\} 2)} \\ $\Rightarrow$ {\tt \#\{1 2\}}}} & 
-{\parbox{4.2cm}{{\tt (into \#\{2 3\} [1 4]} \\ $\Rightarrow$ {\tt \#\{1 2, 3 4\}}}} &
-{\parbox{3cm}{{\tt (seq \#\{2 1\})} \\ $\Rightarrow$ {\tt (1 2)}}} \\
+{\parbox{4.2cm}{{\tt (into \#\{2 3\} [1 4]} \\ $\Rightarrow$ {\tt \#\{1 2, 3 4\}}}} 
+ \\
 \hline
 \end{tabular}
-\caption{Some of key Clojure data structures and their collection-specific functions}\label{table:data-structures}
+\caption{Some of key Clojure collections and their collection-specific functions}\label{table:coll}
 \end{table}
-Clojure provides a rich set of immutable collections. Each collection's  implementation  is optimized for efficiency based on the intended use. 
-For instance, lists are singly-linked lists, similar to Common Lisp lists. Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
+Clojure learners (and even some experienced programmers) are often confused by the fact that Clojure documentation and examples refer to a {\it sequence} and a {\it collection} without clearly explaining the difference between the two. In fact, that difference seems very fuzzy when a function is described as taking a collection as a parameter, returns a sequence, and then the returned value (which was described as a sequence) is passed to another function which also, according to its documentation, takes a collection. For instance, the result of \clocode{filter} (a sequence) is passed to \clocode{map} whose parameter is described as a collection. Not understanding this difference in terminology signals a lack of depth in understanding of Clojure as a language. 
+
+A seemingly unrelated problem is confusion about the use of functions \clocode{conj} and \clocode{into}, i.e. functions that add elements to a collection, on predefined Clojure collections. The order in which elements are added to the collection is often not what a programmer expects, there are unexpected {\tt IllegalArgument} errors, and Clojure programmers, especially less experienced ones, often resort to trial an error in order to decide, for example, if they should use a list or a vector (described below).
+
+We argue that an approach to teaching that focuses on Clojure design as it relates to Clojure collections and sequences and focuses on a sequence as an underlying Clojure abstraction provides a solid understanding of Clojure collections and their usage and gives students better techniques for writing programs that are more general and less error-prone. The ideas behind these principles are known in the Clojure community (see 
+
+clarifies the use of 
+
+Clojure provides a rich set of immutable collections. Each collection serves a different purpose, and its  implementation  is typically optimized for efficiency based on its intended use. The four most commonly used Clojure collections are a {\it list}, a {\it vector}, a {\it hash map}, and a {\it set}. Lists are singly-linked lists, similar to Common Lisp lists, vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time, hash maps are collections of key/value pairs, and sets are unordered collections of elements in which every element occurs at most once. 
+
+Each Clojure collection supports three functions that provide a uniform way of interacting with a collection. However, the implementation, and therefore the behavior of each of these functions is different for different types collections. The functions are as follows:
+\begin{itemize}
+\item {\tt conj} that takes a collection and an item and returns a new collection {\it of the same type} with the new element added to the collection. 
+\item {\tt into} that takes a collection and a sequence of elements 
+\end{itemize}
+
+The first two columns of table~\ref{table:data-structures} list and give (syntactic) examples of four most commonly used data structures:
+
+
+For instance,Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
 However, adding an element at the end takes linear time since the entire list needs to be copied. 
 Vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time.
 %: $log_{32} N$, where $N$ is the number of elements in the vector. 
