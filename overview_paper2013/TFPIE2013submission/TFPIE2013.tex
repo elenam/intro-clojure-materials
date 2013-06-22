@@ -301,7 +301,7 @@ Catching and reformatting Clojure error messages also allows us to simplify the 
 
 When a Clojure throws a Java exception, our procedure for handling it is as follows:
 \begin{enumerate}
-\item Catch the exception in a {\tt try/catch} block. 
+\item Catch the exception in a {\tt try/catch} block in the Clojure {\tt main} function. 
 \item Filter the stack trace, as described above. 
 \item Match the class of the exception (e.g.IllegalArgumentException) against a list. 
 \item If a matching case is found, attempt to match the message against a list of regular expressions. 
@@ -404,12 +404,19 @@ Wrong number of arguments (1)  passed to an anonymous function
 %\elenacomment{issues: compilation error messages; laziness and project setup}
 
 \subsubsection{Extending try/catch approach}
-While running user code in {\tt try/catch} allows catching and rewriting run-time errors, 
-\elenacomment{Compilation errors, laziness}
+While running user code in {\tt try/catch} allows catching and rewriting run-time errors, there are certain type of errors that cannot be caught this way. Since Clojure is an interpreted language, compile time errors also manifest themselves at run time as Java exceptions of the type {\tt CompilerException}. However, the way a Clojure program is typically run the error manifests itself before Clojure \clocode{main} function starts. Therefore such an error bypasses a {\tt try/catch} block in {\tt main}. If an error message bypasses the {\tt try/catch} block, it never gets caught and rewritten, and so it remains the original cryptic Clojure message.
+
+Another possibility for an exception to bypass a {\tt try/catch} block in {\tt main} is via laziness. Clojure sequences are by default lazy, and many predefined function work with them in a lazy manner as well: they compute only as much of a sequence as needed. When a lazy sequence is produced in a Clojure program, it is not computed ({\it realized}, in Clojure terminology) until it is needed. If {\tt main} returns a lazy sequence, it then gets printed to the runtime system. In order to get printed, the sequence needs to be realized. However, since this happens technically outside of {\tt main}, the {\tt try/catch} block is bypassed. 
+
+A similar problem arises when users run their code in REPL: unless they surround their testing code with a {\tt try/catch block} and call the error handling function, they would still be getting native Clojure error messages. 
+
+It is clear that in order to deal with these issues, one needs to use an approach other than a {\tt try/catch} block in {\tt main}. We discuss a possible way of deaking with these issues in Section~\ref{subsec:envt}.
+
+%\elenacomment{Compilation errors, laziness}
 
 
 \subsection{Development environment}\label{subsec:envt}
-Even though new students will start off by simply writing code in a basic text editor, their code will typically be a part of a project.
+Even though new students will start by simply writing code in a basic text editor, their code will typically be a part of a project.
 We will provide a template project that contains all of the necessary libraries and project settings and %will provide 
 a file for the students to write their code. It includes the exception-catching and reformatting and predefined Clojure functions that we need to supply for students to use in their own code. We also include libraries, such as a turtle graphics library~\cite{turtle} and a Clojure wrapper for Java Swing (a Java GUI library), called seesaw~\cite{graphics}. The environment makes it possible to run students' code as a complete program (designated in a project setup) as well as in a REPL %\elenacomment{make sure to clarify what that is earlier} 
 for interactive testing. 
