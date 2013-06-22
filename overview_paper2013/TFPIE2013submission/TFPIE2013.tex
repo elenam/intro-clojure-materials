@@ -239,6 +239,8 @@ The disadvantages include the need to write preconditions for each function indi
 
 Note that our customized functions with preconditions have the same names as Clojure predefined functions, so they ``overshadow'' these functions. If one would like to call an original Clojure function, such as {\tt map}, a fully qualified name would be required: \clocode{clojure.core/map}. An alternative approach would be to create our versions of predefined functions that follow a naming convention, for instance \clocode{bmap} for a ``beginner map''. The reason we decided to use the same names as core Clojure functions is to simplify access to many online examples that use predefined functions, and, even more importantly, to make it easier for advanced students to transition to ``real'' Clojure for open source projects or other community shared code if they are use the same names as the core Clojure. The beginner-friendly functions would be provided to students in a transparent and flexible way: the source will be fully available and students would be able to switch to between the original predefined functions and the beginner-friendly ones,  so that they can choose a setup that works for the purposes of their project at any given point. 
 
+%The list of functions that we provide preconditions for, as well as the exact preconditions, are still work in progress. 
+
 
 \subsubsection{Rewriting Clojure error messages}\label{subsub:rewrite}
 
@@ -291,9 +293,26 @@ is out of bounds. The index is: $n$}} \\[0.3cm]
 
 While preconditions are helpful for commonly used functions, it would not be feasible (or necessary) to provide them for all predefined Clojure functions. Besides, students will be writing their own functions (including anonymous functions) for which no preconditions are defined. Thus we need to provide a way to transform native Clojure messages into beginner-friendly analogs. 
 
-There are also cases when simple type checking is not sufficient. For example, even if we check that the first argument to \clocode{map} is a function and the second argument is a sequence, it may be function that is not applicable to the elements of the sequence (such as trying to call \clocode{<} on a string) or expects a wrong number of arguments. 
+There are also cases when simple type checking that can be done in a precondition is not sufficient. For example, even if we check that the first argument to \clocode{map} is a function and the second argument is a sequence, it may be function that is not applicable to the elements of the sequence (such as trying to call \clocode{<} on a string) or expects a wrong number of arguments.
 
-Below we give examples of some of these situations and the resulting messages. 
+Catching and reformatting Clojure error messages also allows us to simplify the standard stack trace. A complete stack trace of an error message often contains over a hundred Clojure and Java function calls. We approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
+%\todo{an example of error messages before and after}
+%The error message filtering has worked well in tests and gives messages that make sense to beginners. 
+
+When a Clojure throws a Java exception, our procedure for handling it is as follows:
+\begin{enumerate}
+\item Catch the exception in a {\tt try/catch} block. 
+\item Filter the stack trace, as described above. 
+\item Match the class of the exception (e.g.IllegalArgumentException) against a list. 
+\item If a matching case is found, attempt to match the message against a list of regular expressions. 
+\item If any of the matching message segments are Clojure types, find a corresponding user-friendly type in a ``dictionary''. 
+\item Transform the message text according to the pattern corresponding to the matching regular expression, while replacing types according to the type dictionary.  
+\item Display the transformed error message. Users also have an option to see the original error message (by opening a separate tab). 
+\end{enumerate}
+Some sample types translations are given in table~\ref{table:types}, and some sample message transformations are in table~\ref{table:messages}. If no type match can be found, either by a lookup or by checking interfaces that a type implements, %(e.g. a variety of types that represent functions that all implement {\tt IFn} interface)
+then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
+
+Below we give more detailed examples of some of these situations and specific resulting messages. 
 
 Suppose a student uses a predefined, but somewhat less common, function \clocode{drop-while} for which no precondition is provided. The function takes a predicate and a sequence, and removes items in the beginning of the sequence while they satisfy the predicate. Since any non-false and non-nil value in Clojure is considered {\tt true}, the ``predicate'' can be any function applicable to the sequence items. Moreover, since Clojure sequence processing is lazy, the function only needs to be applicable up to the first item in the sequence for which it returns {\tt false}. For instance, \clocode{(drop-while odd? '(1 5 6 "banana"))} (where \clocode{odd?} is a predicate on integers that determines if a number is odd) works without errors and returns \clocode{(6 "banana")}. 
 
@@ -303,24 +322,68 @@ If the first argument is not a function, e.g. \clocode{(drop-while 5 '(1 2 3))},
 java.lang.ClassCastException java.lang.Long cannot be cast to clojure.lang.IFn
 }
 
+\noindent
 Our modified message is much more understandable:
 
 {\tt
 Attempted to use a number, but a function was expected.
 }
 
+\noindent
 A similar transformation takes place if we pass a number instead of a sequence, for instance \clocode{(drop-while odd? 5)}. The original message is 
 
 {\tt
-java.lang.IllegalArgumentException Don't know how to create ISeq from: java.lang.Long
+java.lang.IllegalArgumentException Don't know how to create ISeq from: 
+
+java.lang.Long
 }
 
+\noindent
 The transformed message is:
 
 {\tt
 Don't know how to create a sequence from a number
 }
 
+\noindent
+Note that, unlike the previous message that required that the first argument was already a function, in this case we require that the argument provides some means for creating a sequence out of it. For example, a string is not a sequence, but it can be turned into a sequence of characters by applying a specific function. Thus there is a difference in wording in the two original error messages (``cannot cast X to Y'' vs ``cannot create Y from X'')  which we reflect in the wording of our more beginner-friendly messages. 
+
+Continuing with the example, we examine what happens when a function passed to \clocode{drop-while} cannot be applied to items of a sequence. Consider the call \clocode{(drop-while odd? '(5 "apple" 6))}. Here \clocode{odd?} is successfully applied to \clocode{5} and then unsuccessfully to a string \clocode{"apple"}. In this case the original message is 
+
+{\tt
+java.lang.IllegalArgumentException Argument must be an integer: apple
+}
+
+\noindent
+On the positive side, the message is reasonably clear: it specifies the argument (\clocode{apple}) and states that it must be an integer. However, the message does not specify which function caused the problem (\clocode{odd?}) or which item of the sequence was to blame (since the sequence could have been returned from another function, we cannot always assume that we can see all the arguments). Unfortunately, based on just the exception that we catch we cannot provide the missing information, so our ``transformed" message is almost the same as the original: 
+
+{\tt
+Argument must be an integer: apple
+}
+
+\noindent 
+The situation may be helped somewhat by providing a precondition for \clocode{odd?} that would at least report that the invalid argument was passed to the function \clocode{odd?} which we currently do not have, but can add. 
+
+Another common source of  errors is passing a wrong number of arguments to a function. These functions can be predefined or user-defined, which can be further subdivided into named and anonymous. Consider the following two examples: \clocode{(drop-while cons '(1 2 3))}, where \clocode{cons} is a function of two arguments, and a user-defined anonymous function of two arguments that simply returns the first one: \clocode{(drop-while (fn [x y] x) '(1 2 3))}. The original error messages are as following:
+
+{\tt
+clojure.lang.ArityException Wrong number of args (1) passed to: 
+
+core\$cons
+
+clojure.lang.ArityException  Wrong number of args (1) passed to: 
+
+core\$eval3187\$fn
+}
+
+\noindent
+Once again, the message is sufficiently informative, although it is missing the expected number of arguments, which is impossible to recover from the error message alone (however, keep in mind that Clojure functions may have a variable number of arguments).  We can improve the function names by removing the reference to {\tt core} that at this point does not make sense to students, and convert the cryptic function name in the second call to just ``anonymous function''. The messages become:
+
+{\tt
+Wrong number of arguments (1)  passed to a function cons
+
+Wrong number of arguments (1)  passed to an anonymous function
+}
 
 
 
@@ -337,14 +400,7 @@ Don't know how to create a sequence from a number
 %
 %{\tt Error: Don't know how to create a sequence from a number}. 
 
-Table~\ref{table:types} shows more examples of type names conversion. If no type match can be found, either by a lookup or by checking interfaces that a type implements, %(e.g. a variety of types that represent functions that all implement {\tt IFn} interface)
-then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
-There are other error messages that require more beginner-friendly wording; see table~\ref{table:messages} for examples. 
-
-
-Catching and reformatting Clojure error messages also allows us to simplify the standard stack trace. A complete stack trace of an error message often contains over a hundred Clojure and Java function calls. We approach this issue is by filtering out everything in the stack that is not a part of the student's project (such a project may include some of our own functions added for simplicity). This allows students to see the part of the stack trace that directly relates to their code, and nothing else. 
-%\todo{an example of error messages before and after}
-The error message filtering has worked well in tests and gives messages that make sense to beginners. %\elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. 
+%\elenacomment{Might move it earlier})\joecomment{I would mention the fact that there are testers earlier, and maybe indicate that they are an active part of the improvement process, not simply that we dragged them into a room and forced them to use clojure once} \stephencomment{Added this to the intro}. 
 %Among issues that we still need to address, however, are compilation errors which cannot be caught at run time and some errors that show up after {\tt main} finishes due to lazy evaluation. A way to approach this issue would be to use our own run system instead of the one provided with the Clojure project manager Leiningen (see section~\ref{subsec:envt} for details).
 %\elenacomment{issues: compilation error messages; laziness and project setup}
 
