@@ -254,11 +254,13 @@ Original type & Beginner-friendly type \\
 java.lang.Number & a number \\
 java.lang.Integer & a number \\
 java.lang.Double  & a number \\
+clojure.lang.BigInt  & a number \\
 %java.lang.Float & a number \\
 java.lang.String & a string \\
-java.lang.Character & a symbol \\
-clojure.lang.Symbol  & a symbol \\
+java.lang.Character & a character \\
+%clojure.lang.Symbol  & a symbol \\
 clojure.lang.ISeq & a sequence \\
+clojure.lang.Ref  & a mutable object \\
 \hline
 \end{tabular}
 \caption{Sample type conversion}\label{table:types}
@@ -275,18 +277,21 @@ but $Y'$ was expected.}} \\[0.3cm]
 Don't know how to create $X$ from:  $Y$ & 
 {\parbox{5cm}{Don't know how to \\ create  $X'$ from $Y'$}} \\[0.3cm]
 \hline
-{\tt IndexOutOfBoundsException} & $n$ & {\parbox{5cm}{An index in a sequence \\ 
-is out of bounds. The index is: $n$}} \\[0.3cm]
+%{\tt IndexOutOfBoundsException} & $n$ & {\parbox{5cm}{An index in a sequence \\ 
+%is out of bounds. The index is: $n$}} \\[0.3cm]
+{\tt IllegalArgumentException} & F not supported on type: X &
+{\parbox{5cm}{Function F' does not allow X' 
+\\ as an argument}} \\[0.3cm]
 \hline
 {\tt NullPointerException} & -- &  {\parbox{5cm}{An attempt to access a 
 \\ non-existing object
 \\ (NullPointerException)}} \\[0.3cm]
 \hline
 \end{tabular}
-\caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types. }\label{table:messages}
+\caption{Sample message wording conversion. $X,Y$ are the original types, $X',Y'$ are the corresponding beginner-friendly types, $F$ is a function name, $F'$ is a simplified function name (without any qualifiers)}\label{table:messages}
 \end{table}
 
-\elenacomment{Update tables to new messages}
+%\elenacomment{Update tables to new messages}
 
 
 %\elenacomment{mention earlier that we are developing an environment}
@@ -429,7 +434,7 @@ A good Clojure development environment for beginners %we think that
 \begin{itemize}
 \item Provide at least basic syntax highlighting and formatting. 
 \item Provide at least the basics of Clojure project management. 
-\item Report errors in a reasonable way, with line numbers. 
+\item Allow incorporation of beginner-friendly error reporting. 
 \item Be convenient and easy to understand for beginners.
 \item Be reliable and bug-free.
 \end{itemize}
@@ -456,11 +461,18 @@ Vectors are a highly efficient data structure for both insertion and deletion at
 %: $log_{32} N$, where $N$ is the number of elements in the vector. 
 They are implemented as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one.
 % constructed out of it. Hash-maps and sets are also optimized in their own way for efficient creation of modified versions via insertion, deletion, or modification. 
-A function {\tt conj} that adds an element to a collection, returning the result as a collection of the same type as the original, positions the element in the most efficient way for this type of a collection. Thus it adds it at the beginning for a list and at the end for a vector. While this makes sense from the language implementation standpoint, this behavior is very confusing for new programmers. 
+\elenacomment{show syntax}
+
+A function {\tt conj} that adds an element to a collection, returning the result as a collection of the same type as the original, positions the element in the most efficient way for this type of a collection. Thus it adds it at the beginning for a list and at the end for a vector. 
+\elenacomment{show code}
+While this makes sense from the language implementation standpoint, this behavior is very confusing for new programmers. 
 
 Most functions on collections, however, are not collection-specific: they take any collection that can be converted into a sequence of elements in some order, and return a sequence, rather than a specific collection. For instance, {\tt map} that maps a function
 %, such as ``add 5'', 
 over all elements of a collection, returns a sequence regardless of what kind of collection was passed to it. Sequences are stored as list-like structures, or as a different implementation (e.g. as lazy sequences), but they all function exactly the same in relation to all function that they can be passed to. 
+\elenacomment{mention seq}
+
+\elenacomment{show into example and reverse example}
 
 Encouraging students to program in a collection-independent way, i.e. using a sequence abstraction, helps them focus on the concepts, rather than specifics of collections implementations. We provide collection-independent functions in a few cases when they do not exist, such as {\tt add-last} that adds an element to a collection at the end, returning the result as a sequence. We also provide examples of handling data in a collection-independent way since most  examples in Clojure forums and documentation use collection-specific functions for efficiency. Students will see both collection-specific and collection-independent functions which would provide a good understanding of abstraction and its benefits. 
 
@@ -472,8 +484,10 @@ Encouraging students to program in a collection-independent way, i.e. using a se
 Clojure is a promising candidate for an introductory CS course. Its rich collection of data structures and focus on abstraction teaches students good programming skills. The growing use of Clojure in industry means that there is an active and helpful community surrounding the language which helps students to continue Clojure development after the introductory course. However, in order to adopt Clojure as a language for an introductory class one needs to tackle a few challenges, such as confusing errors messages and  a lack of beginner-friendly development environments.
 
 \section{Acknowledgments}
-The authors thank Jon Anthony, Brian Goslinga, and Simon Hawkin for helpful discussion and suggestions and %\joecomment{Use the word input? Or else it sounds like we just enjoy talking to them and that deserves mentioning :)}. 
-Max Magnuson and Paul Schliep for thorough testing of our development environment. \elenacomment{+ Nic and TFPIE}
+The authors thank Jon Anthony, Brian Goslinga, Nic McPhee, and Simon Hawkin for helpful discussion and suggestions, %\joecomment{Use the word input? Or else it sounds like we just enjoy talking to them and that deserves mentioning :)}. 
+Max Magnuson and Paul Schliep for thorough testing of our development environment, and participants at TFPIE 2013 for their feedback and discussion. 
+
+%\elenacomment{+ Nic and TFPIE}
 
 \bibliographystyle{eptcs}
 \bibliography{overview}
