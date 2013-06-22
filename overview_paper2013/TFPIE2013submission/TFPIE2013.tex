@@ -470,8 +470,13 @@ vector & [1 2] & {\parbox{3.5cm}{{\tt (conj [1 2] 3)} \\ $\Rightarrow$ {\tt [1 2
 {\parbox{3cm}{{\tt (seq [1 2])} \\ $\Rightarrow$ {\tt (1 2)}}} \\
 \hline
 hashmap & \{1 2\} & {\parbox{3.5cm}{{\tt (conj \{1 2\} [3 4])} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} & 
-{\parbox{4.2cm}{{\tt (into [1 2] `(3 4))} \\ $\Rightarrow$ {\tt [1 2 3 4]}}} &
-{\parbox{3cm}{{\tt (seq [1 2])} \\ $\Rightarrow$ {\tt (1 2)}}} \\
+{\parbox{4.2cm}{{\tt (into \{1 2\} [[3 4]]} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} &
+{\parbox{3cm}{{\tt (seq \{1 2\})} \\ $\Rightarrow$ {\tt ([1 2])}}} \\
+\hline
+set & \#\{1 2\} & {\parbox{3.5cm}{{\tt (conj \#\{1 3\} 2)} \\ $\Rightarrow$ {\tt \#\{1 2 3\}}
+\\ {\tt (conj \#\{1 2\} 2)} \\ $\Rightarrow$ {\tt \#\{1 2\}}}} & 
+{\parbox{4.2cm}{{\tt (into \#\{2 3\} [1 4]} \\ $\Rightarrow$ {\tt \#\{1 2, 3 4\}}}} &
+{\parbox{3cm}{{\tt (seq \#\{2 1\})} \\ $\Rightarrow$ {\tt (1 2)}}} \\
 \hline
 \end{tabular}
 \caption{Some of key Clojure data structures and their collection-specific functions}\label{table:data-structures}
