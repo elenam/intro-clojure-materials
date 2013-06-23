@@ -87,11 +87,12 @@ The course focuses on problem solving in general and  its applications to comput
 Students work on understanding a problem's requirements and gradually develop solutions in a programming language, with an emphasis on effective design and testing strategies. They learn about language syntax and behavior, key programming concepts such as conditionals and functions, data representation in a program, and similar introductory-level concepts. Mastering the concept of recursion is one of the key learning objectives in the course since it is a basis of many important data structures and algorithms. 
 %\stephencomment{Perhaps expand on why we value recursion?}. 
 Towards the end of the course students develop their own implementations of simple searching and sorting algorithms and are informally introduced to the notion of big-O. Course exercises include both concrete assignments and open-ended projects, such as graphics and simple game development. Students often work in groups, which promotes inter-personal communication and a code style that conveys intention. 
-\elenacomment{We used to have a paragraph here about the place of 1301 in our curriculum, and it's likely that we want it back}
+%\elenacomment{We used to have a paragraph here about the place of 1301 in our curriculum, and it's likely that we want it back}
 
-%Students continuing in the CS program would take 
+Students continuing in the CS program would take 
 %%a version of a discrete mathematics class as their second CS  course and 
-%Data Structures (in Java) as their next programing course. The rest of our curriculum incorporates a variety of languages and systems, but assumes solid understanding of Java by all students. 
+Data Structures (in Java) as their next programing course. The rest of our curriculum incorporates a variety of languages and systems, but assumes solid understanding of Java by all students. 
+Not all students coming into the Data Structures course would have had Clojure in the introductory course since there is an alternative introductory course at UMM that uses python. This means that we cannot at this point continue with Clojure directly in subsequent courses. However, we believe that students benefit from concepts that they learn in an introductory courses even if they do not immediately and directly build upon the language that they learned in such courses. In our work we focus on suitability of Clojure for teaching concepts and preparing students for independent programing, rather than direct benefits of using it in subsequent courses. 
 %It is important to note that not all students in subsequent CS courses have come from this introductory course: at UMM, for instance, we have an alternative entry point for the CS major that explores the same introductory concepts using digital media (images, music, etc.) and the Python programming language, to better accommodate students who approach CS from the design and artistic standpoints. \elenacomment{while this is important from the practical standpoint, I am not sure we have room for this here} \stephencomment{Doesn't seem super necessary from this paper's perspective.}
 
 %\todo{A bit about assumed setup of CS curriculum; learning goals}
@@ -155,7 +156,7 @@ documentation and examples, multiple blogs, several Google groups and an IRC cha
 The key technical (as opposed to conceptual) challenges of teaching Clojure to beginners stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from Java and mention Java types and other notions %(such as null pointer exceptions) 
 that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. 
 %There are a few common functions with names that may be misleading to new students. 
-Below we describe our work developing a custom environment that addresses these problems.
+Below we describe our work developing a custom environment for beginners that addresses these problems.
 
 \subsection{Customizing Clojure error messages}\label{subsec:errors}
 
@@ -168,8 +169,8 @@ These nuances do not matter to students, but would get in the way of their learn
 Our run-time environment runs student code in a \clocode{try/catch} block which allows us to catch and customize error messages. 
 We use two approaches to improving Clojure error messages for beginners:
 \begin{itemize}
-\item for frequently used functions, such as \clocode{map, reduce, filter}, we provide \clocode{preconditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
-\item for all other errors we rewrite an error message to use more beginner-friendly terminology. 
+\item for frequently used functions, such as \clocode{map, reduce, filter}, we provide {\it preconditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
+\item for all other errors we rewrite an error message thrown by Clojure runtime system to use more understandable for beginner. 
 \end{itemize}
 
 \subsubsection{Using preconditions for commonly used functions}\label{subsub:pre-cond}
