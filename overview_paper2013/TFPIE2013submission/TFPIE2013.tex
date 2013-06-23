@@ -454,11 +454,22 @@ There are other similar examples that require providing alternatives with more p
 %\todo{Error messages, development environment, lack of examples for beginners, some confusing names since they are a part of a full-scale language.}
 
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
+Clojure learners (and even some experienced programmers) are often confused by the fact that Clojure documentation and examples refer to a {\it sequence} and a {\it collection} without clearly explaining the difference between the two. In fact, that difference seems very fuzzy when a function is described as taking a collection as a parameter, returns a sequence, and then the returned value (which was described as a sequence) is passed to another function which also, according to its documentation, takes a collection. For instance, the result of \clocode{filter} (a sequence) is passed to \clocode{map} whose parameter is described as a collection.  Not understanding this difference in terminology signals a lack of depth in understanding of Clojure as a language.
+
+A seemingly unrelated problem is confusion about the use of functions \clocode{conj} and \clocode{into}, i.e. functions that add elements to a collection, on predefined Clojure collections. The order in which elements are added to the collection is often not what a programmer expects, there are unexpected {\tt IllegalArgument} errors, and Clojure programmers, especially less experienced ones, often resort to trial an error in order to decide, for example, if they should use a list or a vector (described below).
+
+Principles behind collections and sequences are known in the Clojure community (see~\cite{JC}), but are not necessarily clearly explained to new Clojure programmers. We argue that a teaching approach that centers on the sequence abstraction and the conceptual differences between collections and sequences provides a solid understanding of the language and the ability to utilize its resources to write modular and less error-prone programs. Below we describe our approach and a small addition to Clojure that supports it. 
+
+\subsection{Clojure sequences and collections}\label{seq-abstr}
+Clojure sequences are structures that contain some (possibly infinite) number of elements in any order. Internal implementations of sequences may differ, but these differences are not observable to the rest of the program. Sequences support functions that access elements in order, such as \clocode{first} (returns the first element in a sequence), \clocode{rest} (returns a sequence of all elements except the first one, in order). Most general functions, e.g. \clocode{map, reduce, filter} return sequences. There are no guarantees of efficiency of specific operations on sequences. Thus a sequence can be viewed as an abstraction for an ordered group of elements. 
+
+Unlike a sequence, a collection refers to a particular storage structure for a group of elements. Clojure provides a rich set of collections. Since Clojure is a functional language, its collections are immutable, i.e. all functions that ``add'' elements to,  or ``remove'' elements from, a collection actually create a new one. Each collection serves a different purpose, and its  implementation  is typically optimized for efficiency based on its intended use. The four most commonly used Clojure collections are a {\it list}, a {\it vector}, a {\it map}, and a {\it set}. Lists are singly-linked lists, similar to Common Lisp lists, vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time (implemented as very shallow trees), maps are hash maps of key/value pairs, and sets are unordered collections of elements in which every element occurs at most once. 
+
 \begin{table}[t]
 \centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-Name & Example & {\tt seq} & {\tt conj} &  {\tt into}  \\
+Name & Notation & {\tt seq} & {\tt conj} &  {\tt into}  \\
 \hline
 list & `(1 2) & {\parbox{3cm}{{\tt (seq `(1 2))} \\ $\Rightarrow$ {\tt (1 2)}}} &
 {\parbox{3.5cm}{{\tt (conj `(1 2) 3)} \\ $\Rightarrow$ {\tt (3 1 2)}}} & 
@@ -471,62 +482,66 @@ vector & [1 2] &
 {\parbox{4.2cm}{{\tt (into [1 2] `(3 4))} \\ $\Rightarrow$ {\tt [1 2 3 4]}}} 
  \\
 \hline
-hashmap & \{1 2\} & 
+map & \{1 2\} & 
 {\parbox{3cm}{{\tt (seq \{1 2\})} \\ $\Rightarrow$ {\tt ([1 2])}}} &
 {\parbox{3.5cm}{{\tt (conj \{1 2\} [3 4])} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} & 
-{\parbox{4.2cm}{{\tt (into \{1 2\} [[3 4]]} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} 
+{\parbox{4.2cm}{{\tt (into \{1 2\} `([3 4]))} \\ $\Rightarrow$ {\tt \{1 2, 3 4\}}}} 
  \\
 \hline
 set & \#\{1 2\} & 
 {\parbox{3cm}{{\tt (seq \#\{2 1\})} \\ $\Rightarrow$ {\tt (1 2)}}} &
 {\parbox{3.5cm}{{\tt (conj \#\{1 3\} 2)} \\ $\Rightarrow$ {\tt \#\{1 2 3\}}
 \\ {\tt (conj \#\{1 2\} 2)} \\ $\Rightarrow$ {\tt \#\{1 2\}}}} & 
-{\parbox{4.2cm}{{\tt (into \#\{2 3\} [1 4]} \\ $\Rightarrow$ {\tt \#\{1 2, 3 4\}}}} 
+{\parbox{4.2cm}{{\tt (into \#\{2 3\} [1 4])} \\ $\Rightarrow$ {\tt \#\{1 2, 3 4\}}}} 
  \\
 \hline
 \end{tabular}
 \caption{Some of key Clojure collections and their collection-specific functions}\label{table:coll}
 \end{table}
-Clojure learners (and even some experienced programmers) are often confused by the fact that Clojure documentation and examples refer to a {\it sequence} and a {\it collection} without clearly explaining the difference between the two. In fact, that difference seems very fuzzy when a function is described as taking a collection as a parameter, returns a sequence, and then the returned value (which was described as a sequence) is passed to another function which also, according to its documentation, takes a collection. For instance, the result of \clocode{filter} (a sequence) is passed to \clocode{map} whose parameter is described as a collection.  Not understanding this difference in terminology signals a lack of depth in understanding of Clojure as a language.
-
-A seemingly unrelated problem is confusion about the use of functions \clocode{conj} and \clocode{into}, i.e. functions that add elements to a collection, on predefined Clojure collections. The order in which elements are added to the collection is often not what a programmer expects, there are unexpected {\tt IllegalArgument} errors, and Clojure programmers, especially less experienced ones, often resort to trial an error in order to decide, for example, if they should use a list or a vector (described below).
-
-Principles behind collections and sequences are known in the Clojure community (see~\cite{JC}), but are not necessarily clearly explained to new Clojure programmers. We argue that a teaching approach that centers on the sequence abstraction and the conceptual differences between collections and sequences provides a solid understanding of the language and the ability to utilize its resources to write modular and less error-prone programs. Below we describe our approach and a small addition to Clojure that supports it. 
-
-\subsection{Clojure sequences and collections}\label{seq-abstr}
-Clojure sequences are structures that contain some (possibly infinite) number of elements in any order. Internal implementations of sequences may differ, but these differences are not observable to the rest of the program. Sequences support functions that access elements in order, such as \clocode{first} (returns the first element in a sequence), \clocode{rest} (returns a sequence of all elements except the first one, in order). Most general functions, e.g. \clocode{map, reduce, filter} return sequences. There are no guarantees of efficiency of specific operations on sequences. Thus a sequence can be viewed as an abstraction for an ordered group of elements. 
-
-Unlike a sequence, a collection refers to a particular storage structure for a group of elements. Clojure provides a rich set of immutable collections. Each collection serves a different purpose, and its  implementation  is typically optimized for efficiency based on its intended use. The four most commonly used Clojure collections are a {\it list}, a {\it vector}, a {\it hash map}, and a {\it set}. Lists are singly-linked lists, similar to Common Lisp lists, vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time, hash maps are collections of key/value pairs, and sets are unordered collections of elements in which every element occurs at most once. 
 
 Each Clojure collection supports three functions that provide a uniform way of interacting with it. However, the implementation, and therefore the behavior of each of these functions is different for different collections. The functions are as follows:
 \begin{itemize}
+\item \clocode{seq} takes a collection and produces its corresponding sequence. It may be thought of as an iterator over a collection.  
 \item \clocode{conj} that takes a collection and an item and returns a new collection {\it of the same type} with the new element added to the collection. 
 \item \clocode{into} that takes a collection and a sequence of elements and adds all of these elements to the collection. \clocode{into} is implemented by adding each element of the collection (in order) using \clocode{conj}. 
-\item \clocode{seq} takes a collection and produces its corresponding sequence. 
 \end{itemize}
+Table~\ref{table:coll} shows how these functions work on the four most common collections. 
 
-The first two columns of table~\ref{table:coll} list and give (syntactic) examples of four most commonly used data structures:
+Lists can be thought of as their own sequences, thus \clocode{seq} just returns the same list. 
+Since lists are implemented as linked lists, \clocode{conj} adds new elements at the beginning of the list at a constant time. Consequently, \clocode{into} adds all the elements of the given sequence one-by-one at the beginning, reversing the order, so adding a sequence \clocode{(3 4)} to a list results in adding \clocode{4, 3} at the beginning. 
+
+Unlike lists, vectors are optimized so that adding to the end is more efficient than adding at the beginning. Consequently, both  \clocode{conj} and \clocode{into} add elements at the end. \clocode{seq} on a vector just returns its elements in order. 
+
+Maps are key/value pairs, which is reflected in the result of a \clocode{seq} applied to a map: \clocode{(seq \{1, 2\})} returns a sequence consisting of a single pair (as a vector) \clocode{[1 2]}. Since an element of a map is a pair, \clocode{conj} also takes a pair, and consequently \clocode{into} takes a sequence of pairs. While this behavior corresponds to the underlying structure of maps, new programmer are often confused by the fact that \clocode{conj} on maps requires a pair, and not a single element. 
+
+Sets correspond to the mathematical notion of a set, and thus are by nature unordered. Iterating over a set via \clocode{seq} often results in elements being ordered by their hash function in the underlying Java. Consequently, adding elements to a set does not guarantee any specific position of the new element. If the element is already in the set, it will not be added. 
+
+\subsection{Abstraction-centered approach to teaching CS concepts via Clojure}\label{subsec:abstraction}
+When teaching Clojure in an introductory class, it is important to focus on concepts, and not on details. While Clojure collections are a great example of language design and a very useful toolbox for a programmer, new students need to focus on more general ideas, such as recursion, and specifics of collections (and in particular, of differences in behavior of \clocode{conj} and \clocode{into} on lists and vectors) may get in the way of understanding concepts. As an example, suppose we would like students to write a function that reverses a sequence using \clocode{reduce}. 
 
 
-For instance,Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
-However, adding an element at the end takes linear time since the entire list needs to be copied. 
-Vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time.
-%: $log_{32} N$, where $N$ is the number of elements in the vector. 
-They are implemented as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one.
-% constructed out of it. Hash-maps and sets are also optimized in their own way for efficient creation of modified versions via insertion, deletion, or modification. 
-\elenacomment{show syntax}
 
-A function {\tt conj} that adds an element to a collection, returning the result as a collection of the same type as the original, positions the element in the most efficient way for this type of a collection. Thus it adds it at the beginning for a list and at the end for a vector. 
-\elenacomment{show code}
-While this makes sense from the language implementation standpoint, this behavior is very confusing for new programmers. 
+%For instance,Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
+%However, adding an element at the end takes linear time since the entire list needs to be copied. 
+%Vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time.
+%%: $log_{32} N$, where $N$ is the number of elements in the vector. 
+%They are implemented as shallow trees so that everything that is not on the path to a changed element can be shared between the old vector and the new one.
+%% constructed out of it. Hash-maps and sets are also optimized in their own way for efficient creation of modified versions via insertion, deletion, or modification. 
+%\elenacomment{show syntax}
 
-Most functions on collections, however, are not collection-specific: they take any collection that can be converted into a sequence of elements in some order, and return a sequence, rather than a specific collection. For instance, {\tt map} that maps a function
-%, such as ``add 5'', 
-over all elements of a collection, returns a sequence regardless of what kind of collection was passed to it. Sequences are stored as list-like structures, or as a different implementation (e.g. as lazy sequences), but they all function exactly the same in relation to all function that they can be passed to. 
-\elenacomment{mention seq}
+%A function {\tt conj} that adds an element to a collection, returning the result as a collection of the same type as the original, positions the element in the most efficient way for this type of a collection. Thus it adds it at the beginning for a list and at the end for a vector. 
+%\elenacomment{show code}
+%While this makes sense from the language implementation standpoint, this behavior is very confusing for new programmers. 
 
-\elenacomment{show into example and reverse example}
+%Most functions on collections, however, are not collection-specific: they take any collection that can be converted into a sequence of elements in some order, and return a sequence, rather than a specific collection. For instance, {\tt map} that maps a function
+%%, such as ``add 5'', 
+%over all elements of a collection, returns a sequence regardless of what kind of collection was passed to it. Sequences are stored as list-like structures, or as a different implementation (e.g. as lazy sequences), but they all function exactly the same in relation to all function that they can be passed to. 
+%\elenacomment{mention seq}
 
+\elenacomment{show reverse example}
+
+
+\elenacomment{old, needs to be rewritten:}
 Encouraging students to program in a collection-independent way, i.e. using a sequence abstraction, helps them focus on the concepts, rather than specifics of collections implementations. We provide collection-independent functions in a few cases when they do not exist, such as {\tt add-last} that adds an element to a collection at the end, returning the result as a sequence. We also provide examples of handling data in a collection-independent way since most  examples in Clojure forums and documentation use collection-specific functions for efficiency. Students will see both collection-specific and collection-independent functions which would provide a good understanding of abstraction and its benefits. 
 
 %Because the 
@@ -538,7 +553,7 @@ Clojure is a promising candidate for an introductory CS course. Its rich collect
 
 \section{Acknowledgments}
 The authors thank Jon Anthony, Brian Goslinga, Nic McPhee, and Simon Hawkin for helpful discussion and suggestions, %\joecomment{Use the word input? Or else it sounds like we just enjoy talking to them and that deserves mentioning :)}. 
-Max Magnuson and Paul Schliep for thorough testing of our development environment, and participants at TFPIE 2013 for their feedback and discussion. 
+Max Magnuson and Paul Schliep for thorough testing of our development environment, and participants of November 2012 Boston Clojure meetup, TFPIE 2013, and June 2013 Twin Cities Clojure meeting for their feedback and discussion. 
 
 %\elenacomment{+ Nic and TFPIE}
 
