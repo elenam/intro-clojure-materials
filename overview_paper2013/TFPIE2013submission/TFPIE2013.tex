@@ -391,7 +391,8 @@ Wrong number of arguments (1)  passed to a function cons
 Wrong number of arguments (1)  passed to an anonymous function
 }
 
-\elenacomment{Need to end this section somehow}
+
+%\elenacomment{Need to end this section somehow}
 
 
 %\elenacomment{cut out from the earlier version, needs rewriting}
@@ -462,7 +463,7 @@ A seemingly unrelated problem is confusion about the use of functions \clocode{c
 Principles behind collections and sequences are known in the Clojure community (see~\cite{JC}), but are not necessarily clearly explained to new Clojure programmers. We argue that a teaching approach that centers on the sequence abstraction and the conceptual differences between collections and sequences provides a solid understanding of the language and the ability to utilize its resources to write modular and less error-prone programs. Below we describe our approach and a small addition to Clojure that supports it. 
 
 \subsection{Clojure sequences and collections}\label{seq-abstr}
-Clojure sequences are structures that contain some (possibly infinite) number of elements in any order. Internal implementations of sequences may differ, but these differences are not observable to the rest of the program. Sequences support functions that access elements in order, such as \clocode{first} (returns the first element in a sequence), \clocode{rest} (returns a sequence of all elements except the first one, in order). Most general functions, e.g. \clocode{map, reduce, filter} return sequences. There are no guarantees of efficiency of specific operations on sequences. Thus a sequence can be viewed as an abstraction for an ordered group of elements. 
+Clojure sequences are structures that contain some (possibly infinite) number of elements in some order. Internal implementations of sequences may differ, but these differences are not observable to the rest of the program. Sequences support functions that access elements in order, such as \clocode{first} (returns the first element in a sequence), \clocode{rest} (returns a sequence of all elements except the first one, in order). Most general functions, e.g. \clocode{map, reduce, filter} return sequences. There are no guarantees of efficiency of specific operations on sequences. Thus a sequence can be viewed as an abstraction for an ordered group of elements. 
 
 Unlike a sequence, a collection refers to a particular storage structure for a group of elements. Clojure provides a rich set of collections. Since Clojure is a functional language, its collections are immutable, i.e. all functions that ``add'' elements to,  or ``remove'' elements from, a collection actually create a new one. Each collection serves a different purpose, and its  implementation  is typically optimized for efficiency based on its intended use. The four most commonly used Clojure collections are a {\it list}, a {\it vector}, a {\it map}, and a {\it set}. Lists are singly-linked lists, similar to Common Lisp lists, vectors are a highly efficient data structure for both insertion and deletion at any position in a logarithmic time (implemented as very shallow trees), maps are hash maps of key/value pairs, and sets are unordered collections of elements in which every element occurs at most once. 
 
