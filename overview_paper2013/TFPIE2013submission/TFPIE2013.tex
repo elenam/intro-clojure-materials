@@ -45,7 +45,8 @@ The Clojure programming language is a new language in the LISP family that is ga
 \section{Introduction}
 %\joecomment{Any particular reason I'm listed as Joseph rather than Joe? Either one is fine but Joe is what I usually go by/is most Googleable}
 %\joecomment{Typo in the title. Pick either 'of' or 'to' in the beginning.}
-The Clojure programming language is a new language in the LISP family that is gaining rapid popularity in industry due to its elegant design and suitability for concurrent programming. Clojure is beginning to be incorporated into upper-division undergraduate courses, including those at University of Minnesota, Morris (UMM). In this paper we argue that there are educational benefits to using Clojure as a programming language in an introductory course (section~\ref{sec:benefits}). We discuss several challenges that need to be overcome in order to teach Clojure to students with no programming experience, such as modifying error messages and providing a beginner-friendly development environment. We describe our efforts towards these goals (section~\ref{sec:technical}). \joecomment{I think this whole section reads better if you say 'in section X' instead of '(section X)'.} We also discuss conceptual approaches towards teaching Clojure to beginners that make use of Clojure sequence abstraction (section~\ref{sec:approaches}). 
+The Clojure programming language is a new language in the LISP family that is gaining rapid popularity in industry due to its elegant design and suitability for concurrent programming. Clojure is beginning to be incorporated into upper-division undergraduate courses, including those at University of Minnesota, Morris (UMM). In this paper we argue that there are educational benefits to using Clojure as a programming language in an introductory course (section~\ref{sec:benefits}). We discuss several challenges that need to be overcome in order to teach Clojure to students with no programming experience, such as modifying error messages and providing a beginner-friendly development environment. We describe our efforts towards these goals in section~\ref{sec:technical}. %\joecomment{I think this whole section reads better if you say 'in section X' instead of '(section X)'.} 
+We also discuss conceptual approaches towards teaching Clojure to beginners that make use of Clojure sequence abstraction in  section~\ref{sec:approaches}. 
 
 The project on adopting Clojure as a language for an introductory class is work in progress conducted at UMM as a combined effort of faculty, students, and alumni. Currently we are implementing and improving beginner-friendly Clojure development environment. 
 %and utilizing testing feedback from two sophomores (computer science majors) who have no prior experience with Clojure, and one of whom has no experience with functional programming. 
@@ -72,8 +73,9 @@ data structures with fast traversal to any element that maximize sharing when a 
 for concurrent execution due to immutability of data structures and a significantly reduced need for locking and synchronization. 
 
 Because of its convenience, efficiency, and elegant design 
-Clojure is rapidly gaining popularity in the software development community. In 2012 Clojure was rated as "Adopt" by the ThoughtWorks Technology Radar; there were four major industry conferences dedicated to Clojure, two in the US and two in Europe, and the blog aggregator "Planet Clojure" includes over 400 blogs.%~\cite{clojure:review}.
-\joecomment{Not sure why the citation here is commented out - I think it might be nice to have}
+Clojure is rapidly gaining popularity in the software development community. In 2012 Clojure was rated as "Adopt" by the ThoughtWorks Technology Radar; there were four major industry conferences dedicated to Clojure, two in the US and two in Europe, and the blog aggregator "Planet Clojure" includes over 400 blogs \cite{clojure:review}.
+%\joecomment{Not sure why the citation here is commented out - I think it might be nice to have}
+%\elenacomment{because they would like dois for their references, and this one is too informal. Ok, I'll add it back.}
 
 \section{Benefits of teaching Clojure as the first language}\label{sec:benefits}
 %\subsection{Overview of an introductory CS course and its role in CS curriculum}
@@ -112,7 +114,8 @@ Developing a similar undergraduate curriculum based on Clojure would provide add
 %\joecomment{I like Stephen's other suggestion of "for use in industry" better. Industrial software development parses ambiguously (we are not talking about a factory which generates code)}
 %developed for use in industry \stephencomment{This seems out of place here and unnecessary}. 
 Clojure combines a rich set of features %(including a variety of mechanisms for concurrency) 
-with an elegant uniform underlying model based on abstraction. Clojure ``collections'' (i.e. data structures) include lists, vectors, sets, and hashmaps. \joecomment{This is about the 8th time I've seen Clojure referred to as elegant, but the Wikipedia reader in me is screaming "[citation needed]". Just a thought} However, 
+with an elegant uniform underlying model based on abstraction. Clojure ``collections'' (i.e. data structures) include lists, vectors, sets, and hashmaps. %\joecomment{This is about the 8th time I've seen Clojure referred to as elegant, but the Wikipedia reader in me is screaming "[citation needed]". Just a thought} 
+However, 
 %all of them can be worked with as sequences \stephencomment{"
 all of these collections can be worked with as sequences (see section~\ref{sec:approaches}). 
 %While it would be impossible (and unnecessary) to present all of Clojure's features in an undergraduate course, 
@@ -137,11 +140,14 @@ Students can  integrate Clojure into projects developed in Java or labs that use
 
 A related benefit is Clojure's suitability for concurrency. Clojure provides mechanisms for multithreading that do not require explicit thread synchronization,  locks, 
 %objects \joecomment{object locking? Locking objects sounds like a weird euphemism for safes or keys or something}, 
-or adjustments to the number of processors. The simplest forms of Clojure multithreading, e.g. a function \clocode{pmap}, which stands for {\it parallel map}, can be mentioned and used in an introductory class. \joecomment{'can be mentioned' sounds weird. How about 'are suitable for use in'?} However, explaining principles of parallel execution is beyond the scope of an introductory class. Despite this, background in Clojure would make it easier for students to learn this material in a later course or independently.% for a project or an internship.
+or adjustments to the number of processors. The simplest forms of Clojure multithreading, e.g. a function \clocode{pmap}, which stands for {\it parallel map}, is used exactly the same way as regular \clocode{map}, and is suitable for use in an introductory class. 
+%\joecomment{'can be mentioned' sounds weird. How about 'are suitable for use in'?} 
+However, explaining principles of parallel execution is beyond the scope of an introductory class. Despite this, background in Clojure would make it easier for students to learn this material in a later course or independently.
+% for a project or an internship.
 % or, if need be \joecomment{I think this interjection is unnecessary.}, independently for a project or an internship. 
 %\joecomment{My previous comment may have been unclear - I meant you should only remove the "if need be." I think there is value in mentioning the independent/internship part.}
 The students would already be familiar with key concepts, such as immutable persistent data structures. Clojure is a good fit for the recent 
-emphasis on teaching concurrency in undergraduate curriculum (e.g.~\cite{Brown:2010}). \joecomment{These last two sentences feel tacked on. I think the 'Despite this...' sentence sounds more like a paragraph closer. Needs to be reordered somehow.}
+emphasis on teaching concurrency in undergraduate curriculum (e.g.~\cite{Brown:2010}). %\joecomment{These last two sentences feel tacked on. I think the 'Despite this...' sentence sounds more like a paragraph closer. Needs to be reordered somehow.}
 
 Clojure has a friendly, well-developed
 %\elenacomment{added "friendly" - thoughts?} \stephencomment{I haven't had any problems with people and I'm sure conference attendees will know that this is an issue with several FP communities.} \joecomment{Swapped word order so sentence flows better.}
