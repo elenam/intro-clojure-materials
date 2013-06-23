@@ -501,7 +501,7 @@ set & \#\{1 2\} &
 
 Each Clojure collection supports three functions that provide a uniform way of interacting with it. However, the implementation, and therefore the behavior of each of these functions is different for different collections. The functions are as follows:
 \begin{itemize}
-\item \clocode{seq} takes a collection and produces its corresponding sequence. It may be thought of as an iterator over a collection.  
+\item \clocode{seq} takes a collection and produces its corresponding sequence. It may be thought of as an iterator over a collection. When a collection is passed to a function that requires a sequence, \clocode{seq} is applied to it to iterate over its elements. 
 \item \clocode{conj} that takes a collection and an item and returns a new collection {\it of the same type} with the new element added to the collection. 
 \item \clocode{into} that takes a collection and a sequence of elements and adds all of these elements to the collection. \clocode{into} is implemented by adding each element of the collection (in order) using \clocode{conj}. 
 \end{itemize}
@@ -517,9 +517,34 @@ Maps are key/value pairs, which is reflected in the result of a \clocode{seq} ap
 Sets correspond to the mathematical notion of a set, and thus are by nature unordered. Iterating over a set via \clocode{seq} often results in elements being ordered by their hash function in the underlying Java. Consequently, adding elements to a set does not guarantee any specific position of the new element. If the element is already in the set, it will not be added. 
 
 \subsection{Abstraction-centered approach to teaching CS concepts via Clojure}\label{subsec:abstraction}
-When teaching Clojure in an introductory class, it is important to focus on concepts, and not on details. While Clojure collections are a great example of language design and a very useful toolbox for a programmer, new students need to focus on more general ideas, such as recursion, and specifics of collections (and in particular, of differences in behavior of \clocode{conj} and \clocode{into} on lists and vectors) may get in the way of understanding concepts. As an example, suppose we would like students to write a function that reverses a sequence using \clocode{reduce}. 
+When teaching Clojure in an introductory class, it is important to focus on concepts, and not on details. While Clojure collections are a great example of language design and a very useful toolbox for a programmer, new students need to focus on more general ideas, such as recursion, and specifics of collections (and in particular, of differences in behavior of \clocode{conj} and \clocode{into} on lists and vectors) may get in the way of understanding concepts. 
 
+As an example, suppose we would like students to write a function that reverses a sequence using \clocode{reduce} (we have given some examples of using \clocode{reduce} in Section~\ref{subsub:pre-cond}). Students would correctly assume that they need \clocode{conj} as the first parameter to \clocode{reduce} since we are adding all the elements of a given sequence to the resulting one. However, whether an element is added to the beginning or to the end of the result depends on whether one starts with a vector or a list. Consider the two attempts below (\clocode{defn} stands for ``define function'', \clocode{fn} for declaring an anonymous function, and function parameters follow the function name in a vector):
+\begin{verbatim}
+;; using a list: works because conj adds to the beginning
+(defn my-reverse [coll]
+    (reduce (fn [c x] (conj c x))  '() coll)) 
 
+;; using a vector: doesn't work because conj adds at the end of a vector
+(defn my-reverse [coll]
+    (reduce (fn [c x] (conj c x)) [] coll)) 
+\end{verbatim}
+The approach using a list works since \clocode{conj} adds to the beginning, reversing the sequence. However, if one happen to start with a vector, as in the second attempt, they would just get the original sequence back since \clocode{conj} adds to the end on vectors. Note that if we were to write a function that works in a similar way, but preserves the order of elements, we would have used a vector, not a list, as the starting point. A subtle, but important, point is that the first version of \clocode{my-reverse} returns a list, and the second one a vector, which may affect subsequent functions applied to it as well if these functions are collection-specific (consider, for example, a subsequent use of \clocode{into} on the result of \clocode{my-reverse}). 
+
+If one were to use this approach in a classroom, the discussion of concepts (what does it mean to reverse a sequence?) would be mixed with specific language details (which collection provides the needed behavior of \clocode{conj}?). At the conceptual level all we need is a way of adding an element at the beginning and at the end of a sequence, resulting in a sequence, and not in any specific collection. We introduce two functions that do that: \clocode{add-first}\footnote{\clocode{add-first} is pretty much an alias for a predefined function \clocode{cons} that has the right functionality, but with the opposite order of arguments. The similarity of the names (\clocode{cons/conj}) and the difference in the argument order could be confusing to beginners, so we chose to use a different name.} and \clocode{add-last}. Both functions take a sequence and an element and return a sequence with the element added accordingly. 
+
+If we rewrite the reverse example using \clocode{add-first}, it no longer matters what collection we use as a starting point since \clocode{add-first} guarantees the right behavior. We always a get a sequence back, so the result has a predictable behavior in any context. This solution is also easier to read and understand. 
+\begin{verbatim}
+;; abstract approach (works with a list or a vector)
+(defn my-reverse [coll]
+    (reduce (fn [c x] (add-first c x)) '() coll)) 
+\end{verbatim}
+
+We do not need to provide collection-independent analogs of \clocode{into} since Clojure already has a function \clocode{concat} that concatenates (the sequences of) two or more collections into one sequence. It is important, however, that we encourage students to use \clocode{concat}, especially given that many online examples use \clocode{into} in places where \clocode{concat} would have been conceptually simpler and more general. 
+
+One may note that \clocode{add-first} and especially \clocode{add-last} are not as efficient as \clocode{conj}. Likewise, \clocode{concat} may be slower than \clocode{into}. However, in an introductory class efficiency is not a primary concern. 
+
+We plan to teach both collection-specific and collection-independent functions since both are widely used in examples. Students will be encouraged to use the collection-independent approach when they focus on problem solving. Specific collections should be used only when there is a reason to use a specific one. For instance, maps can be very useful for creating lookup tables, and sets are a good choice if one wants to store a group of entities regardless in no specific order. We believe that this approach provides students with an opportunity to focus on concepts without being bogged down in implementation details, but at the same time allows them to utilize the richness of Clojure collections. It also illustrates the difference between an abstract and concrete, which is a useful perspective for future software development courses and work. 
 
 %For instance,Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
 %However, adding an element at the end takes linear time since the entire list needs to be copied. 
@@ -538,18 +563,16 @@ When teaching Clojure in an introductory class, it is important to focus on conc
 %over all elements of a collection, returns a sequence regardless of what kind of collection was passed to it. Sequences are stored as list-like structures, or as a different implementation (e.g. as lazy sequences), but they all function exactly the same in relation to all function that they can be passed to. 
 %\elenacomment{mention seq}
 
-\elenacomment{show reverse example}
 
-
-\elenacomment{old, needs to be rewritten:}
-Encouraging students to program in a collection-independent way, i.e. using a sequence abstraction, helps them focus on the concepts, rather than specifics of collections implementations. We provide collection-independent functions in a few cases when they do not exist, such as {\tt add-last} that adds an element to a collection at the end, returning the result as a sequence. We also provide examples of handling data in a collection-independent way since most  examples in Clojure forums and documentation use collection-specific functions for efficiency. Students will see both collection-specific and collection-independent functions which would provide a good understanding of abstraction and its benefits. 
+%\elenacomment{old, needs to be rewritten:}
+%Encouraging students to program in a collection-independent way, i.e. using a sequence abstraction, helps them focus on the concepts, rather than specifics of collections implementations. We provide collection-independent functions in a few cases when they do not exist, such as {\tt add-last} that adds an element to a collection at the end, returning the result as a sequence. We also provide examples of handling data in a collection-independent way since most  examples in Clojure forums and documentation use collection-specific functions for efficiency. Students will see both collection-specific and collection-independent functions which would provide a good understanding of abstraction and its benefits. 
 
 %Because the 
 
 %\todo{Clojure concepts: sequence abstraction vs concrete collections, laziness; providing examples for beginners + knowledge of complete language to understand other examples.}
 
 \section{Conclusions}
-Clojure is a promising candidate for an introductory CS course. Its rich collection of data structures and focus on abstraction teaches students good programming skills. The growing use of Clojure in industry means that there is an active and helpful community surrounding the language which helps students to continue Clojure development after the introductory course. However, in order to adopt Clojure as a language for an introductory class one needs to tackle a few challenges, such as confusing errors messages and  a lack of beginner-friendly development environments.
+Clojure is a promising candidate for an introductory CS course. Its rich collection of data structures and focus on abstraction teaches students good programming skills. Teaching Clojure would give a unique opportunity to teach both general problem-solving (as applied to CS) and concrete language tools. The growing use of Clojure in industry means that there is an active and helpful community surrounding the language which helps students to continue Clojure development after the introductory course. However, in order to adopt Clojure as a language for an introductory class one needs to tackle a few challenges, such as confusing errors messages and  a lack of beginner-friendly development environments.
 
 \section{Acknowledgments}
 The authors thank Jon Anthony, Brian Goslinga, Nic McPhee, and Simon Hawkin for helpful discussion and suggestions, %\joecomment{Use the word input? Or else it sounds like we just enjoy talking to them and that deserves mentioning :)}. 
