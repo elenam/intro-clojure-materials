@@ -161,7 +161,7 @@ documentation and examples, multiple blogs, several Google groups and an IRC cha
 
 \section{Technical challenges of teaching Clojure as the first language}\label{sec:technical}
 The key technical (as opposed to conceptual) challenges of teaching Clojure to beginners stem from the fact that it was not designed as a language for beginners. Clojure currently does not have a beginner-friendly development environment. Another significant problem is that Clojure error messages come directly from Java and mention Java types and other notions %(such as null pointer exceptions) 
-that do not appear directly in Clojure (Clojure is implicitly typed) and are not understandable to beginners. 
+that do not appear directly in Clojure (Clojure is implicitly typed) \joecomment{This parenthetical is weird because it's quite a while after the Java types thing. I think you can remove it, esp since you talk about the types stuff down below.} and are not understandable to beginners. 
 %There are a few common functions with names that may be misleading to new students. 
 Below we describe our work developing a custom environment for beginners that addresses these problems.
 
@@ -169,7 +169,7 @@ Below we describe our work developing a custom environment for beginners that ad
 
 Clojure error messages are Java exceptions and therefore refer to Java types (some native to Java and some coming from Clojure's implementation in Java) that are unclear to beginners, especially because Clojure is dynamically typed with no need  to specify types explicitly. 
 %, and as a beginner you never have to specify any types explicitly \joecomment{This last part should be clarified. It reads like all beginners are magically exempt from explicit typing}. 
-Types used in Clojure implementation form a rich Java hierarchy; for instance, numerous types implement an interface that represents a Clojure sequence type, with subtle differences in internal representations.   
+Types used in Clojure's implementation form a rich Java hierarchy; for instance, numerous types implement an interface that represents a Clojure sequence type, with subtle differences in internal representations.   
 These nuances do not matter to students, but would get in the way of their learning experience. There are also cases when an error message does not make sense to new students at all, such as {\tt NullPointerException}: students do not understand a concept of a pointer, and understanding it would require background  not only in Clojure, but also in the underlying Java. 
 %\stephencomment{awk} \elenacomment{I'll think about phrasing here} \joecomment{A semicolon rather than parenthetical phrase would make this read less confusingly.}. 
 
@@ -177,7 +177,7 @@ Our run-time environment runs student code in a \clocode{try/catch} block which 
 We use two approaches to improving Clojure error messages for beginners:
 \begin{itemize}
 \item for frequently used functions, such as \clocode{map, reduce, filter}, we provide {\it preconditions}  to detect parameters that are of the wrong type. This allows us to detect and report more precise information about errors than is contained in a default error message. 
-\item for all other errors we rewrite an error message thrown by Clojure runtime system to use more understandable for beginner. 
+\item for all other errors we rewrite the error message thrown by the Clojure runtime system to use more understandable language for beginners. \joecomment{Rewrote this a bit, probably it should mention trimming the stacktrace too?}
 \end{itemize}
 
 \subsubsection{Using preconditions for commonly used functions}\label{subsub:pre-cond}
@@ -321,8 +321,9 @@ When a Clojure throws a Java exception, our procedure for handling it is as foll
 \item If any of the matching message segments are Clojure types, find a corresponding user-friendly type in a ``dictionary''. 
 \item Transform the message text according to the pattern corresponding to the matching regular expression, while replacing types according to the type dictionary.  
 \item Display the transformed error message. Users also have an option to see the original error message (by opening a separate tab). 
+\joecomment{A screenshot might be nice here, if there's room}
 \end{enumerate}
-Some sample types translations are given in table~\ref{table:types}, and some sample message transformations are in table~\ref{table:messages}. If no type match can be found, either by a lookup or by checking interfaces that a type implements, %(e.g. a variety of types that represent functions that all implement {\tt IFn} interface)
+Some sample type translations are given in table~\ref{table:types}, and some sample message transformations are in table~\ref{table:messages}. If no type match can be found, either by a lookup or by checking interfaces that a type implements, %(e.g. a variety of types that represent functions that all implement {\tt IFn} interface)
 then we would display the type as an ``unrecognized type'' followed by the actual type. However, as we expand our type dictionary and continue testing, these cases occur less and less frequently. 
 
 Below we give more detailed examples of some of these situations and specific resulting messages. 
@@ -465,7 +466,7 @@ There are other similar examples that require providing alternatives with more p
 \section{Approaches to teaching Clojure to beginners}\label{sec:approaches}
 Clojure learners (and even some experienced programmers) are often confused by the fact that Clojure documentation and examples refer to a {\it sequence} and a {\it collection} without clearly explaining the difference between the two. In fact, that difference seems very fuzzy when a function is described as taking a collection as a parameter, returns a sequence, and then the returned value (which was described as a sequence) is passed to another function which also, according to its documentation, takes a collection. For instance, the result of \clocode{filter} (a sequence) is passed to \clocode{map} whose parameter is described as a collection.  Not understanding this difference in terminology signals a lack of depth in understanding of Clojure as a language.
 
-A seemingly unrelated problem is confusion about the use of functions \clocode{conj} and \clocode{into}, i.e. functions that add elements to a collection, on predefined Clojure collections. The order in which elements are added to the collection is often not what a programmer expects, there are unexpected {\tt IllegalArgument} errors, and Clojure programmers, especially less experienced ones, often resort to trial an error in order to decide, for example, if they should use a list or a vector (described below).
+A seemingly unrelated problem is confusion about the use of functions \clocode{conj} and \clocode{into}, i.e. functions that add elements to a collection, on predefined Clojure collections. The order in which elements are added to the collection is often not what a programmer expects, there are unexpected {\tt IllegalArgument} errors, and Clojure programmers, especially less experienced ones, often resort to trial and error in order to decide, for example, if they should use a list or a vector (described below).
 
 Principles behind collections and sequences are known in the Clojure community (see~\cite{JC}), but are not necessarily clearly explained to new Clojure programmers. We argue that a teaching approach that centers on the sequence abstraction and the conceptual differences between collections and sequences provides a solid understanding of the language and the ability to utilize its resources to write modular and less error-prone programs. Below we describe our approach and a small addition to Clojure that supports it. 
 
@@ -512,18 +513,18 @@ Each Clojure collection supports three functions that provide a uniform way of i
 \begin{itemize}
 \item \clocode{seq} takes a collection and produces its corresponding sequence. It may be thought of as an iterator over a collection. When a collection is passed to a function that requires a sequence, \clocode{seq} is applied to it to iterate over its elements. 
 \item \clocode{conj} that takes a collection and an item and returns a new collection {\it of the same type} with the new element added to the collection. 
-\item \clocode{into} that takes a collection and a sequence of elements and adds all of these elements to the collection. \clocode{into} is implemented by adding each element of the collection (in order) using \clocode{conj}. 
+\item \clocode{into} takes a collection and a sequence of elements and adds all of the elements to the collection. \clocode{into} is implemented by adding each element of the collection (in order) using \clocode{conj}. 
 \end{itemize}
 Table~\ref{table:coll} shows how these functions work on the four most common collections. 
 
 Lists can be thought of as their own sequences, thus \clocode{seq} just returns the same list. 
 Since lists are implemented as linked lists, \clocode{conj} adds new elements at the beginning of the list at a constant time. Consequently, \clocode{into} adds all the elements of the given sequence one-by-one at the beginning, reversing the order, so adding a sequence \clocode{(3 4)} to a list results in adding \clocode{4, 3} at the beginning. 
 
-Unlike lists, vectors are optimized so that adding to the end is more efficient than adding at the beginning. Consequently, both  \clocode{conj} and \clocode{into} add elements at the end. \clocode{seq} on a vector just returns its elements in order. 
+Unlike lists, vectors are optimized so that adding to the end is more efficient than adding at the beginning \joecomment{This is a little confusing since you earlier mention that vectors are efficient for insertion anywhere. Maybe not an issue, idk}. Consequently, both  \clocode{conj} and \clocode{into} add elements at the end. Calling \clocode{seq} on a vector just returns its elements in order. 
 
 Maps are key/value pairs, which is reflected in the result of a \clocode{seq} applied to a map: \clocode{(seq \{1, 2\})} returns a sequence consisting of a single pair (as a vector) \clocode{[1 2]}. Since an element of a map is a pair, \clocode{conj} also takes a pair, and consequently \clocode{into} takes a sequence of pairs. While this behavior corresponds to the underlying structure of maps, new programmer are often confused by the fact that \clocode{conj} on maps requires a pair, and not a single element. 
 
-Sets correspond to the mathematical notion of a set, and thus are by nature unordered. Iterating over a set via \clocode{seq} often results in elements being ordered by their hash function in the underlying Java. Consequently, adding elements to a set does not guarantee any specific position of the new element. If the element is already in the set, it will not be added. 
+Sets correspond to the mathematical notion of a set, and thus are by nature unordered. Iterating over a set via \clocode{seq} often results in elements being ordered by their hash function in the underlying Java implementation \joecomment{I think 'often' should be removed - the way it sounds now is that sets behave randomly}. Consequently, adding elements to a set does not guarantee any specific position of the new element. If the element is already in the set, it will not be added. 
 
 \subsection{Abstraction-centered approach to teaching CS concepts via Clojure}\label{subsec:abstraction}
 When teaching Clojure in an introductory class, it is important to focus on concepts, and not on details. While Clojure collections are a great example of language design and a very useful toolbox for a programmer, new students need to focus on more general ideas, such as recursion, and specifics of collections (and in particular, of differences in behavior of \clocode{conj} and \clocode{into} on lists and vectors) may get in the way of understanding concepts. 
@@ -553,7 +554,7 @@ We do not need to provide collection-independent analogs of \clocode{into} since
 
 One may note that \clocode{add-first} and especially \clocode{add-last} are not as efficient as \clocode{conj}. Likewise, \clocode{concat} may be slower than \clocode{into}. However, in an introductory class efficiency is not a primary concern. 
 
-We plan to teach both collection-specific and collection-independent functions since both are widely used in examples. Students will be encouraged to use the collection-independent approach when they focus on problem solving. Specific collections should be used only when there is a reason to use a specific one. For instance, maps can be very useful for creating lookup tables, and sets are a good choice if one wants to store a group of entities regardless in no specific order. We believe that this approach provides students with an opportunity to focus on concepts without being bogged down in implementation details, but at the same time allows them to utilize the richness of Clojure collections. It also illustrates the difference between an abstract and concrete, which is a useful perspective for future software development courses and work. 
+We plan to teach both collection-specific and collection-independent functions since both are widely used in examples. Students will be encouraged to use the collection-independent approach when they focus on problem solving. Specific collections should be used only when there is a reason to use a specific one. For instance, maps can be very useful for creating lookup tables, and sets are a good choice if one wants to store a group of entities regardless in no specific order. We believe that this approach provides students with an opportunity to focus on concepts without being bogged down in implementation details, but at the same time allows them to utilize the richness of Clojure collections. It also illustrates the difference between the abstract and concrete, which is a useful perspective for future software development courses and work. 
 
 %For instance,Creating a new list from an existing one can be done in a constant time when an element is added or removed from the beginning by taking advantage of sharing the rest of the elements. %after the one we are adding or removing. %The new list is just a reference to its first element.
 %However, adding an element at the end takes linear time since the entire list needs to be copied. 
@@ -584,8 +585,8 @@ We plan to teach both collection-specific and collection-independent functions s
 Clojure is a promising candidate for an introductory CS course. Its rich collection of data structures and focus on abstraction teaches students good programming skills. Teaching Clojure would give a unique opportunity to teach both general problem-solving (as applied to CS) and concrete language tools. The growing use of Clojure in industry means that there is an active and helpful community surrounding the language which helps students to continue Clojure development after the introductory course. However, in order to adopt Clojure as a language for an introductory class one needs to tackle a few challenges, such as confusing errors messages and  a lack of beginner-friendly development environments.
 
 \section{Acknowledgments}
-The authors thank Jon Anthony, Brian Goslinga, Nic McPhee, and Simon Hawkin for helpful discussion and suggestions, %\joecomment{Use the word input? Or else it sounds like we just enjoy talking to them and that deserves mentioning :)}. 
-Max Magnuson and Paul Schliep for thorough testing of our development environment, and participants of November 2012 Boston Clojure meetup, TFPIE 2013, and June 2013 Twin Cities Clojure meeting for their feedback and discussion. 
+The authors thank Jon Anthony, Brian Goslinga, Nic McPhee, and Simon Hawkin for helpful discussion and suggestions; %\joecomment{Use the word input? Or else it sounds like we just enjoy talking to them and that deserves mentioning :)}. 
+Max Magnuson and Paul Schliep for thorough testing of our development environment; and participants of November 2012 Boston Clojure meetup, TFPIE 2013, and June 2013 Twin Cities Clojure meeting for their feedback and discussion. 
 
 %\elenacomment{+ Nic and TFPIE}
 
